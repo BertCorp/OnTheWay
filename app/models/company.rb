@@ -1,4 +1,8 @@
 class Company < ActiveRecord::Base
+  has_many :appointments
+  has_many :providers
+  has_many :customers, :through => :appointments
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable

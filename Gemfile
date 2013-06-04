@@ -29,7 +29,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem 'rails-admin'
+gem 'rails_admin'
 gem 'simple_form'
 gem 'devise'
 gem 'public_activity'

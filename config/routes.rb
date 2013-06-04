@@ -1,10 +1,14 @@
 OnTheWay::Application.routes.draw do
 
+  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+
   devise_for :companies
   devise_for :providers
 
-  resources :companies
-  resources :providers
+  resources :companies do
+    resources :providers
+  end
+
   resources :customers
   resources :appointments
 
