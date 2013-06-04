@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  company_id: 1
+  provider_id: 1
+  customer_id: 1
+  shortcode: MyString
+  when: 2013-06-04 16:31:22
+  where: MyText
+  provider_location: MyText
+  status: MyString
+  rating: 1
+  feedback: MyText
+  confirmed_at: 2013-06-04 16:31:22
+  arrived_at: 2013-06-04 16:31:22
+  finished_at: 2013-06-04 16:31:22
+
+two:
+  company_id: 1
+  provider_id: 1
+  customer_id: 1
+  shortcode: MyString
+  when: 2013-06-04 16:31:22
+  where: MyText
+  provider_location: MyText
+  status: MyString
+  rating: 1
+  feedback: MyText
+  confirmed_at: 2013-06-04 16:31:22
+  arrived_at: 2013-06-04 16:31:22
+  finished_at: 2013-06-04 16:31:22

@@ -1,0 +1,47 @@
+<h1>Listing appointments</h1>
+
+<table>
+  <tr>
+    <th>Company</th>
+    <th>Provider</th>
+    <th>Customer</th>
+    <th>Shortcode</th>
+    <th>When</th>
+    <th>Where</th>
+    <th>Provider location</th>
+    <th>Status</th>
+    <th>Rating</th>
+    <th>Feedback</th>
+    <th>Confirmed at</th>
+    <th>Arrived at</th>
+    <th>Finished at</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @appointments.each do |appointment| %>
+  <tr>
+    <td><%= appointment.company_id %></td>
+    <td><%= appointment.provider_id %></td>
+    <td><%= appointment.customer_id %></td>
+    <td><%= appointment.shortcode %></td>
+    <td><%= appointment.when %></td>
+    <td><%= appointment.where %></td>
+    <td><%= appointment.provider_location %></td>
+    <td><%= appointment.status %></td>
+    <td><%= appointment.rating %></td>
+    <td><%= appointment.feedback %></td>
+    <td><%= appointment.confirmed_at %></td>
+    <td><%= appointment.arrived_at %></td>
+    <td><%= appointment.finished_at %></td>
+    <td><%= link_to 'Show', appointment %></td>
+    <td><%= link_to 'Edit', edit_appointment_path(appointment) %></td>
+    <td><%= link_to 'Destroy', appointment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Appointment', new_appointment_path %>

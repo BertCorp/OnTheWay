@@ -1,0 +1,69 @@
+<%= form_for(@appointment) do |f| %>
+  <% if @appointment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
+
+      <ul>
+      <% @appointment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :company_id %><br />
+    <%= f.number_field :company_id %>
+  </div>
+  <div class="field">
+    <%= f.label :provider_id %><br />
+    <%= f.number_field :provider_id %>
+  </div>
+  <div class="field">
+    <%= f.label :customer_id %><br />
+    <%= f.number_field :customer_id %>
+  </div>
+  <div class="field">
+    <%= f.label :shortcode %><br />
+    <%= f.text_field :shortcode %>
+  </div>
+  <div class="field">
+    <%= f.label :when %><br />
+    <%= f.datetime_select :when %>
+  </div>
+  <div class="field">
+    <%= f.label :where %><br />
+    <%= f.text_area :where %>
+  </div>
+  <div class="field">
+    <%= f.label :provider_location %><br />
+    <%= f.text_area :provider_location %>
+  </div>
+  <div class="field">
+    <%= f.label :status %><br />
+    <%= f.text_field :status %>
+  </div>
+  <div class="field">
+    <%= f.label :rating %><br />
+    <%= f.number_field :rating %>
+  </div>
+  <div class="field">
+    <%= f.label :feedback %><br />
+    <%= f.text_area :feedback %>
+  </div>
+  <div class="field">
+    <%= f.label :confirmed_at %><br />
+    <%= f.datetime_select :confirmed_at %>
+  </div>
+  <div class="field">
+    <%= f.label :arrived_at %><br />
+    <%= f.datetime_select :arrived_at %>
+  </div>
+  <div class="field">
+    <%= f.label :finished_at %><br />
+    <%= f.datetime_select :finished_at %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

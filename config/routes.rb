@@ -1,4 +1,15 @@
 OnTheWay::Application.routes.draw do
+
+  devise_for :companies
+  devise_for :providers
+
+  resources :companies
+  resources :providers
+  resources :customers
+  resources :appointments
+
+  root :to => "pages#index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

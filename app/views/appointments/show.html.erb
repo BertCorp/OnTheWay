@@ -1,0 +1,70 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Company:</b>
+  <%= @appointment.company_id %>
+</p>
+
+<p>
+  <b>Provider:</b>
+  <%= @appointment.provider_id %>
+</p>
+
+<p>
+  <b>Customer:</b>
+  <%= @appointment.customer_id %>
+</p>
+
+<p>
+  <b>Shortcode:</b>
+  <%= @appointment.shortcode %>
+</p>
+
+<p>
+  <b>When:</b>
+  <%= @appointment.when %>
+</p>
+
+<p>
+  <b>Where:</b>
+  <%= @appointment.where %>
+</p>
+
+<p>
+  <b>Provider location:</b>
+  <%= @appointment.provider_location %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @appointment.status %>
+</p>
+
+<p>
+  <b>Rating:</b>
+  <%= @appointment.rating %>
+</p>
+
+<p>
+  <b>Feedback:</b>
+  <%= @appointment.feedback %>
+</p>
+
+<p>
+  <b>Confirmed at:</b>
+  <%= @appointment.confirmed_at %>
+</p>
+
+<p>
+  <b>Arrived at:</b>
+  <%= @appointment.arrived_at %>
+</p>
+
+<p>
+  <b>Finished at:</b>
+  <%= @appointment.finished_at %>
+</p>
+
+
+<%= link_to 'Edit', edit_appointment_path(@appointment) %> |
+<%= link_to 'Back', appointments_path %>
