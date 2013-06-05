@@ -13,6 +13,11 @@ OnTheWay::Application.routes.draw do
   resources :customers
   resources :appointments
 
+  get "customer" => "pages#customer"
+  get "provider" => "pages#provider"
+  get "providers/track" => "providers#get_position"
+  post "providers/track" => "providers#set_position"
+
   root :to => "pages#index"
 
   # The priority is based upon order of creation:

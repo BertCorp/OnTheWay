@@ -2,8 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+# Server gems
+gem 'redis', '2.2.2'
+gem 'redis-rails'
 
 group :production do
   gem 'unicorn'
@@ -33,6 +34,7 @@ gem 'rails_admin'
 gem 'simple_form'
 gem 'devise'
 gem 'public_activity'
+gem 'json'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

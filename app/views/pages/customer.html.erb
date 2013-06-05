@@ -1,0 +1,42 @@
+
+<h3>Finding Mark's Location:</h3>
+
+<div id="mapContainer" style="width: 800px; height: 500px; margin: auto;"></div>
+
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+
+  var marker = null;
+  var map = null;
+  function track() {
+    $.getJSON('/providers/track', {}, function(data) {
+      var position = data;
+      $('p').prepend(JSON.stringify(position) + "<br/>");
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      var coords = new google.maps.LatLng(latitude, longitude);
+      var mapOptions = {
+        zoom: 15,
+        center: coords,
+        mapTypeControl: true,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      if (marker) {
+        marker.setPosition(coords);
+      } else {
+        map = new google.maps.Map(document.getElementById("mapContainer"), mapOptions);
+        marker = new google.maps.Marker({
+          position: coords,
+          map: map,
+          title: "Mark's current location!"
+        });
+      }
+    });
+    setTimeout(track, 5000);
+  }
+  track();
+
+</script>
+
+<p></p>
+

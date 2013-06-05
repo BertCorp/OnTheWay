@@ -1,4 +1,13 @@
 class ProvidersController < ApplicationController
+
+  def get_position
+    render :text => $redis.get('mark')
+  end
+
+  def set_position
+    render :text => $redis.set('mark', params[:position].to_json)
+  end
+
   # GET /providers
   # GET /providers.json
   def index

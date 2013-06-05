@@ -4,4 +4,12 @@ class PagesController < ApplicationController
 
   end
 
+  def provider
+    # store location
+  end
+
+  def customer
+    # show location
+  end
+
 end
