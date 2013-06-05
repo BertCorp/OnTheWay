@@ -12,7 +12,7 @@ RailsAdmin.config do |config|
   # config.main_app_name = Proc.new { |controller| [Rails.application.engine_name.titleize, controller.params['action'].titleize] }
 
   # RailsAdmin may need a way to know who the current user is]
-  config.current_user_method { current_company } # auto-generated
+  config.current_user_method { current_admin } # auto-generated
 
   # If you want to track changes on your models:
   # config.audit_with :history, 'Company'
@@ -64,22 +64,22 @@ RailsAdmin.config do |config|
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :company_id, :integer 
-  #     configure :provider_id, :integer 
-  #     configure :customer_id, :integer 
-  #     configure :shortcode, :string 
-  #     configure :when, :datetime 
-  #     configure :where, :text 
-  #     configure :provider_location, :text 
-  #     configure :status, :string 
-  #     configure :rating, :integer 
-  #     configure :feedback, :text 
-  #     configure :confirmed_at, :datetime 
-  #     configure :arrived_at, :datetime 
-  #     configure :finished_at, :datetime 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
+  #     configure :id, :integer
+  #     configure :company_id, :integer
+  #     configure :provider_id, :integer
+  #     configure :customer_id, :integer
+  #     configure :shortcode, :string
+  #     configure :when, :datetime
+  #     configure :where, :text
+  #     configure :provider_location, :text
+  #     configure :status, :string
+  #     configure :rating, :integer
+  #     configure :feedback, :text
+  #     configure :confirmed_at, :datetime
+  #     configure :arrived_at, :datetime
+  #     configure :finished_at, :datetime
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
 
   #   # Cross-section configuration:
 
@@ -119,12 +119,12 @@ RailsAdmin.config do |config|
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :name, :string 
-  #     configure :phone, :string 
-  #     configure :email, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
+  #     configure :id, :integer
+  #     configure :name, :string
+  #     configure :phone, :string
+  #     configure :email, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
 
   #   # Cross-section configuration:
 
@@ -164,12 +164,12 @@ RailsAdmin.config do |config|
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :name, :string 
-  #     configure :email, :string 
-  #     configure :phone, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
+  #     configure :id, :integer
+  #     configure :name, :string
+  #     configure :email, :string
+  #     configure :phone, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
 
   #   # Cross-section configuration:
 
@@ -209,12 +209,12 @@ RailsAdmin.config do |config|
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :company_id, :integer 
-  #     configure :name, :string 
-  #     configure :phone, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
+  #     configure :id, :integer
+  #     configure :company_id, :integer
+  #     configure :name, :string
+  #     configure :phone, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
 
   #   # Cross-section configuration:
 
