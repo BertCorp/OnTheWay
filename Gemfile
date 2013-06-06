@@ -36,6 +36,7 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'public_activity'
 gem 'json'
+gem 'base32-crockford'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

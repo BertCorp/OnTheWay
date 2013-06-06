@@ -1,23 +1,17 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <b>Company:</b>
-  <%= @appointment.company_id %>
-</p>
 
 <p>
   <b>Provider:</b>
-  <%= @appointment.provider_id %>
+  <%= link_to @appointment.provider.name, @appointment.provider %>
 </p>
 
 <p>
   <b>Customer:</b>
-  <%= @appointment.customer_id %>
+  <%= link_to @appointment.customer.name, @appointment.customer %>
 </p>
 
 <p>
-  <b>Shortcode:</b>
-  <%= @appointment.shortcode %>
+  <b>Short url:</b>
+  <a href="http://otwhq.com/<%= @appointment.shortcode %>">http://otwhq.com/<%= @appointment.shortcode %></a>
 </p>
 
 <p>
@@ -31,7 +25,7 @@
 </p>
 
 <p>
-  <b>Provider location:</b>
+  <b>Provider's Current location:</b>
   <%= @appointment.provider_location %>
 </p>
 

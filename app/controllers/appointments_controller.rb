@@ -1,8 +1,9 @@
 class AppointmentsController < ApplicationController
+  before_filter :authenticate_company!
   # GET /appointments
   # GET /appointments.json
   def index
-    @appointments = Appointment.all
+    @appointments = current_company.appointments.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +14,7 @@ class AppointmentsController < ApplicationController
   # GET /appointments/1
   # GET /appointments/1.json
   def show
-    @appointment = Appointment.find(params[:id])
+    @appointment = current_company.appointments.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,7 +25,7 @@ class AppointmentsController < ApplicationController
   # GET /appointments/new
   # GET /appointments/new.json
   def new
-    @appointment = Appointment.new
+    @appointment = current_company.appointments.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,13 +35,29 @@ class AppointmentsController < ApplicationController
 
   # GET /appointments/1/edit
   def edit
-    @appointment = Appointment.find(params[:id])
+    @appointment = current_company.appointments.find(params[:id])
   end
 
   # POST /appointments
   # POST /appointments.json
   def create
-    @appointment = Appointment.new(params[:appointment])
+    # save new customer
+    if params[:appointment][:customer].present?
+      c = Customer.new(params[:appointment][:customer])
+      c.save
+      params[:appointment].delete(:customer)
+      params[:appointment][:customer_id] = c.id
+    end
+
+    # build the proper when date field
+    params[:appointment][:when] = "#{params[:appointment][:when][:date]} #{params[:appointment][:when][:time]}"
+
+    # save the proper status timestamps
+    if (params[:appointment][:status] != 'requested') && !params[:appointment]["#{params[:appointment][:status]}_at".to_sym].present?
+      params[:appointment]["#{params[:appointment][:status]}_at".to_sym] = Time.now
+    end
+
+    @appointment = current_company.appointments.new(params[:appointment])
 
     respond_to do |format|
       if @appointment.save
@@ -56,7 +73,7 @@ class AppointmentsController < ApplicationController
   # PUT /appointments/1
   # PUT /appointments/1.json
   def update
-    @appointment = Appointment.find(params[:id])
+    @appointment = current_company.appointments.find(params[:id])
 
     respond_to do |format|
       if @appointment.update_attributes(params[:appointment])
@@ -72,7 +89,7 @@ class AppointmentsController < ApplicationController
   # DELETE /appointments/1
   # DELETE /appointments/1.json
   def destroy
-    @appointment = Appointment.find(params[:id])
+    @appointment = current_company.appointments.find(params[:id])
     @appointment.destroy
 
     respond_to do |format|

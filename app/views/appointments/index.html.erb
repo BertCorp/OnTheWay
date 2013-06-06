@@ -1,49 +1,47 @@
-
+  <% if current_company.providers.count > 0 %>
   <%= link_to 'Add Appointment', new_appointment_path, :class => 'btn btn-primary pull-right' %>
-
+  <% end %>
   <h1>Appointments</h1>
 
   <table class="table table-bordered table-striped">
     <tr>
       <th>ID</th>
-      <th>Provider</th>
       <th>Customer</th>
-      <th>Shortcode</th>
+      <th>Provider</th>
+      <th>URL</th>
       <th>When</th>
       <th>Where</th>
       <th>Status</th>
-      <th>Rating</th>
       <th>Feedback</th>
-      <th>Confirmed</th>
-      <th>Arrived</th>
-      <th>Finished</th>
       <th></th>
     </tr>
 
   <% @appointments.each do |appointment| %>
     <tr>
-      <td><%= appointment.id %></td>
-      <td><%= appointment.provider_id %></td>
-      <td><%= appointment.customer_id %></td>
-      <td><%= appointment.shortcode %></td>
-      <td><%= appointment.when %></td>
+      <td><%= link_to appointment.id, appointment %></td>
+      <td><%= link_to appointment.customer.name, appointment.customer %></td>
+      <td><%= link_to appointment.provider.name, appointment.provider %></td>
+      <td><%= link_to "http://otwhq.com/#{appointment.shortcode}", "http://otwhq.com/#{appointment.shortcode}" %></td>
+      <td><%= appointment.when.strftime("%F") %> <%= appointment.when.strftime("%l:%M%P") if appointment.when.strftime("%l:%M%P") != "12:00am" %></td>
       <td><%= appointment.where %></td>
-      <td><%= appointment.provider_location %></td>
-      <td><%= appointment.status %></td>
-      <td><%= appointment.rating %></td>
-      <td><%= appointment.feedback %></td>
-      <td><%= appointment.confirmed_at %></td>
+      <td><a href="#" title="<%= appointment.status_date %>"><%= appointment.status %></a></td>
+      <td><%= appointment.rating %> - <%= appointment.feedback %></td>
+      <!--<td><%= appointment.confirmed_at %></td>
       <td><%= appointment.arrived_at %></td>
-      <td><%= appointment.finished_at %></td>
+      <td><%= appointment.finished_at %></td>-->
       <td>
-        <%= link_to raw('<i class="icon-edit icon-white"></i> Edit'), edit_appointment_path(appointment), :class => 'btn btn-primary btn-mini' %>
-        <%= link_to raw('<i class="icon-trash icon-white"></i> Delete'), appointment, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger btn-mini' %>
+        <%= link_to raw('<i class="icon-edit icon-white"></i>'), edit_appointment_path(appointment), :class => 'btn btn-primary btn-mini', :title => "Edit" %>
+        <%= link_to raw('<i class="icon-trash icon-white"></i>'), appointment, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger btn-mini', :title => "Delete" %>
       </td>
     </tr>
   <% end %>
-  <% if @appointments.count < 1 %>
+  <% if current_company.providers.count < 1 %>
     <tr>
-      <td colspan="14" style="text-align: center;">Looks like you don't have any appointments. <%= link_to 'Add One', new_appointment_path, :class => 'btn btn-primary' %></td>
+      <td colspan="10" style="text-align: center;">Looks like you don't have any providers yet. <%= link_to 'Add One', new_provider_path, :class => 'btn btn-primary' %></td>
+    </tr>
+  <% elsif @appointments.count < 1 %>
+    <tr>
+      <td colspan="10" style="text-align: center;">Looks like you don't have any appointments. <%= link_to 'Add One', new_appointment_path, :class => 'btn btn-primary' %></td>
     </tr>
   <% end %>
   </table>

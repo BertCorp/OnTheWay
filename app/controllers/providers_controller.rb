@@ -1,6 +1,8 @@
 class ProvidersController < ApplicationController
+  before_filter :authenticate_company!
 
   # TEMP methods
+=begin
   def get_position
     render :text => $redis.get('mark')
   end
@@ -8,6 +10,7 @@ class ProvidersController < ApplicationController
   def set_position
     render :text => $redis.set('mark', params[:position].to_json)
   end
+=end
 
   # GET /providers
   # GET /providers.json

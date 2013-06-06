@@ -1,6 +1,4 @@
 
-<%= link_to 'Add Customer', new_customer_path, :class => 'btn btn-primary pull-right' %>
-
 <h1>Customers</h1>
 
 <table class="table table-bordered table-striped">
@@ -24,7 +22,7 @@
 <% end %>
 <% if @customers.count < 1 %>
   <tr>
-    <td colspan="14" style="text-align: center;">Looks like you don't have any customers. Once you create some appointments, they will show up here.</td>
+    <td colspan="4" style="text-align: center;">Looks like you don't have any customers. Once you create some appointments, they will show up here.</td>
   </tr>
 <% end %>
 </table>
