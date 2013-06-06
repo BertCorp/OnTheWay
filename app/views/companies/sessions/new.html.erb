@@ -1,0 +1,20 @@
+
+<div class="border-form-div">
+
+  <h2>Login</h2>
+
+  <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+    <%= f.email_field :email, :placeholder => "Email Address", :autofocus => true %>
+    <%= f.password_field :password, :placeholder => "Password" %>
+    <% if devise_mapping.rememberable? -%>
+      <label class="checkbox"> <%= f.check_box :remember_me %> Remember me</label>
+    <% end -%>
+
+    <%= render "companies/shared/links" %>
+
+    <div class="form-actions">
+      <%= f.submit "Login" %>
+    </div>
+  <% end %>
+
+</div>
