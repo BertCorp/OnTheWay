@@ -1,27 +1,35 @@
-<h1>Listing providers</h1>
+<% if @providers.count > 0 %>
 
-<table>
-  <tr>
-    <th>Company</th>
-    <th>Name</th>
-    <th>Phone</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+  <%= link_to 'Add Provider', new_provider_path, :class => 'btn btn-primary pull-right' %>
 
-<% @providers.each do |provider| %>
-  <tr>
-    <td><%= provider.company_id %></td>
-    <td><%= provider.name %></td>
-    <td><%= provider.phone %></td>
-    <td><%= link_to 'Show', provider %></td>
-    <td><%= link_to 'Edit', edit_provider_path(provider) %></td>
-    <td><%= link_to 'Destroy', provider, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+  <h1>Providers</h1>
+
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th></th>
+    </tr>
+
+  <% @providers.each do |provider| %>
+    <tr>
+      <td><%= link_to provider.name, provider %></td>
+      <td><%= provider.email %></td>
+      <td><%= provider.phone %></td>
+      <td>
+        <%= link_to raw('<i class="icon-edit icon-white"></i> Edit'), edit_provider_path(provider), :class => 'btn btn-primary btn-mini' %>
+        <%= link_to raw('<i class="icon-trash icon-white"></i> Delete'), provider, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger btn-mini' %>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+
+<% else %>
+
+<p>Looks like you don't have any providers yet.</p>
+<p>Providers are the people that do the house calls.</p>
+
+<p><%= link_to 'Add Your First Provider', new_provider_path, :class => 'btn btn-primary btn-block btn-large' %></p>
+
 <% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Provider', new_provider_path %>

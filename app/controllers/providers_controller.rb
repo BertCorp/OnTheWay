@@ -1,5 +1,6 @@
 class ProvidersController < ApplicationController
 
+  # TEMP methods
   def get_position
     render :text => $redis.get('mark')
   end
@@ -11,7 +12,7 @@ class ProvidersController < ApplicationController
   # GET /providers
   # GET /providers.json
   def index
-    @providers = Provider.all
+    @providers = current_company.providers.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -22,7 +23,7 @@ class ProvidersController < ApplicationController
   # GET /providers/1
   # GET /providers/1.json
   def show
-    @provider = Provider.find(params[:id])
+    @provider = current_company.providers.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -33,7 +34,7 @@ class ProvidersController < ApplicationController
   # GET /providers/new
   # GET /providers/new.json
   def new
-    @provider = Provider.new
+    @provider = current_company.providers.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -43,13 +44,13 @@ class ProvidersController < ApplicationController
 
   # GET /providers/1/edit
   def edit
-    @provider = Provider.find(params[:id])
+    @provider = current_company.providers.find(params[:id])
   end
 
   # POST /providers
   # POST /providers.json
   def create
-    @provider = Provider.new(params[:provider])
+    @provider = current_company.providers.new(params[:provider])
 
     respond_to do |format|
       if @provider.save
@@ -65,7 +66,7 @@ class ProvidersController < ApplicationController
   # PUT /providers/1
   # PUT /providers/1.json
   def update
-    @provider = Provider.find(params[:id])
+    @provider = current_company.providers.find(params[:id])
 
     respond_to do |format|
       if @provider.update_attributes(params[:provider])
@@ -81,7 +82,7 @@ class ProvidersController < ApplicationController
   # DELETE /providers/1
   # DELETE /providers/1.json
   def destroy
-    @provider = Provider.find(params[:id])
+    @provider = current_company.providers.find(params[:id])
     @provider.destroy
 
     respond_to do |format|

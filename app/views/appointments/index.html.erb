@@ -1,47 +1,49 @@
-<h1>Listing appointments</h1>
 
-<table>
-  <tr>
-    <th>Company</th>
-    <th>Provider</th>
-    <th>Customer</th>
-    <th>Shortcode</th>
-    <th>When</th>
-    <th>Where</th>
-    <th>Provider location</th>
-    <th>Status</th>
-    <th>Rating</th>
-    <th>Feedback</th>
-    <th>Confirmed at</th>
-    <th>Arrived at</th>
-    <th>Finished at</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+  <%= link_to 'Add Appointment', new_appointment_path, :class => 'btn btn-primary pull-right' %>
 
-<% @appointments.each do |appointment| %>
-  <tr>
-    <td><%= appointment.company_id %></td>
-    <td><%= appointment.provider_id %></td>
-    <td><%= appointment.customer_id %></td>
-    <td><%= appointment.shortcode %></td>
-    <td><%= appointment.when %></td>
-    <td><%= appointment.where %></td>
-    <td><%= appointment.provider_location %></td>
-    <td><%= appointment.status %></td>
-    <td><%= appointment.rating %></td>
-    <td><%= appointment.feedback %></td>
-    <td><%= appointment.confirmed_at %></td>
-    <td><%= appointment.arrived_at %></td>
-    <td><%= appointment.finished_at %></td>
-    <td><%= link_to 'Show', appointment %></td>
-    <td><%= link_to 'Edit', edit_appointment_path(appointment) %></td>
-    <td><%= link_to 'Destroy', appointment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+  <h1>Appointments</h1>
 
-<br />
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th>ID</th>
+      <th>Provider</th>
+      <th>Customer</th>
+      <th>Shortcode</th>
+      <th>When</th>
+      <th>Where</th>
+      <th>Status</th>
+      <th>Rating</th>
+      <th>Feedback</th>
+      <th>Confirmed</th>
+      <th>Arrived</th>
+      <th>Finished</th>
+      <th></th>
+    </tr>
 
-<%= link_to 'New Appointment', new_appointment_path %>
+  <% @appointments.each do |appointment| %>
+    <tr>
+      <td><%= appointment.id %></td>
+      <td><%= appointment.provider_id %></td>
+      <td><%= appointment.customer_id %></td>
+      <td><%= appointment.shortcode %></td>
+      <td><%= appointment.when %></td>
+      <td><%= appointment.where %></td>
+      <td><%= appointment.provider_location %></td>
+      <td><%= appointment.status %></td>
+      <td><%= appointment.rating %></td>
+      <td><%= appointment.feedback %></td>
+      <td><%= appointment.confirmed_at %></td>
+      <td><%= appointment.arrived_at %></td>
+      <td><%= appointment.finished_at %></td>
+      <td>
+        <%= link_to raw('<i class="icon-edit icon-white"></i> Edit'), edit_appointment_path(appointment), :class => 'btn btn-primary btn-mini' %>
+        <%= link_to raw('<i class="icon-trash icon-white"></i> Delete'), appointment, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger btn-mini' %>
+      </td>
+    </tr>
+  <% end %>
+  <% if @appointments.count < 1 %>
+    <tr>
+      <td colspan="14" style="text-align: center;">Looks like you don't have any appointments. <%= link_to 'Add One', new_appointment_path, :class => 'btn btn-primary' %></td>
+    </tr>
+  <% end %>
+  </table>

@@ -1,4 +1,5 @@
-<%= form_for(@provider) do |f| %>
+<div class="border-form-div">
+<%= simple_form_for(@provider, :html => { :class => 'form-horizontal' }) do |f| %>
   <% if @provider.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@provider.errors.count, "error") %> prohibited this provider from being saved:</h2>
@@ -11,19 +12,15 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :company_id %><br />
-    <%= f.number_field :company_id %>
-  </div>
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :phone %><br />
-    <%= f.text_field :phone %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <%= f.hidden_field :company_id, :value => current_company.id %>
+
+  <%= f.input :name %>
+  <%= f.input :email %>
+  <%= f.input :phone %>
+
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to 'Cancel', :back, :class => "btn btn-danger" %>
   </div>
 <% end %>
+</div>

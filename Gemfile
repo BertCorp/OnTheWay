@@ -33,6 +33,7 @@ gem 'jquery-rails'
 gem 'rails_admin'
 gem 'simple_form'
 gem 'devise'
+gem 'devise_invitable'
 gem 'public_activity'
 gem 'json'
 

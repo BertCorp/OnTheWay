@@ -1,25 +1,30 @@
-<h1>Listing customers</h1>
 
-<table>
+<%= link_to 'Add Customer', new_customer_path, :class => 'btn btn-primary pull-right' %>
+
+<h1>Customers</h1>
+
+<table class="table table-bordered table-striped">
   <tr>
     <th>Name</th>
+    <th>Email</th>
     <th>Phone</th>
-    <th></th>
-    <th></th>
     <th></th>
   </tr>
 
 <% @customers.each do |customer| %>
   <tr>
-    <td><%= customer.name %></td>
+    <td><%= link_to customer.name, customer %></td>
+    <td><%= customer.email %></td>
     <td><%= customer.phone %></td>
-    <td><%= link_to 'Show', customer %></td>
-    <td><%= link_to 'Edit', edit_customer_path(customer) %></td>
-    <td><%= link_to 'Destroy', customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td>
+      <%= link_to raw('<i class="icon-edit icon-white"></i> Edit'), edit_customer_path(customer), :class => 'btn btn-primary btn-mini' %>
+      <%= link_to raw('<i class="icon-trash icon-white"></i> Delete'), customer, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger btn-mini' %>
+    </td>
+  </tr>
+<% end %>
+<% if @customers.count < 1 %>
+  <tr>
+    <td colspan="14" style="text-align: center;">Looks like you don't have any customers. Once you create some appointments, they will show up here.</td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New Customer', new_customer_path %>
