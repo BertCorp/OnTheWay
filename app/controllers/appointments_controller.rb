@@ -3,8 +3,8 @@ class AppointmentsController < ApplicationController
   # GET /appointments
   # GET /appointments.json
   def index
-    @upcoming_appointments = current_company.appointments.where("('when' >= '#{Date.today}') AND (('status' != 'canceled') AND ('status' != 'finished'))").order("'when' ASC")
-    @past_appointments = current_company.appointments.where("('when' < '#{Date.today}') OR (('status' == 'canceled') OR ('status' == 'finished'))").order("'when' DESC")
+    @upcoming_appointments = current_company.appointments.where("('when' >= '#{Date.today}') AND (('status' != 'canceled') AND ('status' != 'finished'))").order('"appointments"."when" ASC')
+    @past_appointments = current_company.appointments.where("('when' < '#{Date.today}') OR (('status' == 'canceled') OR ('status' == 'finished'))").order('"appointments"."when" DESC')
 
     respond_to do |format|
       format.html # index.html.erb
