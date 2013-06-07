@@ -17,12 +17,12 @@
     <label class="control-label" for="appointment_customer">Customer</label>
     <div class="controls">
       <% if @appointment.customer %>
-      <%= f.select :customer, current_company.customers.collect {|a| [a.name, a.id]}, { :include_blank => '-- Select Proider --' } -%>
+      <%= f.select :customer_id, current_company.customers.collect {|a| [a.name, a.id]} -%>
       <% else %>
         <%= f.fields_for :customer do |customer| %>
-          <%= customer.text_field :name, :placeholder => 'Name' %><br/>
-          <%= customer.text_field :email, :placeholder => 'customer@email.com' %><br/>
-          <%= customer.text_field :phone, :placeholder => '(xxx) xxx-xxxx' %>
+          <%= customer.text_field :name, placeholder: 'Name', style: "margin-bottom: 5px;" %><br/>
+          <%= customer.email_field :email, placeholder: 'ex: example@onthewayhq.com', style: "margin-bottom: 5px;" %><br/>
+          <%= customer.telephone_field :phone, placeholder: '123-456-7890', pattern: "[0-9]{3}[\-][0-9]{3}[\-][0-9]{4}", class: 'input-medium', maxlength: '12' %>
         <% end %>
       <% end %>
     </div>
@@ -31,8 +31,8 @@
   <div class="control-group string optional appointment_when">
     <label class="string optional control-label" for="appointment_when">When</label>
     <div class="controls">
-      <input data-datepicker="datepicker" id="appointment_when" name="appointment[when][date]" class="input-small" type="text" value="<%= (@appointment.when||Date.today).strftime("%F") %>" />
-      <input class="input-mini" type="text" name="appointment[when][time]" value="<%= @appointment.when.strftime("%l:%M%P") if @appointment.when %>" placeholder="12:00pm" />
+      <input id="appointment_when" name="appointment[when][date]" class="input-medium" type="date" value="<%= (@appointment.when||Date.today).strftime("%F") %>" />
+      <input class="input-small" type="time" name="appointment[when][time]" value="<%= @appointment.when.strftime("%l:%M%P") if @appointment.when %>" style="width: 102px;" />
       <!--<span class="help-block">All times are shown as Central Standard Time (GMT -06:00).</span>-->
     </div>
   </div>
@@ -62,7 +62,7 @@
   <div class="control-group string optional appointment_confirmed_at">
     <label class="string optional control-label" for="appointment_confirmed_at">Confirmed At</label>
     <div class="controls">
-      <input id="appointment_confirmed_at" name="appointment[confirmed_at]" class="input-small" type="text" value="<%= @appointment.confirmed_at %>" />
+      <input id="appointment_confirmed_at" name="appointment[confirmed_at]" class="input-large" type="text" value="<%= @appointment.confirmed_at %>" />
     </div>
   </div>
   <% end %>
@@ -70,7 +70,7 @@
   <div class="control-group string optional appointment_arrived_at">
     <label class="string optional control-label" for="appointment_arrived_at">Arrived At</label>
     <div class="controls">
-      <input id="appointment_arrived_at" name="appointment[arrived_at]" class="input-small" type="text" value="<%= @appointment.arrived_at %>" />
+      <input id="appointment_arrived_at" name="appointment[arrived_at]" class="input-large" type="text" value="<%= @appointment.arrived_at %>" />
     </div>
   </div>
   <% end %>
@@ -78,7 +78,7 @@
   <div class="control-group string optional appointment_finished_at">
     <label class="string optional control-label" for="appointment_finished_at">Finished At</label>
     <div class="controls">
-      <input id="appointment_finished_at" name="appointment[finished_at]" class="input-small" type="text" value="<%= @appointment.finished_at %>" />
+      <input id="appointment_finished_at" name="appointment[finished_at]" class="input-large" type="text" value="<%= @appointment.finished_at %>" />
     </div>
   </div>
   <% end %>

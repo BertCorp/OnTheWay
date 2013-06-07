@@ -53,6 +53,10 @@ class AppointmentsController < ApplicationController
     # build the proper when date field
     params[:appointment][:when] = "#{params[:appointment][:when][:date]} #{params[:appointment][:when][:time]}"
 
+    if !params[:appointment][:status].present?
+      params[:appointment][:status] = 'requested'
+    end
+
     # save the proper status timestamps
     if (params[:appointment][:status] != 'requested') && !params[:appointment]["#{params[:appointment][:status]}_at".to_sym].present?
       params[:appointment]["#{params[:appointment][:status]}_at".to_sym] = Time.now
