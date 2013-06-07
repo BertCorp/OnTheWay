@@ -16,7 +16,7 @@
 
   <%= f.input :name, input_html: { required: 'required' } %>
   <%= f.input :email, as: :email, placeholder: "ex: example@onthewayhq.com" %>
-  <%= f.input :phone, as: :tel, placeholder: "Format: 123-456-7890", input_html: { pattern: "[0-9]{3}[\-][0-9]{3}[\-][0-9]{4}", class: 'input-small' } %>
+  <%= f.input :phone, as: :tel, placeholder: "123-456-7890", input_html: { pattern: "[0-9]{3}[\-][0-9]{3}[\-][0-9]{4}", class: 'input-medium', maxlength: '12' } %>
 
   <div class="form-actions">
     <%= f.button :submit, :class => 'btn-primary' %>

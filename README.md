@@ -15,6 +15,7 @@ Todos
 - shortcode integration
 - customer appointment pages
 
+
 completed
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07
