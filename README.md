@@ -2,7 +2,8 @@ OnTheWay
 ========
 
 Customer Web Panel: http://www.onthewayhq.com
-Provider Mobile App: http://www.onthewayhq.com/prototypes/provider-mobile-v1.0.html
+
+Provider Mobile App: http://www.onthewayhq.com/mobile/
 
 
 Todos
