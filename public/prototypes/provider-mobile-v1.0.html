@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>OnTheWay</title>
+  <link rel="stylesheet"  href="http://view.jquerymobile.com/1.3.1/dist/demos/css/themes/default/jquery.mobile.min.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="shortcut icon" href="http://view.jquerymobile.com/1.3.1/dist/demos/favicon.ico">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://view.jquerymobile.com/1.3.1/dist/demos/_assets/js/index.js"></script>
+  <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+</head>
+<body>
+
+<div data-role="page" id="home" class="jqm-demos">
+
+  <div data-role="header" class="jqm-header">
+    <h1 class="jqm-logo"><a href="./"><img src="./images/logo-white.png" alt="OnTheWay"></a></h1>
+  </div><!-- /header -->
+
+  <div data-role="content" class="jqm-content jqm-fullwidth">
+
+    <ul data-role="listview" data-theme="d" data-dividertheme="b" data-filter="true" data-filter-theme="d" data-filter-placeholder="Search Appointments...">
+      <li data-role="list-divider">Today (June 7, 2013) <span class="ui-li-count">2</span></li>
+      <li><a href="#detail" data-transition="slide">
+        <h3>Mark Bertrand</h3>
+        <!--<p>Description of services require. Has a leaky faucet.</p>-->
+        <p class="ui-li-aside">
+          <strong>9:00</strong>AM<br/>
+          <span class="label label-success">finished</span>
+        </p>
+      </a></li>
+      <li><a href="#">
+        <h3>Megan Dunn</h3>
+        <!--<p>Description of services require. Has a leaky faucet.</p>-->
+        <p class="ui-li-aside">
+          <strong>10:00</strong>AM<br/>
+          <span class="label label-warning">NEXT</span>
+        </p>
+      </a></li>
+      <li><a href="#">
+        <h3>Megan Dunn</h3>
+        <!--<p>Description of services require. Has a leaky faucet.</p>-->
+        <p class="ui-li-aside">
+          <strong>10:00</strong>AM<br/>
+          <span class="label label-warning">EN ROUTE</span>
+        </p>
+      </a></li>
+      <li><a href="#">
+        <h3>Megan Dunn</h3>
+        <!--<p>Description of services require. Has a leaky faucet.</p>-->
+        <p class="ui-li-aside">
+          <strong>10:00</strong>AM<br/>
+          <span class="label label-warning">IN PROGRESS</span>
+        </p>
+      </a></li>
+      <li data-role="list-divider">Tomorrow (June 8, 2013) <span class="ui-li-count">1</span></li>
+      <li><a href="#">
+        <h3>Kelsey Kreiling</h3>
+        <!--<p>Description of services require. Has a leaky faucet.</p>-->
+        <p class="ui-li-aside">
+          <strong>4:48</strong>PM<br/>
+          <span class="label label-info">confirmed</span>
+        </p>
+      </a></li>
+      <li data-role="list-divider">June 9, 2013 <span class="ui-li-count">3</span></li>
+      <li><a href="#">
+        <h3>Brett Gilbert</h3>
+        <!--<p>As someone who has purchased children's books from our 4-for-3 Store, you may be interested in these featured books.</p>-->
+        <p class="ui-li-aside">
+          <strong>12:47</strong>PM<br/>
+          <span class="label label-important">canceled</span>
+        </p>
+      </a></li>
+      <li><a href="#">
+        <h3>Daniel Zarick</h3>
+        <!--<p>Hey little buddy, sorry but I can't make it up to vacationland this weekend. Maybe next weekend?</p>-->
+        <p class="ui-li-aside">
+          <strong>6:24</strong>AM<br/>
+          <span class="label label-info">confirmed</span>
+        </p>
+      </a></li>
+      <li><a href="#">
+        <h3>Chris Duesing</h3>
+        <!--<p>There are 3 updates for the home on your watchlist: 1 updated MLS listing and 2 homes under contract.</p>-->
+        <p class="ui-li-aside">
+          <strong>5:52</strong>AM<br/>
+          <span class="label label-info">confirmed</span>
+        </p>
+      </a></li>
+      <li data-role="list-divider">June 15, 2013 <span class="ui-li-count">2</span></li>
+      <li><a href="index.html">
+        <h3>Angela Smith</h3>
+        <!--<p>My name is Angela Smith, SEO Consultant. I've greatly enjoyed looking through your site and I was wondering if you'd be interested in providing a link</p>-->
+        <p class="ui-li-aside">
+          <strong>6:24</strong>AM<br/>
+          <span class="label label-info">confirmed</span>
+        </p>
+      </a></li>
+      <li><a href="index.html">
+        <h3>Mike Taylor</h3>
+        <!--<p>Sounds good, let me check into our plans.</p>-->
+        <p class="ui-li-aside">
+          <strong>6:24</strong>AM<br/>
+          <span class="label">requested</span>
+        </p>
+      </a></li>
+    </ul>
+
+  </div><!-- /content -->
+
+</div><!-- /page -->
+
+<div data-role="page" id="detail" class="jqm-demos">
+
+  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
+    <a href="#home" data-icon="back" data-iconpos="notext" data-rel="back" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back ui-icon-shadow"></span></span></a>
+    <h1>Mark Bertrand</h1>
+    <!--<a href="#edit" data-icon="edit" data-iconpos="notext" data-transition="slideup" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Edit</span><span class="ui-icon ui-icon-edit ui-icon-shadow"></span></span></a>-->
+  </div><!-- /header -->
+
+  <div data-role="content">
+
+    <div class="ui-grid-solo">
+      <div class="ui-block-a">
+        <a href="#dialog-success" data-role="button" data-rel="dialog" data-transition="pop" data-theme="b">I'm Finished</a>
+        <!--<a href="#dialog-texts" data-role="button" data-rel="dialog" data-transition="popup" data-theme="b">I'm Finished</a>-->
+      </div>
+    </div>
+
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><a href="#dialog-texts" data-role="button" data-rel="dialog" data-transition="slideup" data-theme="b">Text</a></div>
+      <div class="ui-block-b"><a href="tel:+15555555555" data-role="button" data-theme="b">Call</a></div>
+    </div>
+
+    <div class="ui-grid-solo">
+      <div class="ui-block-a">
+        <!--<a href="#" data-role="button" data-theme="e">Confirm</a>-->
+        <a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-transition="pop" data-theme="a">Cancel Appointment</a>
+      </div>
+    </div>
+
+    <div>
+      <h3>Customer:</h3>
+      Mark Bertrand<br/>
+      <a href="mailto:mark@onthewayhq.com">mark@onthewayhq.com</a><br/>
+      555-555-5555
+    </div>
+
+    <div>
+      <p>
+        <a href="#" style="float: right;">(change)</a>
+        <strong>Appointment:</strong><br/>
+        2013-06-13 (TODAY) at 1:30pm<br/>
+      </p>
+      <p style="text-align: center;">
+        <span class="label label-warning" title="2013-06-07 11:19:54 -0500">IN PROGRESS</span><br/>
+        Started: 2013-06-13 13:32:13
+      </p>
+
+      <p>
+        Where: 123 N. Main St. Apt 3. Santa Monica, CA
+        <br/><a href="#">(Get Directions)</a>
+      </p>
+
+      <p>Queue #: 2 / ETA: 13:30</p>
+      <p>Short url: <a href="http://otwhq.com/3">http://otwhq.com/3</a></p>
+    </div>
+
+  </div><!-- /content -->
+
+</div>
+
+<div data-role="dialog" id="dialog-texts">
+
+  <div data-role="content" data-theme="a">
+    <h3>Quick Reply</h3>
+    <a href="#dialog-success" data-role="button" data-rel="dialog" data-transition="slidedown" data-theme="b">"Running Late"</a>
+    <a href="#dialog-success" data-role="button" data-rel="dialog" data-transition="slidedown" data-theme="b">"Be there in 10"</a>
+    <a href="sms:+15555555555" data-role="button" data-rel="dialog" data-transition="slidedown" data-theme="b">Custom Message</a>
+
+    <a href="#detail" data-role="button" data-rel="back" data-theme="a">Cancel</a>
+  </div>
+
+</div>
+
+<div data-role="dialog" id="dialog-success">
+
+  <div data-role="content" data-theme="b">
+    <h3>Customer has been notified!</h3>
+    <a href="#detail" data-role="button" date-rel="back" data-theme="c">Ok</a>
+  </div>
+
+</div>
+
+<div data-role="dialog" id="dialog-cancel-confirm">
+
+  <div data-role="header" data-theme="d">
+    <h1>Cancel Appointment?</h1>
+  </div>
+
+  <div data-role="content">
+    <p>Are you sure you want to cancel this appointment? The customer won't be too happy!</p>
+    <a href="#home" data-role="button" data-theme="b">Yes</a>
+    <a href="#detail" data-role="button" data-rel="back" data-theme="c">Nevermind</a>
+  </div>
+
+</div>
+
+
+<!--<div data-role="page" id="edit" class="jqm-demos">
+
+  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
+    <a href="#home" data-icon="delete" data-iconpos="notext" data-rel="back" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Close" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Close</span><span class="ui-icon ui-icon-delete ui-icon-shadow"></span></span></a>
+  </div>
+
+  <div data-role="content">
+    <p>Edit!</p>
+  </div>
+
+</div>-->
+
+</body>
+</html>
