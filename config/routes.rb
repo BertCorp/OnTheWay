@@ -20,6 +20,8 @@ OnTheWay::Application.routes.draw do
   get "providers/track" => "providers#get_position"
   post "providers/track" => "providers#set_position"
 
+  get "mobile" => redirect("/prototypes/provider-mobile-v1.0.html")
+
   root :to => "pages#index"
 
 end
