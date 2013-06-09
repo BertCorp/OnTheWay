@@ -746,3 +746,6 @@ a.badge:focus {
 .btn-mini .badge {
   top: 0;
 }
+
+/* Map/Directions specific */
+#directions_list .adp-step, #directions_list .adp-text { padding-left: 30px; }
