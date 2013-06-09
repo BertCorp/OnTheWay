@@ -70,13 +70,13 @@
       }).load('directions');
     });
 
-    $(document).on('pageshow', '#directions', function() {
-      demo.add('directions', $('#map_canvas_1').gmap('get', 'getCurrentPosition')).load('directions');
-    });
+    //$(document).on('pageshow', '#directions', function() {
+    //  demo.add('directions', $('#map_canvas_1').gmap('get', 'getCurrentPosition')).load('directions');
+    //});
 
-    $(document).on("pagehide", '#gps_map', function() {
-      demo.add('directions', function() { $('#map_canvas_1').gmap('clearWatch'); }).load('directions');
-    });
+    //$(document).on("pagehide", '#gps_map', function() {
+    //  demo.add('directions', function() { $('#map_canvas_1').gmap('clearWatch'); }).load('directions');
+    //});
 
   </script>
 </head>
@@ -262,10 +262,10 @@
       </p>
       <!--<a id="submit" href="#" data-role="button" data-icon="search">Get Directions</a>-->
     </div>
-    <div id="results" class="ui-listview ui-listview-inset ui-corner-all ui-shadow" style="display:none;">
+    <div id="results" class="ui-listview ui-listview-inset ui-shadow" style="display:none;">
       <div class="ui-li ui-li-divider ui-btn ui-bar-b">Driving Directions</div>
       <div id="directions_list"></div>
-      <div class="ui-li ui-li-divider ui-btn ui-bar-b"></div>
+      <!--<div class="ui-li ui-li-divider ui-btn ui-bar-b"></div>-->
     </div>
   </div>
 
