@@ -17,6 +17,7 @@ Todos
 - customer appointment pages
 - twilio integration
 - shortcode integration
+
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07
 - ~~(web) proper saving of when date and time~~ 2013-06-07

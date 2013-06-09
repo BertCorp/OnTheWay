@@ -15,12 +15,14 @@ OnTheWay::Application.routes.draw do
   resources :appointments
 
   # test methods
-  get "customer" => "pages#customer"
-  get "provider" => "pages#provider"
-  get "providers/track" => "providers#get_position"
-  post "providers/track" => "providers#set_position"
+  #get "customer" => "pages#customer"
+  #get "provider" => "pages#provider"
+  #get "providers/track" => "providers#get_position"
+  #post "providers/track" => "providers#set_position"
 
-  get "mobile" => redirect("/prototypes/provider-mobile-v1.0.html")
+  get "mobile" => redirect("/provider")
+  get "provider" => redirect("/prototypes/provider-v1.0.html")
+  get "customer" => redirect("/prototypes/customer-v1.0.html")
 
   root :to => "pages#index"
 
