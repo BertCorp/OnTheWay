@@ -23,6 +23,7 @@ OnTheWay::Application.routes.draw do
   get "mobile" => redirect("/provider")
   get "provider" => redirect("/prototypes/provider-v1.0.html")
   get "customer" => redirect("/prototypes/customer-v1.0.html")
+  get "feedback" => redirect("/prototypes/customer-feedback-v1.0.html")
 
   root :to => "pages#index"
 

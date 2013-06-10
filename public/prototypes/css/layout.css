@@ -749,3 +749,5 @@ a.badge:focus {
 
 /* Map/Directions specific */
 #directions_list .adp-step, #directions_list .adp-text { padding-left: 30px; }
+#star { margin: 25px auto; width: 100% !important; text-align: center; }
+#star img { padding: 0 5px; }

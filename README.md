@@ -14,9 +14,11 @@ Todos
   - ~~map / directions~~ 2013-06-08
   - add appointment
   - some type of login/authentication
-- customer appointment pages
+- customer appointment functional html mockups
+  - ~~basic appointment page~~ 2013-06-09
+  - feedback/share page
 - twilio integration
-- shortcode integration
+- functional shortcode urls
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07
