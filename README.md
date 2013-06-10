@@ -4,6 +4,8 @@ OnTheWay
 Customer Web Panel: http://www.onthewayhq.com
 
 Provider Mobile App: http://www.onthewayhq.com/mobile/
+Customer Appointment: http://www.onthewayhq.com/customer/
+Customer Feedback: http://www.onthewayhq.com/feedback/
 
 
 Todos
