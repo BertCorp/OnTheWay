@@ -63,12 +63,17 @@
     <p style="text-align: center; ">Want to share with your friends?</p>
 
     <div class="ui-grid-solo">
-      <textarea cols="40" rows="8" style="height: 100px;">Just had an amazing experience with Mike the Plumber, thanks to @OnTheWayHQ / http://onthewayhq.com</textarea>
+      <textarea id="share-text" cols="40" rows="8" style="height: 100px;">Just had an amazing experience with Mike the Plumber, thanks to @OnTheWayHQ / http://onthewayhq.com</textarea>
     </div>
 
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><a href="" data-role="button" data-theme="b">Twitter</a></div>
-      <div class="ui-block-b"><a href="" data-role="button" data-theme="b">Facebook</a></div>
+    <div class="ui-grid-solo">
+      <div class="ui-block-a"><a href="#" onclick="window.location.href='http://mobile.twitter.com/home?status=' + $('share-text').val(); return false;" data-role="button" data-theme="b">Twitter</a></div>
+    </div>
+
+    <p style="text-align: center;">Or share on ...</p>
+
+    <div class="ui-grid-solo">
+      <div class="ui-block-a"><a href="https://www.facebook.com/sharer/sharer.php?m2w&amp;u=http://www.onthewayhq.com" data-role="button" data-theme="b">Facebook</a></div>
     </div>
 
   </div><!-- /content -->
