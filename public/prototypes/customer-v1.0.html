@@ -23,7 +23,6 @@
   <script type="text/javascript">
 
     var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
-    var providerLocation = {};
 
     ////////////////////////////////////////////////////////////
 
@@ -38,7 +37,9 @@
               self.get('map').panTo(latlng);
               self.search({ 'location': latlng }, function(results, status) {
                 if ( status === 'OK' ) {
-                  self.displayDirections({ 'origin': results[0].formatted_address, 'destination': '640 W Waveland Ave. Chicago, IL 60657', 'travelMode': google.maps.DirectionsTravelMode.DRIVING });
+                  self.displayDirections({ 'origin': results[0].formatted_address, 'destination': '640 W Waveland Ave. Chicago, IL 60657', 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
+                    //console.log(status);
+                  });
                 }
               });
             } else {
@@ -49,14 +50,6 @@
       }).load('directions');
     });
 
-    //$(document).on('pageshow', '#directions', function() {
-    //  demo.add('directions', $('#map_canvas_1').gmap('get', 'getCurrentPosition')).load('directions');
-    //});
-
-    //$(document).on("pagehide", '#gps_map', function() {
-    //  demo.add('directions', function() { $('#map_canvas_1').gmap('clearWatch'); }).load('directions');
-    //});
-
   </script>
 </head>
 <body>
@@ -65,9 +58,9 @@
 
   <div data-role="content">
 
-    <p style="text-align: center;">Mark from AAA Deliveries has a delivery scheduled for you today.</p>
+    <p style="text-align: center;"><strong>Mark</strong> from <strong>AAA Deliveries</strong> has a delivery scheduled for you today.</p>
 
-    <p style="text-align: center;">Based on his delivery schedule, there are 4 people in front of you.</p>
+    <p style="text-align: center;">Based on his delivery schedule, there are <strong>4</strong> people in front of you.</p>
 
     <p style="text-align: center;">And we expect Mark to be arriving to you at:</p>
 
@@ -80,8 +73,8 @@
     <p style="text-align: center;">Has something changed? Reschedule or cancel your appointment.</p>
 
     <div class="ui-grid-a">
-      <div class="ui-block-a"><a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-transition="pop" data-theme="b">Change</a></div>
-      <div class="ui-block-b"><a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-transition="pop" data-theme="a">Cancel</a></div>
+      <div class="ui-block-a"><a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-theme="b">Change</a></div>
+      <div class="ui-block-b"><a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-theme="a">Cancel</a></div>
     </div>
 
     <div class="ui-grid-a">
@@ -99,19 +92,20 @@
     <a href="#home" data-icon="back" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back ui-icon-shadow"></span></span></a>
     <h1>Your Appointment</h1>
   </div>
+
   <div data-role="content">
     <div id="map_canvas_1" style="height:300px;"></div>
   </div>
 
 </div>
 
-<div data-role="dialog" id="dialog-cancel-confirm">
+<div data-role="page" id="dialog-cancel-confirm">
 
   <div data-role="header" data-theme="d">
     <h1>Cancel Appointment?</h1>
   </div>
 
-  <div data-role="content">
+  <div data-role="content" data-theme="d">
     <p>Are you sure you want to cancel this appointment?</p>
     <a href="#home" data-role="button" data-rel="back" data-theme="b">Yes</a>
     <a href="#home" data-role="button" data-rel="back" data-theme="c">Nevermind</a>
