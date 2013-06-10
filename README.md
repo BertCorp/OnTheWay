@@ -19,11 +19,11 @@ Todos
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07
 - ~~(web) proper saving of when date and time~~ 2013-06-07
-~~- (mobile) finish functional html mockups~~
+- ~~(mobile) finish functional html mockups~~
   - ~~finish appointment list view~~ 2013-06-07
   - ~~appointment detail view~~ 2013-06-07
   - ~~map / directions~~ 2013-06-08
-~~- customer appointment functional html mockups~~
+- ~~customer appointment functional html mockups~~
   - ~~basic appointment page~~ 2013-06-09
   - ~~feedback/share page~~ 2013-06-10
 
