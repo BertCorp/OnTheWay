@@ -21,9 +21,9 @@ OnTheWay::Application.routes.draw do
   #post "providers/track" => "providers#set_position"
 
   get "mobile" => redirect("/provider")
-  get "provider" => redirect("/prototypes/provider-v1.0.html")
-  get "customer" => redirect("/prototypes/customer-v1.0.html")
-  get "feedback" => redirect("/prototypes/customer-feedback-v1.0.html")
+  get "provider" => redirect("/mockups/provider-v1.0.html")
+  get "customer" => redirect("/mockups/customer-v1.0.html")
+  get "feedback" => redirect("/mockups/customer-feedback-v1.0.html")
 
   root :to => "pages#index"
 

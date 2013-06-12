@@ -82,10 +82,30 @@
 </head>
 <body>
 
+<div data-role="page" id="login" class="jqm-demos">
+
+  <div data-role="header" class="jqm-header">
+    <h1 class="jqm-logo"><img src="./images/logo-white.png" alt="OnTheWay"></h1>
+  </div><!-- /header -->
+
+  <div data-role="content" class="jqm-content jqm-fullwidth">
+    <p style="text-align: center;">Welcome! Please login.</p>
+    <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
+      <form action="#home" id="loginform" data-ajax="false" data-transition="slide">
+        <input id="email" name="login" type="email" placeholder="Email Address"/>
+        <input id="password" name="password" type="password" placeholder="Password" />
+        <input type="submit" name="submit" id="submit" data-theme="b" data-iconpos="right" data-icon="arrow-r" value="login"/>
+      </form>
+    </div>
+  </div>
+
+</div>
+
 <div data-role="page" id="home" class="jqm-demos">
 
   <div data-role="header" class="jqm-header">
-    <h1 class="jqm-logo"><a href="./"><img src="./images/logo-white.png" alt="OnTheWay"></a></h1>
+    <a href="#settings-options" data-rel="dialog" data-icon="gear" data-iconpos="notext" data-transition="slideup" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Map" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Settings</span><span class="ui-icon ui-icon-gear ui-icon-shadow"></span></span></a>
+    <h1 class="jqm-logo"><a href="#home" data-transition="fade"><img src="./images/logo-white.png" alt="OnTheWay"></a></h1>
   </div><!-- /header -->
 
   <div data-role="content" class="jqm-content jqm-fullwidth">
@@ -181,14 +201,25 @@
 
 </div><!-- /page -->
 
+<div data-role="page" id="settings-options">
+
+  <div data-role="header" data-theme="d">
+    <h1>Settings</h1>
+  </div>
+
+  <div data-role="content" data-theme="d">
+    <a href="#login" data-role="button" data-transition="slide" data-direction="reverse" data-theme="b">Logout</a>
+    <a href="#home" data-role="button" data-rel="back" data-theme="c">Cancel</a>
+  </div>
+
+</div><!-- /page -->
+
 <div data-role="page" id="detail" class="jqm-demos">
 
   <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
     <a href="#home" data-icon="back" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back ui-icon-shadow"></span></span></a>
     <h1>Mark Bertrand</h1>
     <a href="#directions" data-icon="info" data-iconpos="notext" data-transition="slide" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Map" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Map</span><span class="ui-icon ui-icon-info ui-icon-shadow"></span></span></a>
-
-    <!--<a href="#edit" data-icon="edit" data-iconpos="notext" data-transition="slideup" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Edit</span><span class="ui-icon ui-icon-edit ui-icon-shadow"></span></span></a>-->
   </div><!-- /header -->
 
   <div data-role="content">
@@ -241,7 +272,7 @@
 
   </div><!-- /content -->
 
-</div>
+</div><!-- /page -->
 
 <div data-role="page" id="directions" class="jqm-demos">
 
@@ -269,7 +300,7 @@
     </div>
   </div>
 
-</div>
+</div><!-- /page -->
 
 <div data-role="page" id="dialog-texts">
 
@@ -282,7 +313,7 @@
     <a href="#detail" data-role="button" data-rel="back" data-theme="a">Cancel</a>
   </div>
 
-</div>
+</div><!-- /page -->
 
 <div data-role="page" id="dialog-success">
 
@@ -291,7 +322,7 @@
     <a href="#detail" data-role="button" date-rel="back" data-theme="c">Ok</a>
   </div>
 
-</div>
+</div><!-- /page -->
 
 <div data-role="page" id="dialog-cancel-confirm">
 
@@ -305,20 +336,7 @@
     <a href="#detail" data-role="button" data-rel="back" data-theme="c">Nevermind</a>
   </div>
 
-</div>
-
-
-<!--<div data-role="page" id="edit" class="jqm-demos">
-
-  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
-    <a href="#home" data-icon="delete" data-iconpos="notext" data-rel="back" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Close" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Close</span><span class="ui-icon ui-icon-delete ui-icon-shadow"></span></span></a>
-  </div>
-
-  <div data-role="content">
-    <p>Edit!</p>
-  </div>
-
-</div>-->
+</div><!-- /page -->
 
 </body>
 </html>

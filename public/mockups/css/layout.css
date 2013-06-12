@@ -32,11 +32,11 @@ body, .jqm-demos  {
 .jqm-header .jqm-logo a {
   display: inline-block;
   text-decoration: none;
-  min-height: 83px;
+  /*min-height: 83px;*/
 }
 .jqm-header .jqm-logo img {
-  display: block;
-  width: 200px;
+  display: inline-block;
+  /*width: 200px;*/
   height: auto;
 }
 .jqm-demos-home .jqm-header .jqm-logo img {

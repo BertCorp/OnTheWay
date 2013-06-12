@@ -11,10 +11,12 @@ Customer Feedback: http://www.onthewayhq.com/feedback/
 Todos
 =====
 - allow providers to add appointment
-- some type of provider login/authentication
 - twilio integration
 - functional shortcode urls
 - mobile prototype for providers
+  - functional provider login/authentication
+  - storing valid user
+  - display provider customers/appointments
 - mobile prototype for customers
 - mobile prototype for customer feedback
 
