@@ -33,21 +33,20 @@ ActiveRecord::Schema.define(:version => 20130606042921) do
   add_index "admins", ["reset_password_token"], :name => "index_admins_on_reset_password_token", :unique => true
 
   create_table "appointments", :force => true do |t|
-    t.integer  "company_id",        :default => 0, :null => false
-    t.integer  "provider_id",       :default => 0, :null => false
-    t.integer  "customer_id",       :default => 0, :null => false
-    t.string   "shortcode"
+    t.integer  "company_id",        :default => 0,           :null => false
+    t.integer  "provider_id",       :default => 0,           :null => false
+    t.integer  "customer_id",       :default => 0,           :null => false
     t.datetime "when"
     t.text     "where"
     t.text     "provider_location"
-    t.string   "status"
+    t.string   "status",            :default => "requested", :null => false
     t.integer  "rating"
     t.text     "feedback"
     t.datetime "confirmed_at"
     t.datetime "arrived_at"
     t.datetime "finished_at"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
   end
 
   create_table "companies", :force => true do |t|
@@ -94,6 +93,7 @@ ActiveRecord::Schema.define(:version => 20130606042921) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "authentication_token"
     t.string   "invitation_token",       :limit => 60
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"

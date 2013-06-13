@@ -1,8 +1,44 @@
+/* Storage of local variables */
+var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
+//  var currentLocation = {},
+//          credentials = {},
+//         appointments = {};
 
-  var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
-  var providerLocation = {};
+////////////////////////////////////////////////////////////
 
-  ////////////////////////////////////////////////////////////
+  $(document).on('pagebeforeshow', '#login', function(){
+    $(document).on('click', '#submit', function(e) { // catch the form's submit event
+      e.preventDefault();
+      if (($('#username').val().length > 0) && ($('#password').val().length > 0)) {
+        // Send data to server through ajax call
+        // action is functionality we want to call and outputJSON is our data
+        $.ajax({url: 'check.php',
+            data: {action : 'login', formData : $('#check-user').serialize()}, // Convert a form to a JSON string representation
+            type: 'post',
+            async: true,
+            beforeSend: function() {
+              // This callback function will trigger before data is sent
+              $.mobile.showPageLoadingMsg(true); // This will show ajax spinner
+            },
+            complete: function() {
+              // This callback function will trigger on data sent/received complete
+              $.mobile.hidePageLoadingMsg(); // This will hide ajax spinner
+            },
+            success: function (result) {
+              resultObject.formSubmitionResult = result;
+              $.mobile.changePage("#home");
+            },
+            error: function (request,error) {
+                // This callback function will trigger on unsuccessful action
+                alert('Network error has occurred please try again!');
+            }
+        });
+      } else {
+        alert('Please fill all nececery fields');
+      }
+      return false; // cancel original event to prevent form submitting
+    });
+  });
 
   $(document).on('pageinit', '#directions', function() {
     demo.add('directions', function() {
@@ -13,7 +49,6 @@
           if ( status === 'OK' ) {
             console.log(position.coords);
             var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-            providerLocation = position.coords;
             self.get('map').panTo(latlng);
             self.search({ 'location': latlng }, function(results, status) {
               if ( status === 'OK' ) {
@@ -32,7 +67,6 @@
           if ( status === 'OK' ) {
             console.log(position.coords);
             var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            providerLocation = position.coords;
             if ( !self.get('markers').client ) {
               self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
             } else {

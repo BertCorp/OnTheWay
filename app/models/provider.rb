@@ -5,7 +5,7 @@ class Provider < ActiveRecord::Base
 
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable#, :validatable
-         # :token_authenticatable, :confirmable,
+         :token_authenticatable#, :confirmable,
          # :lockable, :timeoutable and :omniauthable
 
   # Setup accessible (or protected) attributes for your model
