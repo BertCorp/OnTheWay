@@ -35,10 +35,10 @@
   <div data-role="content" class="jqm-content jqm-fullwidth">
     <p style="text-align: center;">Welcome! Please login.</p>
     <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
-      <form action="#home" id="loginform" data-ajax="false" data-transition="slide">
-        <input id="email" name="login" type="email" placeholder="Email Address"/>
-        <input id="password" name="password" type="password" placeholder="Password" />
-        <input type="submit" name="submit" id="submit" data-theme="b" data-iconpos="right" data-icon="arrow-r" value="login"/>
+      <form action="#home" id="login-form" data-ajax="false" data-transition="slide">
+        <input id="email" name="provider[email]" type="email" placeholder="Email Address"/>
+        <input id="password" name="provider[password]" type="password" placeholder="Password" />
+        <input type="submit" id="submit" data-theme="b" data-iconpos="right" data-icon="arrow-r" value="login"/>
       </form>
     </div>
   </div>

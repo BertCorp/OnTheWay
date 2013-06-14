@@ -1,5 +1,5 @@
 class ProvidersController < ApplicationController
-  before_filter :authenticate_company!
+  #before_filter :authenticate_company!
 
   # TEMP methods
 =begin

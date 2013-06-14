@@ -9,6 +9,14 @@ OnTheWay::Application.routes.draw do
     delete "/logout" => "devise/sessions#destroy", :as => "destroy_company_session"
   end
 
+  devise_for :providers, :skip => [:registrations, :passwords]
+  as :provider do
+    post "providers/login" => "devise/sessions#create", :as => "provider_session"
+    delete "providers/logout" => "devise/sessions#destroy", :as => "destroy_provider_session"
+    #get 'providers/edit' => 'devise/registrations#edit', :as => 'edit_provider_registration'
+    put 'providers' => 'devise/registrations#update', :as => 'provider_registration'
+  end
+
   #resources :companies
   resources :providers
   resources :customers

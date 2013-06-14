@@ -3,6 +3,8 @@ class Provider < ActiveRecord::Base
   has_many :appointments
   has_many :customers, :through => :appointments
 
+  before_save :ensure_authentication_token
+
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable#, :validatable
          :token_authenticatable#, :confirmable,
@@ -10,7 +12,7 @@ class Provider < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
-  attr_accessible :company_id, :name, :phone
+  attr_accessible :company_id, :name, :phone, :authentication_token
 
 
 end

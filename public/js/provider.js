@@ -1,4 +1,6 @@
 /* Storage of local variables */
+var DOMAIN = 'localhost:3000'; // DEVELOPMENT
+// var DOMAIN = 'www.onthewayhq.com'; // PRODUCTION
 var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
 //  var currentLocation = {},
 //          credentials = {},
@@ -9,32 +11,40 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
   $(document).on('pagebeforeshow', '#login', function(){
     $(document).on('click', '#submit', function(e) { // catch the form's submit event
       e.preventDefault();
-      if (($('#username').val().length > 0) && ($('#password').val().length > 0)) {
+      if (($('#email').val().length > 0) && ($('#password').val().length > 0)) {
         // Send data to server through ajax call
         // action is functionality we want to call and outputJSON is our data
-        $.ajax({url: 'check.php',
-            data: {action : 'login', formData : $('#check-user').serialize()}, // Convert a form to a JSON string representation
-            type: 'post',
-            async: true,
-            beforeSend: function() {
-              // This callback function will trigger before data is sent
-              $.mobile.showPageLoadingMsg(true); // This will show ajax spinner
-            },
-            complete: function() {
-              // This callback function will trigger on data sent/received complete
-              $.mobile.hidePageLoadingMsg(); // This will hide ajax spinner
-            },
-            success: function (result) {
-              resultObject.formSubmitionResult = result;
-              $.mobile.changePage("#home");
-            },
-            error: function (request,error) {
-                // This callback function will trigger on unsuccessful action
-                alert('Network error has occurred please try again!');
+        $.ajax({url: 'http://' + DOMAIN + '/providers/login.json',
+          //data: { "provider" : { "email" : $('#email').val(), "password" : $('#password').val() } },
+          data: $('form#login-form').serialize(),
+          type: 'post',
+          async: true,
+          beforeSend: function() {
+            // This callback function will trigger before data is sent
+            $.mobile.showPageLoadingMsg(true); // This will show ajax spinner
+          },
+          complete: function() {
+            // This callback function will trigger on data sent/received complete
+            $.mobile.hidePageLoadingMsg(); // This will hide ajax spinner
+          },
+          success: function (result) {
+            console.log(result);
+
+            //resultObject.formSubmitionResult = result;
+            //$.mobile.changePage("#home");
+          },
+          error: function (request) {
+            //console.log(request);
+            if (request.status == '401') {
+              alert('Invalid login attempt. Please make sure your credentials are accurate.');
+            } else {
+              // This callback function will trigger on unsuccessful action
+              alert('A network error has occurred. Please try again!');
             }
+          }
         });
       } else {
-        alert('Please fill all nececery fields');
+        alert('Please fill in all fields.');
       }
       return false; // cancel original event to prevent form submitting
     });
