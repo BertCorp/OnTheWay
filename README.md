@@ -17,8 +17,8 @@ Todos
   - ~~do initial server check upon app launch and before any data is requested/sent~~ 2013-06-17
     - ~~some type of indicator that system check is happening~~ 2013-06-17
   - ~~storing valid user (local storage)~~ 2013-06-17
+  - ~~appointment blank slate~~ 2013-06-17
   - display provider customers/appointments
-  - appointment blank slate
   - appointment detail view
   - appointment status updates
     - Cancel / Change

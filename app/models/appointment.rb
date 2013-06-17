@@ -42,6 +42,10 @@ class Appointment < ActiveRecord::Base
     AnyBase.encode(id, ([*0..9,*'a'..'z'] - %w[i o u 0 1 3]).join)
   end
 
+  def shorturl
+    "http://otwhq.co/#{shortcode}"
+  end
+
   def status_date
     case status
     when "canceled"
@@ -59,6 +63,10 @@ class Appointment < ActiveRecord::Base
 
   def statuses
     ['requested', 'confirmed', 'arrived', 'finished', 'canceled']
+  end
+
+  def as_json(args={})
+    super(:methods=>[:status, :shorturl, :customer], :except => [:company_id, :customer_id, :provider_id, :provider_location])
   end
 
 end
