@@ -1,8 +1,6 @@
 class Api::V0::SessionsController < Devise::SessionsController
   prepend_before_filter :require_no_authentication, :only => [:create]
 
-  respond_to :json
-
   def create
     build_resource
 
@@ -23,7 +21,17 @@ class Api::V0::SessionsController < Devise::SessionsController
   end
 
   def destroy
+    token_was_removed = false
+    if current_provider
+      current_provider.authentication_token = nil
+      token_was_removed = current_provider.save
+    end
     sign_out(resource_name)
+    if token_was_removed
+      render status: 200, json: { status: true, message: "Logout successful." }
+    else
+      render status: 401, json: { status: false, message: "Logout failed. Invalid token or some internal server error occurred during attempt." }
+    end
   end
 
   protected
