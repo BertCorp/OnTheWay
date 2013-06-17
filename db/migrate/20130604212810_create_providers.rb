@@ -4,6 +4,7 @@ class CreateProviders < ActiveRecord::Migration
       t.integer :company_id, :null => false, :default => 0
       t.string :name
       t.string :phone
+      t.string :device_uid
 
       t.timestamps
     end

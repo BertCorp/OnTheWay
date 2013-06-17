@@ -4,8 +4,12 @@ class Api::V0::SessionsController < Devise::SessionsController
   def check
     updates = {}
     # add any updates to variables that we need to. ie:
-    # updates[:protocol] = 'https://'
-    # updates[:auth_token] = current_provider.authentication_token if current_provider
+    #updates[:protocol] = 'https://'
+    if params[:device_uid]
+      provider = Provider.find_by_device_uid(params[:device_uid])
+      updates[:provider] = { auth_token: provider.authentication_token, email: provider.email, authenticated_at: Time.now } if provider
+    end
+
     render json: updates
   end
 
