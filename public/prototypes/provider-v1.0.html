@@ -211,13 +211,14 @@
 </script>
 <script id="date-tmpl" type="text/template">
 
-  <li data-role="list-divider">{{date}} <span class="ui-li-count">{{appointment_count}}</span></li>
+  <li id="date-{{date}}" data-role="list-divider">{{date}} <span class="ui-li-count"></span></li>
 
 </script>
 <script id="appointment-tmpl" type="text/template">
 
-  <li><a href="#">
-    <h3>{{name}} %></h3>
+  <li id="appointment-{{id}}"><a href="#detail" data-transition="slide">
+    <h3>{{name}}</h3>
+    <p style="display: none;">{{email}} -- {{phone}}<p>
     <p class="ui-li-aside">
       <strong>{{time}}</strong><br/>
       <span class="label {{label-class}}">{{status}}</span>

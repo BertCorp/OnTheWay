@@ -18,7 +18,7 @@ Todos
     - ~~some type of indicator that system check is happening~~ 2013-06-17
   - ~~storing valid user (local storage)~~ 2013-06-17
   - ~~appointment blank slate~~ 2013-06-17
-  - display provider customers/appointments
+  - ~~display provider customers/appointments~~ 2013-06-17
   - appointment detail view
   - appointment status updates
     - Cancel / Change
