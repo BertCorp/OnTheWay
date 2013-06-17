@@ -15,7 +15,7 @@ Todos
   - ~~functional provider login/authentication~~ 2013-06-16
   - ~~get api access w/ auth token working~~ 2013-06-16
   - ~~do initial server check upon app launch and before any data is requested/sent~~ 2013-06-17
-    - some type of indicator that system check is happening
+    - ~~some type of indicator that system check is happening~~ 2013-06-17
   - ~~storing valid user (local storage)~~ 2013-06-17
   - display provider customers/appointments
   - appointment blank slate
