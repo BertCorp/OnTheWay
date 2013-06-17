@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(:version => 20130606042921) do
     t.string   "invited_by_type"
   end
 
+  add_index "providers", ["authentication_token"], :name => "index_providers_on_authentication_token", :unique => true
   add_index "providers", ["email"], :name => "index_providers_on_email", :unique => true
   add_index "providers", ["invitation_token"], :name => "index_providers_on_invitation_token"
   add_index "providers", ["invited_by_id"], :name => "index_providers_on_invited_by_id"

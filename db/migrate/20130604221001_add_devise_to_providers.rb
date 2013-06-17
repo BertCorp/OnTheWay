@@ -42,7 +42,7 @@ class AddDeviseToProviders < ActiveRecord::Migration
     add_index :providers, :reset_password_token, :unique => true
     # add_index :providers, :confirmation_token,   :unique => true
     # add_index :providers, :unlock_token,         :unique => true
-    # add_index :providers, :authentication_token, :unique => true
+    add_index :providers, :authentication_token, :unique => true
   end
 
   def self.down

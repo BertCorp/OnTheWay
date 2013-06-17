@@ -6,7 +6,7 @@ class Provider < ActiveRecord::Base
   before_save :ensure_authentication_token
 
   devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable#, :validatable
+         :recoverable, :rememberable, :trackable, #:validatable
          :token_authenticatable#, :confirmable,
          # :lockable, :timeoutable and :omniauthable
 

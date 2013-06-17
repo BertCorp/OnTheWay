@@ -3,12 +3,32 @@ OnTheWay::Application.routes.draw do
   devise_for :admins, :skip => [:registrations]
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
+  devise_for :providers
+  as :provider do
+    namespace "api" do
+      namespace "v0" do
+        post "login" => "sessions#create", as: "new_provider_session"
+        get "logout" => "sessions#destroy", as: "logout"
+        delete "logout" => "sessions#destroy", as: "destroy_provider_session"
+
+        get "appointments" => "appointments#index", as: "appointments"
+        post "appointments" => "appointments#create"
+        get "appointments/1" => "appointments#show"
+        put "appointments/1" => "appointments#update"
+        delete "appointments/1" => "appointments#destroy"
+
+      end
+    end
+  end
+
+
   devise_for :companies
   as :company do
     get "/login" => "devise/sessions#new", :as => "new_company_session"
     delete "/logout" => "devise/sessions#destroy", :as => "destroy_company_session"
   end
 
+=begin
   devise_for :providers, :skip => [:registrations, :passwords]
   as :provider do
     post "providers/login" => "devise/sessions#create", :as => "provider_session"
@@ -16,6 +36,7 @@ OnTheWay::Application.routes.draw do
     #get 'providers/edit' => 'devise/registrations#edit', :as => 'edit_provider_registration'
     put 'providers' => 'devise/registrations#update', :as => 'provider_registration'
   end
+=end
 
   #resources :companies
   resources :providers
