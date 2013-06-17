@@ -31,7 +31,9 @@ class Appointment < ActiveRecord::Base
   belongs_to :provider
   belongs_to :customer
 
-  attr_accessible :arrived_at, :company_id, :confirmed_at, :customer_id, :feedback, :finished_at, :provider_id, :provider_location, :rating, :status, :when, :where, :en_route_at, :next
+  attr_accessible :company_id, :customer_id, :provider_id, :when, :where, :rating, :feedback
+  attr_accessible :provider_location, :status
+  attr_accessible :confirmed_at, :next_at, :en_route_at, :arrived_at, :finished_at
 
   def self.find_by_shortcode(code)
     i = AnyBase.decode(code, ([*0..9,*'a'..'z'] - %w[i o u 0 1 3]).join)
