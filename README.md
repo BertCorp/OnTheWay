@@ -1,22 +1,32 @@
 OnTheWay
 ========
 
-Customer Web Panel: http://www.onthewayhq.com
-
-Provider Mobile App: http://www.onthewayhq.com/mobile/
-Customer Appointment: http://www.onthewayhq.com/customer/
-Customer Feedback: http://www.onthewayhq.com/feedback/
+- Customer Web Panel: http://www.onthewayhq.com
+- Provider Mobile App: http://www.onthewayhq.com/mobile/
+- Customer Appointment: http://www.onthewayhq.com/customer/
+- Customer Feedback: http://www.onthewayhq.com/feedback/
 
 
 Todos
 =====
-- allow providers to add appointment
-- twilio integration
-- functional shortcode urls
 - mobile prototype for providers
-  - functional provider login/authentication
+  - ~~update and build out api endpoint structure~~ 2013-06-16
+  - ~~figure out api response structure~~ 2013-06-16
+  - ~~functional provider login/authentication~~ 2013-06-16
+  - ~~get api access w/ auth token working~~ 2013-06-16
+  - do initial server check upon app launch and before any data is requested/sent
   - storing valid user
   - display provider customers/appointments
+  - appointment blank slate
+  - appointment detail view
+  - appointment status updates
+    - Cancel / Change
+    - On My Way
+    - I've arrived
+    - I'm finished
+  - allow providers to add appointment
+  - functional shortcode urls
+  - twilio integration
 - mobile prototype for customers
 - mobile prototype for customer feedback
 
