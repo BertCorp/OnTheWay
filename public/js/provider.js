@@ -68,6 +68,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         break;
       case "next" :
       case "en route" :
+      case "arrived" :
       case "in progress" :
         return "label-warning";
         break;

@@ -66,6 +66,22 @@
     </div>
   </div>
   <% end %>
+  <% if @appointment.next_at %>
+  <div class="control-group string optional appointment_next_at">
+    <label class="string optional control-label" for="appointment_next_at">Next At</label>
+    <div class="controls">
+      <input id="appointment_next_at" name="appointment[next_at]" class="input-large" type="text" value="<%= @appointment.next_at %>" />
+    </div>
+  </div>
+  <% end %>
+  <% if @appointment.en_route_at %>
+  <div class="control-group string optional appointment_en_route_at">
+    <label class="string optional control-label" for="appointment_en_route_at">En Route At</label>
+    <div class="controls">
+      <input id="appointment_en_route_at" name="appointment[en_route_at]" class="input-large" type="text" value="<%= @appointment.en_route_at %>" />
+    </div>
+  </div>
+  <% end %>
   <% if @appointment.arrived_at %>
   <div class="control-group string optional appointment_arrived_at">
     <label class="string optional control-label" for="appointment_arrived_at">Arrived At</label>

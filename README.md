@@ -22,14 +22,18 @@ Todos
   - appointment detail view
   - appointment status updates
     - Cancel / Change
-    - On My Way
-    - I've arrived
-    - I'm finished
+    - Next
+    - On My Way (en route)
+    - I've Arrived (in progress)
+    - I'm Finished
   - allow providers to add appointment
   - functional shortcode urls
   - twilio integration
 - mobile prototype for customers
 - mobile prototype for customer feedback
+- appointment tags
+- metadata fields (ability for companies/providers to add custom fields to appointments)
+
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07

@@ -58,8 +58,8 @@ class AppointmentsController < ApplicationController
     end
 
     # save the proper status timestamps
-    if (params[:appointment][:status] != 'requested') && !params[:appointment]["#{params[:appointment][:status]}_at".to_sym].present?
-      params[:appointment]["#{params[:appointment][:status]}_at".to_sym] = Time.now
+    if (params[:appointment][:status] != 'requested') && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
+      params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
     end
 
     @appointment = current_company.appointments.new(params[:appointment])

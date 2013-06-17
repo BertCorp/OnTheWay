@@ -31,7 +31,7 @@ class Appointment < ActiveRecord::Base
   belongs_to :provider
   belongs_to :customer
 
-  attr_accessible :arrived_at, :company_id, :confirmed_at, :customer_id, :feedback, :finished_at, :provider_id, :provider_location, :rating, :status, :when, :where
+  attr_accessible :arrived_at, :company_id, :confirmed_at, :customer_id, :feedback, :finished_at, :provider_id, :provider_location, :rating, :status, :when, :where, :en_route_at, :next
 
   def self.find_by_shortcode(code)
     i = AnyBase.decode(code, ([*0..9,*'a'..'z'] - %w[i o u 0 1 3]).join)
@@ -43,7 +43,7 @@ class Appointment < ActiveRecord::Base
   end
 
   def shorturl
-    "http://otwhq.co/#{shortcode}"
+    "http://otwhq.co/a/#{shortcode}"
   end
 
   def status_date
@@ -54,6 +54,10 @@ class Appointment < ActiveRecord::Base
       return finished_at
     when "arrived"
       return arrived_at
+    when "en route"
+      return en_route_at
+    when "next"
+      return next_at
     when "confirmed"
       return confirmed_at
     else
@@ -62,7 +66,7 @@ class Appointment < ActiveRecord::Base
   end
 
   def statuses
-    ['requested', 'confirmed', 'arrived', 'finished', 'canceled']
+    ['requested', 'confirmed', 'next', 'en route', 'arrived', 'finished', 'canceled']
   end
 
   def as_json(args={})
