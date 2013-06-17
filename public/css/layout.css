@@ -8,6 +8,26 @@ body, .jqm-demos  {
   font-size: 1.05em;
 }
 
+#notification-bar {
+  display: none;
+  top: 0px;
+  left: 0px;
+  font-family: 'Open Sans', sans-serif;
+  position: fixed;
+  text-align: center;
+  background-color: #000;
+  color: #fff;
+  font-weight: 400;
+  font-size: 10px;
+  text-shadow: none;
+  opacity: 0.65;
+  width: 100%;
+  z-index: 10000001;
+}
+  #notification-bar p {
+    margin: 0.5em;
+  }
+
 /* Header */
 .jqm-header {
   background: #fff;

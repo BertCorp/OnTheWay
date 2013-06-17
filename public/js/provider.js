@@ -46,6 +46,19 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     return false;
   }
 
+  // Notification bar
+  function setNotification(message) {
+    $('#notification-bar p').html(message);
+    $('#notification-bar').slideDown("fast");
+  }
+
+  function clearNotification() {
+    $('#notification-bar').slideUp("slow", function() {
+      $('#notification-bar p').html('');
+      $(this).hide();
+    });
+  }
+
 ////////////////////////////// Page Functions /////////////////////////////////
 
   $(document).on('pagebeforeshow', '#login', function(){
@@ -58,9 +71,12 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       async: true,
       beforeSend: function() {
         // TODO: some type of indicator that we are checking for updates?
+        setNotification('Checking server for updates...');
+        setTimeout(clearNotification, 5000);
       },
       complete: function() {
         // TODO: remove indicator
+        //clearNotification();
       },
       success: function(result) {
         // update based on results
@@ -78,6 +94,8 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       error: function(request) {
         // notify user about error checking for updates?
         //console.log(request);
+        setNotification('There was an error retriving server updates.');
+        setTimeout(clearNotification, 5000);
       }
     });
 
