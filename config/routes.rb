@@ -7,6 +7,7 @@ OnTheWay::Application.routes.draw do
   as :provider do
     namespace "api" do
       namespace "v0" do
+        get "check" => "sessions#check"
         post "login" => "sessions#create", as: "new_provider_session"
         get "logout" => "sessions#destroy", as: "logout"
         delete "logout" => "sessions#destroy", as: "destroy_provider_session"

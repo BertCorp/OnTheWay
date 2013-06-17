@@ -1,5 +1,13 @@
 class Api::V0::SessionsController < Devise::SessionsController
-  prepend_before_filter :require_no_authentication, :only => [:create]
+  prepend_before_filter :require_no_authentication, :only => [:create, :check]
+
+  def check
+    updates = {}
+    # add any updates to variables that we need to. ie:
+    # updates[:protocol] = 'https://'
+    # updates[:auth_token] = current_provider.authentication_token if current_provider
+    render json: updates
+  end
 
   def create
     build_resource

@@ -1,10 +1,14 @@
 /* Storage of local variables */
+var PROTOCAL = 'http://'; // DEVELOPMENT + PRODUCTION (for now)
 var DOMAIN = 'localhost:3000'; // DEVELOPMENT
 // var DOMAIN = 'www.onthewayhq.com'; // PRODUCTION
+//var PROTOCAL = 'https://'; // PRODUCTION (YET TO BE IMPLEMENTED)
+var API_PATH = '/api/v0';
 var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
 //  var currentLocation = {},
 //          credentials = {},
 //         appointments = {};
+//      last_fetched_at = false;
 
 ////////////////////////////////////////////////////////////
 
@@ -14,7 +18,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       if (($('#email').val().length > 0) && ($('#password').val().length > 0)) {
         // Send data to server through ajax call
         // action is functionality we want to call and outputJSON is our data
-        $.ajax({url: 'http://' + DOMAIN + '/providers/login.json',
+        $.ajax({url: PROTOCAL + DOMAIN + API_PATH + '/login.json',
           //data: { "provider" : { "email" : $('#email').val(), "password" : $('#password').val() } },
           data: $('form#login-form').serialize(),
           type: 'post',
