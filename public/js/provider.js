@@ -59,6 +59,21 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     });
   }
 
+  function renderAppointments() {
+    if (appointments.length > 0) {
+      // if appointments exist, load them in.
+      var date = $('#date-tmpl').html();
+      var appointment = $('#appointment-tmpl').html();
+      var current_date = false;
+      for (x in appointments) {
+        console.log(appointments);
+      }
+    } else {
+      $('ul#appointments-container').html($('#empty-tmpl').html());
+    }
+    $('ul#appointments-container').listview('refresh');
+  }
+
 ////////////////////////////// Page Functions /////////////////////////////////
 
   $(document).on('pagebeforeshow', '#login', function(){
@@ -70,12 +85,10 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       type: 'get',
       async: true,
       beforeSend: function() {
-        // TODO: some type of indicator that we are checking for updates?
         setNotification('Checking server for updates...');
         setTimeout(clearNotification, 5000);
       },
       complete: function() {
-        // TODO: remove indicator
         //clearNotification();
       },
       success: function(result) {
@@ -94,7 +107,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       error: function(request) {
         // notify user about error checking for updates?
         //console.log(request);
-        setNotification('There was an error retriving server updates.');
+        setNotification('There was an error retrieving server updates.');
         setTimeout(clearNotification, 5000);
       }
     });
@@ -154,6 +167,31 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       removeStorage('credentials');
       $.mobile.changePage("#login");
       return false;
+    });
+  });
+
+  $(document).on('pageinit', '#home', function() {
+    renderAppointments();
+    // then check with server to see if we have updated list and load in new list.
+    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments.json',
+      data: { 'auth_token' : credentials.auth_token },
+      type: 'get',
+      async: true,
+      beforeSend: function() {
+        setNotification('Checking server for new appointments...');
+      },
+      complete: function() {
+        clearNotification();
+      },
+      success: function(result) {
+        renderAppointments(result);
+      },
+      error: function(request) {
+        // notify user about error checking for updates?
+        //console.log(request);
+        setNotification('There was an error retrieving updated appointments.');
+        setTimeout(clearNotification, 5000);
+      }
     });
   });
 

@@ -664,6 +664,7 @@ h2.jqm-home-widget {
   font-weight: bold;
   text-decoration: none;
 }
+.ui-icon-none .ui-icon { background-image: none; }
 
 /* Borrowed from Bootstrap */
 .label, .badge {
