@@ -69,8 +69,8 @@ RailsAdmin.config do |config|
   #     configure :provider_id, :integer
   #     configure :customer_id, :integer
   #     configure :shortcode, :string
-  #     configure :when, :datetime
-  #     configure :where, :text
+  #     configure :starts_at, :datetime
+  #     configure :location, :text
   #     configure :provider_location, :text
   #     configure :status, :string
   #     configure :rating, :integer

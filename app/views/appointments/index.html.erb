@@ -19,8 +19,8 @@
       <td><%= link_to appointment.id, appointment %></td>
       <td><%= link_to appointment.customer.name, appointment.customer %></td>
       <td><%= link_to appointment.provider.name, appointment.provider %></td>
-      <td><%= link_to "http://otwhq.com/#{appointment.shortcode}", "http://otwhq.com/#{appointment.shortcode}" %></td>
-      <td><%= appointment.when.strftime("%F") %> <%= appointment.when.strftime("%l:%M%P") if appointment.when.strftime("%l:%M%P") != "12:00am" %></td>
+      <td><%= link_to appointment.shorturl, appointment.shorturl %></td>
+      <td><%= appointment.starts_at.strftime("%F") %> <%= appointment.starts_at.strftime("%l:%M%P") if appointment.starts_at.strftime("%l:%M%P") != "12:00am" %></td>
       <td><%= link_to appointment.status, appointment, title: appointment.status_date %></td>
       <!--<td><%= appointment.confirmed_at %></td>
       <td><%= appointment.arrived_at %></td>
@@ -52,7 +52,6 @@
       <th>Provider</th>
       <th>URL</th>
       <th>When</th>
-      <th>Where</th>
       <th>Status</th>
       <th>Feedback</th>
       <th></th>
@@ -64,8 +63,7 @@
       <td><%= link_to appointment.customer.name, appointment.customer %></td>
       <td><%= link_to appointment.provider.name, appointment.provider %></td>
       <td><%= link_to "http://otwhq.com/#{appointment.shortcode}", "http://otwhq.com/#{appointment.shortcode}" %></td>
-      <td><%= appointment.when.strftime("%F") %> <%= appointment.when.strftime("%l:%M%P") if appointment.when.strftime("%l:%M%P") != "12:00am" %></td>
-      <td><%= appointment.where %></td>
+      <td><%= appointment.starts_at.strftime("%F") %> <%= appointment.starts_at.strftime("%l:%M%P") if appointment.starts_at.strftime("%l:%M%P") != "12:00am" %></td>
       <td><a href="#" title="<%= appointment.status_date %>"><%= appointment.status %></a></td>
       <td><%= appointment.rating %> - <%= appointment.feedback %></td>
       <!--<td><%= appointment.confirmed_at %></td>

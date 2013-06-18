@@ -29,6 +29,7 @@ Todos
   - allow providers to add appointment
   - functional shortcode urls
   - twilio integration
+- fix appointment date/time timezone issues
 - mobile prototype for customers
 - mobile prototype for customer feedback
 - appointment tags
@@ -45,4 +46,5 @@ Todos
 - ~~customer appointment functional html mockups~~
   - ~~basic appointment page~~ 2013-06-09
   - ~~feedback/share page~~ 2013-06-10
+- ~~resolve "when" field naming conflict~~ 2013-06-18
 

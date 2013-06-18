@@ -31,7 +31,7 @@ class Appointment < ActiveRecord::Base
   belongs_to :provider
   belongs_to :customer
 
-  attr_accessible :company_id, :customer_id, :provider_id, :when, :where, :rating, :feedback
+  attr_accessible :company_id, :customer_id, :provider_id, :starts_at, :location, :rating, :feedback
   attr_accessible :provider_location, :status
   attr_accessible :confirmed_at, :next_at, :en_route_at, :arrived_at, :finished_at
 

@@ -3,8 +3,9 @@ class AppointmentsController < ApplicationController
   # GET /appointments
   # GET /appointments.json
   def index
-    @upcoming_appointments = current_company.appointments.where("('when' >= '#{Date.today}') AND (('status' != 'canceled') AND ('status' != 'finished'))").order('"appointments"."when" ASC')
-    @past_appointments = current_company.appointments.where("('when' < '#{Date.today}') OR (('status' = 'canceled') OR ('status' = 'finished'))").order('"appointments"."when" DESC')
+    Rails.logger.info Date.today
+    @upcoming_appointments = current_company.appointments.where(['("appointments"."starts_at" >= ?) AND (("appointments"."status" != "canceled") AND ("appointments"."status" != "finished"))', Date.today]).order('"appointments"."starts_at" ASC')
+    @past_appointments = current_company.appointments.where(['("appointments"."starts_at" < ?) AND (("appointments"."status" = "canceled") OR ("appointments"."status" = "finished"))', Date.today]).order('"appointments"."starts_at" ASC')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -51,7 +52,7 @@ class AppointmentsController < ApplicationController
     end
 
     # build the proper when date field
-    params[:appointment][:when] = "#{params[:appointment][:when][:date]} #{params[:appointment][:when][:time]}"
+    params[:appointment][:starts_at] = "#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}"
 
     if !params[:appointment][:status].present?
       params[:appointment][:status] = 'requested'

@@ -216,9 +216,9 @@
 </script>
 <script id="appointment-tmpl" type="text/template">
 
-  <li id="appointment-{{id}}"><a href="#detail" data-transition="slide">
+  <li id="appointment-{{id}}" class="appointments"><a href="#detail" data-transition="slide">
     <h3>{{name}}</h3>
-    <p style="display: none;">{{email}} -- {{phone}}<p>
+    <p style="display: none;">{{hidden}}</p>
     <p class="ui-li-aside">
       <strong>{{time}}</strong><br/>
       <span class="label {{label-class}}">{{status}}</span>

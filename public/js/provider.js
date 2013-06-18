@@ -83,6 +83,23 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     }
   } // getAppointmentLabelClass
 
+  function formatAppointmentStatus(status) {
+    switch (status) {
+      case "arrived" :
+        return "IN PROGRESS";
+        break;
+      case "en route" :
+      case "next" :
+        return status.toUpperCase();
+    }
+    return status;
+  }
+
+  function renderAppointment(appointment_id) {
+    console.log(appointment_id);
+    console.log(appointments[appointment_id]);
+  } // renderAppointment
+
   function renderAppointments() {
     if ($.isEmptyObject(appointments)) {
       $('ul#appointments-container').html($('#empty-tmpl').html());
@@ -94,25 +111,24 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       var current_date = false;
       var current_count = 0;
       for (x in appointments) {
-        if (!current_date || (current_date != appointments[x].when.substr(0,10))) {
+        if (!current_date || (current_date != appointments[x].starts_at.substr(0,10))) {
           // update last date divider's appointment count
           if (current_date) $('#date-' + current_date + ' span.ui-li-count').html(current_count);
           // now let's set our new current date and create the new date divider
-          // $.datepicker.formatDate('yy/mm/dd', appointments[x].when);
-          current_date = appointments[x].when.substr(0,10);
+          // $.datepicker.formatDate('yy/mm/dd', appointments[x].starts_at);
+          current_date = appointments[x].starts_at.substr(0,10);
           current_count = 0;
           var date_item = date.replace(/{{date}}/g, current_date);
           $('ul#appointments-container').append(date_item);
         }
         current_count++;
         //console.log(appointments[x]);
-        var time = appointments[x].when.substr(11, 5);
+        var time = appointments[x].starts_at.substr(11, 5);
         var appointment_item = appointment.replace(/{{id}}/g, appointments[x].id);
         appointment_item = appointment_item.replace(/{{name}}/g, appointments[x].customer.name);
-        appointment_item = appointment_item.replace(/{{email}}/g, appointments[x].customer.email);
-        appointment_item = appointment_item.replace(/{{phone}}/g, appointments[x].customer.phone);
+        appointment_item = appointment_item.replace(/{{hidden}}/g, appointments[x].customer.email + " -- " + appointments[x].customer.phone);
         appointment_item = appointment_item.replace(/{{time}}/g, time);
-        appointment_item = appointment_item.replace(/{{status}}/g, appointments[x].status);
+        appointment_item = appointment_item.replace(/{{status}}/g, formatAppointmentStatus(appointments[x].status));
         appointment_item = appointment_item.replace(/{{label-class}}/g, getAppointmentLabelClass(appointments[x].status));
         $('ul#appointments-container').append(appointment_item);
       }
@@ -242,6 +258,13 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         setTimeout(clearNotification, 5000);
       }
     });
+  });
+
+  $(document).on('click', '.appointments a', function(e) {
+    //console.log(this);
+    var appointment_id = $(this).parents('.appointments').attr('id').substr('appointment-'.length);
+    renderAppointment(appointment_id);
+    e.preventDefault();
   });
 
   $(document).on('pageinit', '#directions', function() {

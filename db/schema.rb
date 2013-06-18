@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130617225119) do
+ActiveRecord::Schema.define(:version => 20130618182002) do
 
   create_table "admins", :force => true do |t|
     t.string   "name",                   :default => "", :null => false
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(:version => 20130617225119) do
     t.integer  "company_id",        :default => 0,           :null => false
     t.integer  "provider_id",       :default => 0,           :null => false
     t.integer  "customer_id",       :default => 0,           :null => false
-    t.datetime "when"
-    t.text     "where"
+    t.datetime "starts_at"
+    t.text     "location"
     t.text     "provider_location"
     t.string   "status",            :default => "requested", :null => false
     t.integer  "rating"

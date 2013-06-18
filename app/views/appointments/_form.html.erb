@@ -28,19 +28,19 @@
     </div>
   </div>
 
-  <div class="control-group string optional appointment_when">
-    <label class="string optional control-label" for="appointment_when">When</label>
+  <div class="control-group string optional appointment_starts_at">
+    <label class="string optional control-label" for="appointment_starts_at">When</label>
     <div class="controls">
-      <input id="appointment_when" name="appointment[when][date]" class="input-medium" type="date" value="<%= (@appointment.when||Date.today).strftime("%F") %>" />
-      <input class="input-small" type="time" name="appointment[when][time]" value="<%= @appointment.when.strftime("%l:%M%P") if @appointment.when %>" style="width: 102px;" />
+      <input id="appointment_starts_at" name="appointment[starts_at][date]" class="input-medium" type="date" value="<%= (@appointment.starts_at||Date.today).strftime("%F") %>" />
+      <input class="input-small" type="time" name="appointment[starts_at][time]" value="<%= @appointment.starts_at.strftime("%l:%M%P") if @appointment.starts_at %>" style="width: 102px;" />
       <!--<span class="help-block">All times are shown as Central Standard Time (GMT -06:00).</span>-->
     </div>
   </div>
 
   <div class="control-group">
-    <label class="control-label" for="appointment_where">Where</label>
+    <label class="control-label" for="appointment_location">Where</label>
     <div class="controls">
-      <%= f.text_area :where, :class => 'input-xlarge', :rows => "3" %>
+      <%= f.text_area :location, :class => 'input-xlarge', :rows => "3" %>
     </div>
   </div>
 
