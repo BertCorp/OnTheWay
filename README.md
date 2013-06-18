@@ -19,7 +19,13 @@ Todos
   - ~~storing valid user (local storage)~~ 2013-06-17
   - ~~appointment blank slate~~ 2013-06-17
   - ~~display provider customers/appointments~~ 2013-06-17
+  - ~~recenter directions map~~ 2013-06-18
   - appointment detail view
+    - change appointment
+    - eta
+    - queue
+    - cancel
+    - status date/times
   - appointment status updates
     - Cancel / Change
     - Next

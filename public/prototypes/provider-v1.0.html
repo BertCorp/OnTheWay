@@ -82,7 +82,7 @@
 
   <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
     <a href="#home" data-icon="back" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back ui-icon-shadow"></span></span></a>
-    <h1>Mark Bertrand</h1>
+    <h1></h1>
     <a href="#directions" data-icon="info" data-iconpos="notext" data-transition="slide" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Map" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Map</span><span class="ui-icon ui-icon-info ui-icon-shadow"></span></span></a>
   </div><!-- /header -->
 
@@ -91,7 +91,6 @@
     <div class="ui-grid-solo">
       <div class="ui-block-a">
         <a href="#dialog-success" data-role="button" data-rel="dialog" data-transition="pop" data-theme="b">I'm Finished</a>
-        <!--<a href="#dialog-texts" data-role="button" data-rel="dialog" data-transition="popup" data-theme="b">I'm Finished</a>-->
       </div>
     </div>
 
@@ -109,29 +108,29 @@
 
     <div>
       <h3>Customer:</h3>
-      Mark Bertrand<br/>
-      <a href="mailto:mark@onthewayhq.com">mark@onthewayhq.com</a><br/>
-      555-555-5555
+      <span id="customer-name"></span><br/>
+      <span id="customer-email"></span><br/>
+      <span id="customer-phone"></span>
     </div>
 
     <div>
       <p>
         <a href="#" style="float: right;">(change)</a>
         <strong>Appointment:</strong><br/>
-        2013-06-13 (TODAY) at 1:30pm<br/>
+        <span id="appointment-when"></span><br/>
       </p>
       <p style="text-align: center;">
-        <span class="label label-warning" title="2013-06-07 11:19:54 -0500">IN PROGRESS</span><br/>
-        Started: 2013-06-13 13:32:13
+        <span id="appointment-status" class="label">IN PROGRESS</span><br/>
+        <span id="appointment-arrived_at"></span>
       </p>
 
       <p>
-        Where: 123 N. Main St. Apt 3. Santa Monica, CA<br/>
+        Where: <span id="appointment-location"></span><br/>
         <a href="#directions" data-role="button" data-icon="info" data-transition="slide">View Map</a>
       </p>
 
       <p>Queue #: 2 / ETA: 13:30</p>
-      <p>Short url: <a href="http://otwhq.com/3">http://otwhq.com/3</a></p>
+      <p>Short url: <span id="appointment-shorturl"></span></p>
     </div>
 
   </div><!-- /content -->
@@ -143,6 +142,7 @@
   <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
     <a href="#detail" data-icon="back" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back ui-icon-shadow"></span></span></a>
     <h1>Map &amp; Directions</h1>
+    <a href="#" id="directions-recenter" data-icon="refresh" data-iconpos="notext" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">ReCenter</span><span class="ui-icon ui-icon-refresh ui-icon-shadow"></span></span></a>
   </div>
   <div data-role="content">
     <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
@@ -153,7 +153,7 @@
       </p>
       <p>
         <label for="to">To</label>
-        <input id="to" class="ui-bar-c" type="text" value="640 W Waveland Ave, Chicago, IL 60657" />
+        <input id="to" class="ui-bar-c" type="text" value="" />
       </p>
       <!--<a id="submit" href="#" data-role="button" data-icon="search">Get Directions</a>-->
     </div>

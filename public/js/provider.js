@@ -97,8 +97,26 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
   }
 
   function renderAppointment(appointment_id) {
-    console.log(appointment_id);
-    console.log(appointments[appointments_key[appointment_id]]);
+    appointment = appointments[appointments_key[appointment_id]];
+    console.log(appointment);
+    // update Details page with appointment/customer data.
+    $('#detail h1').html(appointment.customer.name);
+    $('#detail #customer-name').html(appointment.customer.name);
+    $('#detail #customer-email').html('<a href="mailto:' + appointment.customer.email + '">' + appointment.customer.email + '</a>');
+    $('#detail #customer-phone').html(appointment.customer.phone);
+    $('#detail #appointment-when').html(appointment.starts_at);
+
+    $('#detail #appointment-status')
+      .removeClass().addClass('label').addClass(getAppointmentLabelClass(appointment.status))
+      .attr('title', appointment[appointment.status + "_at"])
+      .html(formatAppointmentStatus(appointment.status));
+    // should put info underneath, depending on what the status is...
+    $('#detail #appointment-location').html(appointment.location);
+    $('#detail #appointment-shorturl').html('<a href="' + appointment.shorturl + '">' + appointment.shorturl + '</a>');
+    // update Directions page
+    $('#directions #to').val(appointment.location.replace(/\r\n/g, ' '));
+    // update other subpages
+
   } // renderAppointment
 
   function renderAppointments() {
@@ -126,6 +144,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         current_count++;
         //console.log(appointments[x]);
         var time = appointments[x].starts_at.substr(11, 5);
+        if (time == '00:00') time = "";
         var appointment_item = appointment.replace(/{{id}}/g, appointments[x].id);
         appointment_item = appointment_item.replace(/{{name}}/g, appointments[x].customer.name);
         appointment_item = appointment_item.replace(/{{hidden}}/g, appointments[x].customer.email + " -- " + appointments[x].customer.phone);
@@ -270,17 +289,18 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     //console.log(this);
     var appointment_id = $(this).parents('.appointments').attr('id').substr('appointment-'.length);
     renderAppointment(appointment_id);
-    e.preventDefault();
+    //e.preventDefault();
   });
 
   $(document).on('pageinit', '#directions', function() {
+    var self, map_initial = {};
     demo.add('directions', function() {
       $("#map_canvas_1").gmap({'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI':true, 'callback': function() {
-        var self = this;
+        self = this;
 
         self.getCurrentPosition( function(position, status) {
           if ( status === 'OK' ) {
-            console.log(position.coords);
+            //console.log(position.coords);
             var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
             self.get('map').panTo(latlng);
             self.search({ 'location': latlng }, function(results, status) {
@@ -288,6 +308,11 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
                 //$('#from').val(results[0].formatted_address);
                 self.displayDirections({ 'origin': results[0].formatted_address, 'destination': $('#to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions_list')}, function(response, status) {
                   ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
+                  setTimeout(function() {
+                    console.log('ETA: ' + $('#directions_list .adp-summary').text());
+                    map_initial['center'] = self.get('map').getCenter();
+                    map_initial['zoom'] = self.get('map').getZoom();
+                  }, 100);
                 });
               }
             });
@@ -298,7 +323,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
 
         self.watchPosition(function(position, status) {
           if ( status === 'OK' ) {
-            console.log(position.coords);
+            //console.log(position.coords);
             var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             if ( !self.get('markers').client ) {
               self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
@@ -310,6 +335,12 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         });
       }});
     }).load('directions');
+
+    $(document).on('click', 'a#directions-recenter', function(e) {
+      e.preventDefault();
+      self.get('map').setCenter(map_initial['center']);
+      self.get('map').setZoom(map_initial['zoom']);
+    });
   });
 
   //$(document).on('pageshow', '#directions', function() {
