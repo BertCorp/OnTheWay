@@ -46,5 +46,6 @@ Todos
 - ~~customer appointment functional html mockups~~
   - ~~basic appointment page~~ 2013-06-09
   - ~~feedback/share page~~ 2013-06-10
-- ~~resolve "when" field naming conflict~~ 2013-06-18
+- ~~[bug] fix api appointment order~~ 2013-06-18
+  - ~~resolve "when" field naming conflict~~ 2013-06-18
 

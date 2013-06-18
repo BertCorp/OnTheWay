@@ -7,7 +7,8 @@ var API_PATH = '/api/v0';
 var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
   var currentLocation = {},
           credentials = {},
-         appointments = {};
+         appointments = false;
+     appointments_key = {};
       last_fetched_at = false;
 
 ///////////////////////////// Utility Functions ///////////////////////////////
@@ -97,11 +98,12 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
 
   function renderAppointment(appointment_id) {
     console.log(appointment_id);
-    console.log(appointments[appointment_id]);
+    console.log(appointments[appointments_key[appointment_id]]);
   } // renderAppointment
 
   function renderAppointments() {
-    if ($.isEmptyObject(appointments)) {
+    if (!appointments) appointments = getStorage('appointments');
+    if (!appointments || (appointments.length <= 0)) {
       $('ul#appointments-container').html($('#empty-tmpl').html());
     } else {
       // if appointments exist, load them in.
@@ -247,8 +249,12 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         clearNotification();
       },
       success: function(result) {
-        appointments = result;
         last_fetched_at = $.now();
+        appointments = result;
+        setStorage('appointments', appointments);
+        for (x in appointments) {
+          appointments_key[appointments[x].id] = x;
+        }
         renderAppointments();
       },
       error: function(request) {

@@ -3,7 +3,6 @@ class AppointmentsController < ApplicationController
   # GET /appointments
   # GET /appointments.json
   def index
-    Rails.logger.info Date.today
     @upcoming_appointments = current_company.appointments.where(['("appointments"."starts_at" >= ?) AND (("appointments"."status" != "canceled") AND ("appointments"."status" != "finished"))', Date.today]).order('"appointments"."starts_at" ASC')
     @past_appointments = current_company.appointments.where(['("appointments"."starts_at" < ?) AND (("appointments"."status" = "canceled") OR ("appointments"."status" = "finished"))', Date.today]).order('"appointments"."starts_at" ASC')
 
