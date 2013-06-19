@@ -25,9 +25,9 @@ Todos
     - status date/times
   - appointment status updates
     - ~~Cancel~~ 2013-06-18
-    - On My Way (en route)
-    - I've Arrived
-    - I'm Finished
+    - ~~On My Way (en route)~~ 2013-06-18
+    - ~~I've Arrived~~ 2013-06-18
+    - ~~I'm Finished~~ 2013-06-18
   - allow providers to add appointment
   - functional shortcode urls
   - twilio integration

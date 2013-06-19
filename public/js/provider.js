@@ -121,7 +121,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       $('#progress-btn-container a').attr('data-status', 'confirmed').find('span span').html('Mark as Confirmed');
     } else if ((appointment.status == 'confirmed') && ((new Date(appointment.starts_at).getTime() - $.now()) < 1000*60*60*4)) {
       $('#progress-btn-container a').attr('data-status', 'en route').find('span span').html('On My Way');
-    } else if (appointment.status == 'en route') {
+    } else if ($.inArray(appointment.status, ['en route', 'late']) >= 0) {
       $('#progress-btn-container a').attr('data-status', 'arrived').find('span span').html("I've Arrived");
     } else if (appointment.status == 'arrived') {
       $('#progress-btn-container a').attr('data-status', 'finished').find('span span').html("I'm Finished");
@@ -130,7 +130,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       $('#progress-btn-container a').attr('data-status', '').find('span span').html("");
     }
 
-    if (jQuery.inArray(appointment.status, ['canceled', 'missed', 'finished']) >= 0) {
+    if ($.inArray(appointment.status, ['canceled', 'missed', 'finished']) >= 0) {
       // should there be some other indicator/options on the page?
       $('#cancel-btn-container').hide();
     } else {
@@ -175,7 +175,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         current_count++;
         //console.log(appointments[x]);
         // fix some status stuff.
-        if (jQuery.inArray(appointments[x].status, ["finished", "canceled", "arrived", "en route"]) < 0) {
+        if ($.inArray(appointments[x].status, ["finished", "canceled", "arrived", "en route"]) < 0) {
           // if we are past the start time of an appointment we should be at or already finished
           if ($.now() - new Date(appointments[x].starts_at).getTime() > 1000*60*5) {
             // and it's past the start time + 2 hours, it's MISSED, otherwise, it's LATE.
@@ -331,6 +331,35 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
   $(document).on('click', '.appointments a', function(e) {
     var appointment_id = $(this).parents('.appointments').attr('id').substr('appointment-'.length);
     renderAppointment(appointment_id);
+  });
+
+  $(document).on('click', '#progress-btn-container a', function() {
+    var status = $(this).attr('data-status');
+    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
+      data: { 'auth_token' : credentials.auth_token, 'appointment' : { 'status' : status } },
+      type: 'put',
+      async: true,
+      beforeSend: function() {
+        setNotification('Updating appointment status...');
+      },
+      complete: function() {
+        clearNotification();
+      },
+      success: function(result) {
+        // upon success,
+        if (DEVELOPMENT) console.log(result);
+        appointments[appointments_key[current_appointment_id]] = result;
+        renderAppointment(current_appointment_id);
+        // update appointments? do results return updated appointments? or just returning #home refresh?
+        $('#dialog-success h3').html("Appointment status has been updated.");
+        $.mobile.changePage("#dialog-success", {transition: 'pop', role: 'dialog'});
+      },
+      error: function(request) {
+        // notify user about error checking for updates?
+        //console.log(request);
+        alert('There was an error updating this appointment\'s status.');
+      }
+    });
   });
 
   $(document).on('pageinit', '#directions', function() {

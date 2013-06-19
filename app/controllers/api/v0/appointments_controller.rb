@@ -48,18 +48,6 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
   def update
     @appointment = current_company.appointments.find(params[:id])
 
-    # build the proper when date field
-    params[:appointment][:starts_at] = "#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}"
-
-    if !params[:appointment][:status].present?
-      params[:appointment][:status] = 'confirmed'
-    end
-
-    # save the proper status timestamps
-    if (params[:appointment][:status] != 'requested') && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
-      params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
-    end
-
     # do what you need to do...
     if (params[:appointment][:status])
       # save the proper status timestamps -- dont need requested, canceled
@@ -70,7 +58,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     end
 
     if @appointment.update_attributes(params[:appointment])
-      head :no_content
+      render json: @appointment
     else
       render json: @appointment.errors, status: :unprocessable_entity
     end
