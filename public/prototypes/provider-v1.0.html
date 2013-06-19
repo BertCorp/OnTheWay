@@ -95,8 +95,9 @@
     </div>
 
     <div class="ui-grid-a">
-      <div class="ui-block-a"><a href="#dialog-texts" data-role="button" data-rel="dialog" data-transition="slideup" data-theme="b">Text</a></div>
-      <div class="ui-block-b"><a href="tel:+15555555555" data-role="button" data-theme="b">Call</a></div>
+      <!--<div class="ui-block-a"><a href="#dialog-texts" data-role="button" data-rel="dialog" data-transition="slideup" data-theme="b">Text</a></div>-->
+      <div class="ui-block-a"><a href="" id="customer-text" data-role="button" data-theme="b">Text</a></div>
+      <div class="ui-block-b"><a href="" id="customer-call" data-role="button" data-theme="b">Call</a></div>
     </div>
 
     <div class="ui-grid-solo">
@@ -115,7 +116,7 @@
 
     <div>
       <p>
-        <a href="#" style="float: right;">(change)</a>
+        <!--<a href="#" style="float: right;">(change)</a>-->
         <strong>Appointment:</strong><br/>
         <span id="appointment-when"></span><br/>
       </p>
@@ -166,18 +167,18 @@
 
 </div><!-- /page -->
 
-<div data-role="page" id="dialog-texts">
+<!--<div data-role="page" id="dialog-texts">
 
   <div data-role="content" data-theme="a">
     <h3>Quick Reply</h3>
     <a href="#dialog-success" data-role="button" data-rel="dialog" data-transition="slidedown" data-theme="b">"Running Late"</a>
     <a href="#dialog-success" data-role="button" data-rel="dialog" data-transition="slidedown" data-theme="b">"Be there in 10"</a>
-    <a href="sms:+15555555555" data-role="button" data-rel="dialog" data-transition="slidedown" data-theme="b">Custom Message</a>
+    <a href="" id="" data-role="button" data-rel="dialog" data-transition="slidedown" data-theme="b">Custom Message</a>
 
     <a href="#detail" data-role="button" data-rel="back" data-theme="a">Cancel</a>
   </div>
 
-</div><!-- /page -->
+</div>--><!-- /page -->
 
 <div data-role="page" id="dialog-success">
 
@@ -195,8 +196,8 @@
   </div>
 
   <div data-role="content" data-theme="d">
-    <p>Are you sure you want to cancel this appointment? The customer won't be too happy!</p>
-    <a href="#home" data-role="button" data-theme="b">Yes</a>
+    <p>Are you sure you want to cancel this appointment?</p>
+    <a href="#" id="cancel-appointment" data-role="button" data-theme="b">Yes</a>
     <a href="#detail" data-role="button" data-rel="back" data-theme="c">Nevermind</a>
   </div>
 

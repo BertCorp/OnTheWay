@@ -20,27 +20,28 @@ Todos
   - ~~appointment blank slate~~ 2013-06-17
   - ~~display provider customers/appointments~~ 2013-06-17
   - ~~recenter directions map~~ 2013-06-18
-  - appointment detail view
-    - change appointment
-    - eta
-    - queue
-    - cancel
+  - individual appointment sub views
+    - ~~cancel~~ 2013-06-18
     - status date/times
   - appointment status updates
-    - Cancel / Change
-    - Next
+    - ~~Cancel~~ 2013-06-18
     - On My Way (en route)
-    - I've Arrived (in progress)
+    - I've Arrived
     - I'm Finished
   - allow providers to add appointment
   - functional shortcode urls
   - twilio integration
+  - appointment ETA
+  - provider/appointment queue status
+  - appointments listview pull to refresh
 - fix appointment date/time timezone issues
 - mobile prototype for customers
 - mobile prototype for customer feedback
 - appointment tags
 - metadata fields (ability for companies/providers to add custom fields to appointments)
-
+- better offline handling
+- change appointment
+- auto "next"
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07

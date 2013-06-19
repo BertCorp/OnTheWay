@@ -9,14 +9,14 @@ OnTheWay::Application.routes.draw do
       namespace "v0" do
         get "check" => "sessions#check"
         post "login" => "sessions#create", as: "new_provider_session"
-        get "logout" => "sessions#destroy", as: "logout"
+        get "logout" => "sessions#destroy"
         delete "logout" => "sessions#destroy", as: "destroy_provider_session"
 
         get "appointments" => "appointments#index", as: "appointments"
         post "appointments" => "appointments#create"
-        get "appointments/1" => "appointments#show"
-        put "appointments/1" => "appointments#update"
-        delete "appointments/1" => "appointments#destroy"
+        get "appointments/:id" => "appointments#show"
+        put "appointments/:id" => "appointments#update"
+        #delete "appointments/:id" => "appointments#destroy"
       end
     end
   end

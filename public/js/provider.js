@@ -1,15 +1,17 @@
 //////////////////////// Storage of local variables ///////////////////////////
-var PROTOCOL = 'http://'; // DEVELOPMENT + PRODUCTION (for now)
+var DEVELOPMENT = true;
+var PROTOCOL = 'http://'; // DEVELOPMENT
 var DOMAIN = 'localhost:3000'; // DEVELOPMENT
-// var DOMAIN = 'www.onthewayhq.com'; // PRODUCTION
+//var DOMAIN = 'www.onthewayhq.com'; // PRODUCTION
 //var PROTOCAL = 'https://'; // PRODUCTION (YET TO BE IMPLEMENTED)
 var API_PATH = '/api/v0';
 var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
-  var currentLocation = {},
-          credentials = {},
-         appointments = false;
-     appointments_key = {};
-      last_fetched_at = false;
+    var currentLocation = {},
+            credentials = {},
+           appointments = false,
+       appointments_key = {},
+ current_appointment_id = false,
+        last_fetched_at = false;
 
 ///////////////////////////// Utility Functions ///////////////////////////////
 
@@ -49,6 +51,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
 
   // Notification bar
   function setNotification(message) {
+    if (DEVELOPMENT) console.log(message);
     $('#notification-bar p').html(message);
     $('#notification-bar').slideDown("fast");
   }
@@ -97,13 +100,16 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
   }
 
   function renderAppointment(appointment_id) {
+    current_appointment_id = appointment_id;
     appointment = appointments[appointments_key[appointment_id]];
-    console.log(appointment);
+    if (DEVELOPMENT) console.log(appointment);
     // update Details page with appointment/customer data.
     $('#detail h1').html(appointment.customer.name);
     $('#detail #customer-name').html(appointment.customer.name);
     $('#detail #customer-email').html('<a href="mailto:' + appointment.customer.email + '">' + appointment.customer.email + '</a>');
     $('#detail #customer-phone').html(appointment.customer.phone);
+    $('#detail #customer-text').attr('href', 'sms:+1' + appointment.customer.phone.replace(/\D/g,''));
+    $('#detail #customer-call').attr('href', 'tel:+1' + appointment.customer.phone.replace(/\D/g,''));
     $('#detail #appointment-when').html(appointment.starts_at);
 
     $('#detail #appointment-status')
@@ -254,8 +260,9 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     });
   });
 
-  $(document).on('pageinit', '#home', function() {
-    renderAppointments();
+  $(document).on('pagebeforeshow', '#home', function() {
+    current_appointment_id = false; // reset current appointment
+    renderAppointments(); // render all the appointments
     // then check with server to see if we have updated list and load in new list.
     $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments.json',
       data: { 'auth_token' : credentials.auth_token },
@@ -286,10 +293,8 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
   });
 
   $(document).on('click', '.appointments a', function(e) {
-    //console.log(this);
     var appointment_id = $(this).parents('.appointments').attr('id').substr('appointment-'.length);
     renderAppointment(appointment_id);
-    //e.preventDefault();
   });
 
   $(document).on('pageinit', '#directions', function() {
@@ -309,7 +314,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
                 self.displayDirections({ 'origin': results[0].formatted_address, 'destination': $('#to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions_list')}, function(response, status) {
                   ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
                   setTimeout(function() {
-                    console.log('ETA: ' + $('#directions_list .adp-summary').text());
+                    if (DEVELOPMENT) console.log('ETA: ' + $('#directions_list .adp-summary').text());
                     map_initial['center'] = self.get('map').getCenter();
                     map_initial['zoom'] = self.get('map').getZoom();
                   }, 100);
@@ -340,6 +345,33 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       e.preventDefault();
       self.get('map').setCenter(map_initial['center']);
       self.get('map').setZoom(map_initial['zoom']);
+    });
+  });
+
+  $(document).on('pageinit', '#dialog-cancel-confirm', function() {
+    $(document).on('click', '#cancel-appointment', function() {
+      $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
+        data: { 'auth_token' : credentials.auth_token, 'appointment' : { 'status' : 'canceled' } },
+        type: 'put',
+        async: true,
+        beforeSend: function() {
+          setNotification('Canceling appointment...');
+        },
+        complete: function() {
+          clearNotification();
+        },
+        success: function(result) {
+          // upon success,
+          // update appointments? do results return updated appointments? or just returning #home refresh?
+          // go back to #home
+          $.mobile.changePage("#home");
+        },
+        error: function(request) {
+          // notify user about error checking for updates?
+          //console.log(request);
+          alert('There was an error canceling this appointment.');
+        }
+      });
     });
   });
 
