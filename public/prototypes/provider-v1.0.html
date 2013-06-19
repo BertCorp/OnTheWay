@@ -88,9 +88,9 @@
 
   <div data-role="content">
 
-    <div class="ui-grid-solo">
+    <div id="progress-btn-container" class="ui-grid-solo">
       <div class="ui-block-a">
-        <a href="#dialog-success" data-role="button" data-rel="dialog" data-transition="pop" data-theme="b">I'm Finished</a>
+        <a href="#" data-role="button" data-theme="b">Temp</a>
       </div>
     </div>
 
@@ -100,9 +100,8 @@
       <div class="ui-block-b"><a href="" id="customer-call" data-role="button" data-theme="b">Call</a></div>
     </div>
 
-    <div class="ui-grid-solo">
+    <div id="cancel-btn-container" class="ui-grid-solo">
       <div class="ui-block-a">
-        <!--<a href="#" data-role="button" data-theme="e">Confirm</a>-->
         <a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-transition="pop" data-theme="a">Cancel Appointment</a>
       </div>
     </div>
@@ -121,8 +120,8 @@
         <span id="appointment-when"></span><br/>
       </p>
       <p style="text-align: center;">
-        <span id="appointment-status" class="label">IN PROGRESS</span><br/>
-        <span id="appointment-arrived_at"></span>
+        <span id="appointment-status" class="label"></span><br/>
+        <span id="appointment-status-time"></span>
       </p>
 
       <p>
@@ -183,7 +182,7 @@
 <div data-role="page" id="dialog-success">
 
   <div data-role="content" data-theme="b">
-    <h3>Customer has been notified!</h3>
+    <h3></h3>
     <a href="#detail" data-role="button" date-rel="back" data-theme="c">Ok</a>
   </div>
 

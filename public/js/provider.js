@@ -80,6 +80,8 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         return "label-info";
         break;
       case "canceled" :
+      case "missed" :
+      case "late" :
         return "label-important";
         break;
       default:
@@ -94,6 +96,8 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         break;
       case "en route" :
       case "next" :
+      case "missed" :
+      case "late" :
         return status.toUpperCase();
     }
     return status;
@@ -111,6 +115,27 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     $('#detail #customer-text').attr('href', 'sms:+1' + appointment.customer.phone.replace(/\D/g,''));
     $('#detail #customer-call').attr('href', 'tel:+1' + appointment.customer.phone.replace(/\D/g,''));
     $('#detail #appointment-when').html(appointment.starts_at);
+
+    $('#progress-btn-container').show();
+    if (appointment.status == 'requested') {
+      $('#progress-btn-container a').attr('data-status', 'confirmed').find('span span').html('Mark as Confirmed');
+    } else if ((appointment.status == 'confirmed') && ((new Date(appointment.starts_at).getTime() - $.now()) < 1000*60*60*4)) {
+      $('#progress-btn-container a').attr('data-status', 'en route').find('span span').html('On My Way');
+    } else if (appointment.status == 'en route') {
+      $('#progress-btn-container a').attr('data-status', 'arrived').find('span span').html("I've Arrived");
+    } else if (appointment.status == 'arrived') {
+      $('#progress-btn-container a').attr('data-status', 'finished').find('span span').html("I'm Finished");
+    } else {
+      $('#progress-btn-container').hide();
+      $('#progress-btn-container a').attr('data-status', '').find('span span').html("");
+    }
+
+    if (jQuery.inArray(appointment.status, ['canceled', 'missed', 'finished']) >= 0) {
+      // should there be some other indicator/options on the page?
+      $('#cancel-btn-container').hide();
+    } else {
+      $('#cancel-btn-container').show();
+    }
 
     $('#detail #appointment-status')
       .removeClass().addClass('label').addClass(getAppointmentLabelClass(appointment.status))
@@ -149,6 +174,15 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         }
         current_count++;
         //console.log(appointments[x]);
+        // fix some status stuff.
+        if (jQuery.inArray(appointments[x].status, ["finished", "canceled", "arrived", "en route"]) < 0) {
+          // if we are past the start time of an appointment we should be at or already finished
+          if ($.now() - new Date(appointments[x].starts_at).getTime() > 1000*60*5) {
+            // and it's past the start time + 2 hours, it's MISSED, otherwise, it's LATE.
+            appointments[x].status = (($.now() - new Date(appointments[x].starts_at).getTime()) > 1000*60*60*2) ? "missed" : "late";
+          }
+        }
+
         var time = appointments[x].starts_at.substr(11, 5);
         if (time == '00:00') time = "";
         var appointment_item = appointment.replace(/{{id}}/g, appointments[x].id);
@@ -263,6 +297,8 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
   $(document).on('pagebeforeshow', '#home', function() {
     current_appointment_id = false; // reset current appointment
     renderAppointments(); // render all the appointments
+    // only check for updates every 5 minutes
+    if (last_fetched_at && (($.now() - last_fetched_at) < 1000*60*5)) return true;
     // then check with server to see if we have updated list and load in new list.
     $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments.json',
       data: { 'auth_token' : credentials.auth_token },

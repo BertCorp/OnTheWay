@@ -20,7 +20,7 @@ Todos
   - ~~appointment blank slate~~ 2013-06-17
   - ~~display provider customers/appointments~~ 2013-06-17
   - ~~recenter directions map~~ 2013-06-18
-  - individual appointment sub views
+  - ~~individual appointment sub views~~ 2013-06-18
     - ~~cancel~~ 2013-06-18
     - status date/times
   - appointment status updates
@@ -34,7 +34,6 @@ Todos
   - appointment ETA
   - provider/appointment queue status
   - appointments listview pull to refresh
-- fix appointment date/time timezone issues
 - mobile prototype for customers
 - mobile prototype for customer feedback
 - appointment tags
@@ -55,4 +54,5 @@ Todos
   - ~~feedback/share page~~ 2013-06-10
 - ~~[bug] fix api appointment order~~ 2013-06-18
   - ~~resolve "when" field naming conflict~~ 2013-06-18
+- ~~fix appointment date/time timezone issues~~ 2013-06-18
 

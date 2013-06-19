@@ -32,7 +32,7 @@
     <label class="string optional control-label" for="appointment_starts_at">When</label>
     <div class="controls">
       <input id="appointment_starts_at" name="appointment[starts_at][date]" class="input-medium" type="date" value="<%= (@appointment.starts_at||Date.today).strftime("%F") %>" />
-      <input class="input-small" type="time" name="appointment[starts_at][time]" value="<%= @appointment.starts_at.strftime("%l:%M%P") if @appointment.starts_at %>" style="width: 102px;" />
+      <input class="input-small" type="time" name="appointment[starts_at][time]" value="<%= @appointment.starts_at.strftime("%H:%M:%S") if @appointment.starts_at && @appointment.starts_at.strftime("%H:%M:%S") != "00:00:00" %>" style="width: 102px;" />
       <!--<span class="help-block">All times are shown as Central Standard Time (GMT -06:00).</span>-->
     </div>
   </div>
