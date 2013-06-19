@@ -3,12 +3,12 @@ class AppointmentsController < ApplicationController
   # GET /appointments
   def index
     @upcoming_appointments = current_company.appointments.where(['("appointments"."starts_at" >= ?) AND (("appointments"."status" != "canceled") AND ("appointments"."status" != "finished"))', Date.today]).order('"appointments"."starts_at" ASC')
-    @past_appointments = current_company.appointments.where(['("appointments"."starts_at" < ?) AND (("appointments"."status" = "canceled") OR ("appointments"."status" = "finished"))', Date.today]).order('"appointments"."starts_at" ASC')
+    @past_appointments = current_company.appointments.where(['("appointments"."starts_at" < ?) OR (("appointments"."status" = "canceled") OR ("appointments"."status" = "finished"))', Date.today]).order('"appointments"."starts_at" DESC')
   end
 
   # GET /appointments/1
   def show
-    @appointment = Appointments.find(params[:id])
+    @appointment = Appointment.find(params[:id])
   end
 
   # GET /appointments/new
@@ -46,9 +46,9 @@ class AppointmentsController < ApplicationController
     @appointment = current_company.appointments.new(params[:appointment])
 
     if @appointment.save
-      redirect_to @appointment, notice: 'Appointment was successfully created.' }
+      redirect_to @appointment, notice: 'Appointment was successfully created.'
     else
-      render action: "new" }
+      render action: "new"
     end
   end
 

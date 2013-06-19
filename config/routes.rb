@@ -32,7 +32,7 @@ OnTheWay::Application.routes.draw do
   resources :appointments
 
   get "p/:id" => redirect("/prototypes/provider-v1.0.html?id=:id")
-  get "a/:id" => "appointments#show"
+  get "a/:id" => "customers#appointment"
 
   # test methods
   #get "customer" => "pages#customer"
