@@ -22,6 +22,13 @@
   <script type="text/javascript" src="/js/jquery.ui.map.services.min.js"></script>
   <script type="text/javascript">
 
+    var DEVELOPMENT = true;
+    var PROTOCOL = 'http://'; // DEVELOPMENT
+    var DOMAIN = 'localhost:3000'; // DEVELOPMENT
+    //var DOMAIN = 'www.onthewayhq.com'; // PRODUCTION
+    //var PROTOCAL = 'https://'; // PRODUCTION (YET TO BE IMPLEMENTED)
+    var API_PATH = '/api/v0';
+    var current_appointment_id = '<%= @appointment.id %>';
     var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
 
     ////////////////////////////////////////////////////////////
@@ -37,7 +44,7 @@
               self.get('map').panTo(latlng);
               self.search({ 'location': latlng }, function(results, status) {
                 if ( status === 'OK' ) {
-                  self.displayDirections({ 'origin': results[0].formatted_address, 'destination': '640 W Waveland Ave. Chicago, IL 60657', 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
+                  self.displayDirections({ 'origin': results[0].formatted_address, 'destination': '<%= @appointment.location.gsub("\r\n", " ") %>', 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
                     //console.log(status);
                   });
                 }
@@ -50,6 +57,31 @@
       }).load('directions');
     });
 
+    $(document).on('pageinit', '#dialog-cancel-confirm', function() {
+      $(document).on('click', '#cancel-appointment', function() {
+        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
+          // How do we handle auth token for customers?
+          data: { 'auth_token' : false, 'appointment' : { 'status' : 'canceled' } },
+          type: 'put',
+          async: true,
+          beforeSend: function() {
+          },
+          complete: function() {
+            $.mobile.loading('hide');
+          },
+          success: function(result) {
+            // go back to #home
+            $.mobile.changePage("#home");
+          },
+          error: function(request) {
+            // notify user about error checking for updates?
+            //console.log(request);
+            alert('There was an error canceling your appointment. Try calling.');
+          }
+        });
+      });
+    });
+
   </script>
 </head>
 <body>
@@ -58,28 +90,38 @@
 
   <div data-role="content">
 
-    <p style="text-align: center;"><strong>Mark</strong> from <strong>AAA Deliveries</strong> has a delivery scheduled for you today.</p>
+    <p style="text-align: center;"><strong><%= @appointment.provider.name %></strong> from <strong><%= @appointment.company.name %></strong> has a delivery scheduled for you <%= (@appointment.starts_at.today?) ? 'today' : "on #{@appointment.starts_at.strftime('%Y-%m-%d')}" %>.</p>
 
+    <% if @appointment.status != 'canceled' %>
     <p style="text-align: center;">Based on his delivery schedule, there are <strong>4</strong> people in front of you.</p>
 
-    <p style="text-align: center;">And we expect Mark to be arriving to you at:</p>
+    <p style="text-align: center;">And we expect <%= @appointment.provider.name %> to be arriving to you at:</p>
 
-    <p style="font-size: 40px; text-align: center; margin: 40px 0px;">2:00pm</p>
+    <p style="font-size: 40px; text-align: center; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
+    <% else %>
+    <p style="text-align: center;">Your appointment has been marked:</p>
 
+    <p style="font-size: 40px; text-align: center; margin: 40px 0px; color: #ff9999;">CANCELED</p>
+    <% end %>
+
+    <% if ['next', 'en route', 'arrived'].include? @appointment.status %>
     <div class="ui-grid-solo">
       <div class="ui-block-a"><a href="#directions" data-role="button" data-icon="info" data-transition="slide">View on Map</a></div>
     </div>
+    <% end %>
 
+    <% unless ['finished', 'canceled', 'arrived', 'en route'].include? @appointment.status %>
     <p style="text-align: center;">Has something changed? Reschedule or cancel your appointment.</p>
 
     <div class="ui-grid-a">
       <div class="ui-block-a"><a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-theme="b">Change</a></div>
       <div class="ui-block-b"><a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-theme="a">Cancel</a></div>
     </div>
+    <% end %>
 
     <div class="ui-grid-a">
-      <div class="ui-block-a"><a href="sms:+15555555555" data-role="button" data-theme="b">Text</a></div>
-      <div class="ui-block-b"><a href="tel:+15555555555" data-role="button" data-theme="b">Call</a></div>
+      <div class="ui-block-a"><a href="sms:+1<%= @appointment.provider.phone.gsub(/[^0-9]/, "") %>" data-role="button" data-theme="b">Text</a></div>
+      <div class="ui-block-b"><a href="tel:+1<%= @appointment.provider.phone.gsub(/[^0-9]/, "") %>" data-role="button" data-theme="b">Call</a></div>
     </div>
 
   </div><!-- /content -->
@@ -107,7 +149,7 @@
 
   <div data-role="content" data-theme="d">
     <p>Are you sure you want to cancel this appointment?</p>
-    <a href="#home" data-role="button" data-rel="back" data-theme="b">Yes</a>
+    <button id="cancel-appointment" class="show-page-loading-msg" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Canceling...">Yes</button>
     <a href="#home" data-role="button" data-rel="back" data-theme="c">Nevermind</a>
   </div>
 

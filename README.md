@@ -35,16 +35,19 @@ Todos
   - provider/appointment queue status
   - appointments listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
 - mobile prototype for customers
-  - dynamic
-  - cancel appointment
+  - ~~dynamic~~ 2013-06-19
+  - ~~cancel appointment~~ 2013-06-19
+    - figure out auth token situation for api access -- don't hit api? use server?
+  - ~~customer feedback~~ 2013-06-19
   - change appointment
-  - customer feedback
+  - queue
 - appointment tags
 - metadata fields (ability for companies/providers to add custom fields to appointments)
 - better offline handling
 - change appointment
 - auto "next"
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
+- activity log
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07

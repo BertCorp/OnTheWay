@@ -3,7 +3,7 @@
   <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1.0">
-  <title>OnTheWay - Customer Feedback</title>
+  <title>Customer Feedback - OnTheWay</title>
   <link rel="stylesheet" href="../css/jquery.mobile.min.css">
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="shortcut icon" href="/favicon.ico">
@@ -16,6 +16,43 @@
   <script src="http://view.jquerymobile.com/1.3.1/dist/demos/_assets/js/index.js"></script>
   <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
   <script src="../js/jquery.raty.min.js"></script>
+  <script type="text/javascript">
+
+    var DEVELOPMENT = true;
+    var PROTOCOL = 'http://'; // DEVELOPMENT
+    var DOMAIN = 'localhost:3000'; // DEVELOPMENT
+    //var DOMAIN = 'www.onthewayhq.com'; // PRODUCTION
+    //var PROTOCAL = 'https://'; // PRODUCTION (YET TO BE IMPLEMENTED)
+    var API_PATH = '/api/v0';
+    var current_appointment_id = '<%= @appointment.id %>';
+
+    $(document).on('pageinit', '#home', function() {
+      $(document).on('click', '#submit', function(e) {
+        e.preventDefault();
+        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
+          // How do we handle auth token for customers?
+          data: { 'auth_token' : false, 'appointment' : { 'rating' : $('#star').raty('score'), 'feedback' : $('#feedback').val() } },
+          type: 'put',
+          async: true,
+          beforeSend: function() {
+            $.mobile.loading();
+          },
+          complete: function() {
+            $.mobile.loading('hide');
+          },
+          success: function(result) {
+            // go back to #home
+            $.mobile.changePage("#share");
+          },
+          error: function(request) {
+            // notify user about error checking for updates?
+            alert('There was an error submitting your feedback. Please try again or try calling.');
+          }
+        });
+      });
+    });
+
+  </script>
 </head>
 <body>
 
@@ -38,14 +75,17 @@
           starOff: '../images/star-off.png',
           starOn: '../images/star-on.png'
         });
+        <% if @appointment.rating.present? %>
+          $('#star').raty('score', '<%= @appointment.rating %>');
+        <% end %>
       </script>
 
       <div class="ui-grid-solo">
-        <textarea cols="40" rows="8" placeholder="Comments &amp; Feedback" style="height: 100px;"></textarea>
+        <textarea id="feedback" cols="40" rows="8" placeholder="Comments &amp; Feedback" style="height: 100px;"><%= @appointment.feedback if @appointment.feedback.present? %></textarea>
       </div>
 
       <div class="ui-grid-solo">
-        <div class="ui-block-a"><a href="#share" data-role="button" data-transition="slide" data-theme="b">Submit</a></div>
+        <div class="ui-block-a"><a href="#share" id="submit" data-role="button" data-transition="slide" data-theme="b">Submit</a></div>
       </div>
 
     </form>
@@ -63,7 +103,7 @@
     <p style="text-align: center; ">Want to share with your friends?</p>
 
     <div class="ui-grid-solo">
-      <textarea id="share-text" cols="40" rows="8" style="height: 100px;">Just had an amazing experience with Mike the Plumber, thanks to @OnTheWayHQ / http://onthewayhq.com</textarea>
+      <textarea id="share-text" cols="40" rows="8" style="height: 100px;">Just had an amazing experience with <%= @appointment.company.name %>, thanks to @OnTheWayHQ / http://onthewayhq.com</textarea>
     </div>
 
     <div class="ui-grid-solo">
