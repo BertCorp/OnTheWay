@@ -22,7 +22,7 @@ Todos
   - ~~recenter directions map~~ 2013-06-18
   - ~~individual appointment sub views~~ 2013-06-18
     - ~~cancel~~ 2013-06-18
-    - status date/times
+    - display status date/times
   - appointment status updates
     - ~~Cancel~~ 2013-06-18
     - ~~On My Way (en route)~~ 2013-06-18

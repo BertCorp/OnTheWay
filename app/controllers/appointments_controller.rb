@@ -1,37 +1,19 @@
 class AppointmentsController < ApplicationController
   before_filter :authenticate_company!
   # GET /appointments
-  # GET /appointments.json
   def index
     @upcoming_appointments = current_company.appointments.where(['("appointments"."starts_at" >= ?) AND (("appointments"."status" != "canceled") AND ("appointments"."status" != "finished"))', Date.today]).order('"appointments"."starts_at" ASC')
     @past_appointments = current_company.appointments.where(['("appointments"."starts_at" < ?) AND (("appointments"."status" = "canceled") OR ("appointments"."status" = "finished"))', Date.today]).order('"appointments"."starts_at" ASC')
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @appointments }
-    end
   end
 
   # GET /appointments/1
-  # GET /appointments/1.json
   def show
-    @appointment = current_company.appointments.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @appointment }
-    end
+    @appointment = Appointments.find(params[:id])
   end
 
   # GET /appointments/new
-  # GET /appointments/new.json
   def new
     @appointment = current_company.appointments.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @appointment }
-    end
   end
 
   # GET /appointments/1/edit
@@ -40,7 +22,6 @@ class AppointmentsController < ApplicationController
   end
 
   # POST /appointments
-  # POST /appointments.json
   def create
     # save new customer
     if params[:appointment][:customer].present?
@@ -64,19 +45,14 @@ class AppointmentsController < ApplicationController
 
     @appointment = current_company.appointments.new(params[:appointment])
 
-    respond_to do |format|
-      if @appointment.save
-        format.html { redirect_to @appointment, notice: 'Appointment was successfully created.' }
-        format.json { render json: @appointment, status: :created, location: @appointment }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @appointment.errors, status: :unprocessable_entity }
-      end
+    if @appointment.save
+      redirect_to @appointment, notice: 'Appointment was successfully created.' }
+    else
+      render action: "new" }
     end
   end
 
   # PUT /appointments/1
-  # PUT /appointments/1.json
   def update
     @appointment = current_company.appointments.find(params[:id])
 
@@ -87,26 +63,18 @@ class AppointmentsController < ApplicationController
       params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
     end
 
-    respond_to do |format|
-      if @appointment.update_attributes(params[:appointment])
-        format.html { redirect_to @appointment, notice: 'Appointment was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @appointment.errors, status: :unprocessable_entity }
-      end
+    if @appointment.update_attributes(params[:appointment])
+      redirect_to @appointment, notice: 'Appointment was successfully updated.'
+    else
+      render action: "edit"
     end
   end
 
   # DELETE /appointments/1
-  # DELETE /appointments/1.json
   def destroy
     @appointment = current_company.appointments.find(params[:id])
     @appointment.destroy
 
-    respond_to do |format|
-      format.html { redirect_to appointments_url }
-      format.json { head :no_content }
-    end
+    redirect_to appointments_url
   end
 end

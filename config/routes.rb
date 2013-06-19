@@ -23,13 +23,16 @@ OnTheWay::Application.routes.draw do
 
   devise_for :companies
   as :company do
-    get "/login" => "devise/sessions#new", :as => "new_company_session"
-    delete "/logout" => "devise/sessions#destroy", :as => "destroy_company_session"
+    get "login" => "devise/sessions#new", :as => "new_company_session"
+    delete "logout" => "devise/sessions#destroy", :as => "destroy_company_session"
   end
 
   resources :providers
   resources :customers
   resources :appointments
+
+  get "p/:id" => redirect("/prototypes/provider-v1.0.html?id=:id")
+  get "a/:id" => "appointments#show"
 
   # test methods
   #get "customer" => "pages#customer"

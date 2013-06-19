@@ -45,7 +45,7 @@ class Appointment < ActiveRecord::Base
   end
 
   def shorturl
-    "http://otwhq.co/a/#{shortcode}"
+    "http://otwhq.com/a/#{shortcode}" # switch to http://otwhq.co/ when it's working again
   end
 
   def status_date

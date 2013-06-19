@@ -54,7 +54,6 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
       if ((params[:appointment][:status] != 'requested') && (params[:appointment][:status] != 'canceled'))
         params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
       end
-
     end
 
     if @appointment.update_attributes(params[:appointment])
