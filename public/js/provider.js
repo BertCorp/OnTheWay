@@ -140,7 +140,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     $('#detail #customer-phone').html(appointment.customer.phone);
     $('#detail #customer-text').attr('href', 'sms:+1' + appointment.customer.phone.replace(/\D/g,''));
     $('#detail #customer-call').attr('href', 'tel:+1' + appointment.customer.phone.replace(/\D/g,''));
-    $('#detail #appointment-when').html(appointment.starts_at);
+    $('#detail #appointment-when').html(appointment.starts_at.slice(0, -6));
 
     $('#progress-btn-container').show();
     if (appointment.status == 'requested') {
@@ -168,6 +168,15 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       .attr('title', appointment[appointment.status + "_at"])
       .html(formatAppointmentStatus(appointment.status));
     // should put info underneath, depending on what the status is...
+    var status_time = 'Created: ' + appointment.created_at.slice(0, -6)  + '<br/>';
+    if (appointment.confirmed_at) status_time += 'Confirmed: ' + appointment.confirmed_at.slice(0, -6)  + '<br/>';
+    if (appointment.next_at)      status_time += 'Next: ' + appointment.next_at.slice(0, -6)  + '<br/>';
+    if (appointment.en_route_at)  status_time += 'En Route: ' + appointment.en_route_at.slice(0, -6)  + '<br/>';
+    if (appointment.arrived_at)   status_time += 'Arrived: ' + appointment.arrived_at.slice(0, -6)  + '<br/>';
+    if (appointment.finished_at)  status_time += 'Finished: ' + appointment.finished_at.slice(0, -6)  + '<br/>';
+    if (appointment.status == 'canceled') status_time += 'Canceled: ' + appointment.updated_at.slice(0, -6) + '<br/>';
+    $('#detail #appointment-status-times').html(status_time);
+
     $('#detail #appointment-location').html(appointment.location);
     $('#detail #appointment-shorturl').html('<a href="' + appointment.shorturl + '">' + appointment.shorturl + '</a>');
     // update Directions page

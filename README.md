@@ -22,33 +22,40 @@ Todos
   - ~~recenter directions map~~ 2013-06-18
   - ~~individual appointment sub views~~ 2013-06-18
     - ~~cancel~~ 2013-06-18
-    - display status date/times
+    - ~~display status date/times~~ 2013-06-20
   - ~~appointment status updates~~ 2013-06-18
     - ~~Cancel~~ 2013-06-18
     - ~~On My Way (en route)~~ 2013-06-18
     - ~~I've Arrived~~ 2013-06-18
     - ~~I'm Finished~~ 2013-06-18
   - ~~functional shortcode urls~~ 2013-06-19
-  - allow providers to add appointment
+  - ~~allow providers to add appointment~~ 2013-06-20
   - provider location tracking
-  - appointment ETA -- https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
-  - provider/appointment queue status
-  - twilio integration
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19
   - ~~customer feedback~~ 2013-06-19
     - ~~figure out auth token situation for api access~~ 2013-06-19
-  - queue
-- appointment tags
-- metadata fields (ability for companies/providers to add custom fields to appointments)
-- better offline handling
-- change appointment
+  - auto update queue/eta
+  - provider tracking
+- appointment ETA -- https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
+- provider/appointment queue status
+- twilio integration
 - auto "next"
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
+
+
+Down the Road
+=============
+- Providers
+  - edit/change appointment
+  - appointment tags
+  - metadata fields (ability for companies/providers to add custom fields to appointments)
+  - better offline handling
+  - listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
 - activity log
-- provider appointments listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
 - full CRM functionality
+
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07
