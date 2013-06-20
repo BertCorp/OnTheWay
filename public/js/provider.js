@@ -57,10 +57,12 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
   }
 
   function clearNotification() {
-    $('#notification-bar').slideUp("slow", function() {
-      $('#notification-bar p').html('');
-      $(this).hide();
-    });
+    setTimeout(function() {
+      $('#notification-bar').slideUp("slow", function() {
+        $('#notification-bar p').html('');
+        $(this).hide();
+      });
+    }, 2000);
   }
 
 ////////////////////////// Appointment Functions //////////////////////////////
@@ -210,10 +212,9 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       async: true,
       beforeSend: function() {
         setNotification('Checking server for updates...');
-        setTimeout(clearNotification, 5000);
       },
       complete: function() {
-        //clearNotification();
+        clearNotification();
       },
       success: function(result) {
         // update based on results
