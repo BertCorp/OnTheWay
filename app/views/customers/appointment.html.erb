@@ -57,6 +57,7 @@
       }).load('directions');
     });
 
+    /*
     $(document).on('pageinit', '#dialog-cancel-confirm', function() {
       $(document).on('click', '#cancel-appointment', function() {
         $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
@@ -81,6 +82,7 @@
         });
       });
     });
+    */
 
   </script>
 </head>
@@ -88,20 +90,22 @@
 
 <div data-role="page" id="home" class="jqm-demos">
 
-  <div data-role="content">
+  <div data-role="content" style="text-align: center;">
 
-    <p style="text-align: center;"><strong><%= @appointment.provider.name %></strong> from <strong><%= @appointment.company.name %></strong> has a delivery scheduled for you <%= (@appointment.starts_at.today?) ? 'today' : "on #{@appointment.starts_at.strftime('%Y-%m-%d')}" %>.</p>
+    <p><strong><%= @appointment.provider.name %></strong> from <strong><%= @appointment.company.name %></strong> has a delivery scheduled for you:</p>
+
+    <p style="font-size: 20px;"><strong><%= (@appointment.starts_at.today?) ? 'Today' : "#{@appointment.starts_at.strftime('%Y-%m-%d')}" %></strong></p>
 
     <% if @appointment.status != 'canceled' %>
-    <p style="text-align: center;">Based on his delivery schedule, there are <strong>4</strong> people in front of you.</p>
+    <p>Based on our delivery schedule, there are <strong>4</strong> people in front of you.</p>
 
-    <p style="text-align: center;">And we expect <%= @appointment.provider.name %> to be arriving to you at:</p>
+    <p>And we expect to arrive at:</p>
 
-    <p style="font-size: 40px; text-align: center; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
+    <p style="font-size: 40px; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
     <% else %>
-    <p style="text-align: center;">Your appointment has been marked:</p>
+    <p>Your appointment has been marked:</p>
 
-    <p style="font-size: 40px; text-align: center; margin: 40px 0px; color: #ff9999;">CANCELED</p>
+    <p style="font-size: 40px; margin: 40px 0px; color: #ff9999;">CANCELED</p>
     <% end %>
 
     <% if ['next', 'en route', 'arrived'].include? @appointment.status %>
@@ -111,13 +115,14 @@
     <% end %>
 
     <% unless ['finished', 'canceled', 'arrived', 'en route'].include? @appointment.status %>
-    <p style="text-align: center;">Has something changed? Reschedule or cancel your appointment.</p>
+    <!--<p style="text-align: center;">Has something changed? Reschedule or cancel your appointment.</p>
 
     <div class="ui-grid-a">
       <div class="ui-block-a"><a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-theme="b">Change</a></div>
       <div class="ui-block-b"><a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-theme="a">Cancel</a></div>
-    </div>
+    </div>-->
     <% end %>
+    <p>Has something changed?<br/>Please let them know:</p>
 
     <div class="ui-grid-a">
       <div class="ui-block-a"><a href="sms:+1<%= @appointment.provider.phone.gsub(/[^0-9]/, "") %>" data-role="button" data-theme="b">Text</a></div>

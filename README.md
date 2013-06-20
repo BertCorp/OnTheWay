@@ -23,7 +23,7 @@ Todos
   - ~~individual appointment sub views~~ 2013-06-18
     - ~~cancel~~ 2013-06-18
     - display status date/times
-  - appointment status updates
+  - ~~appointment status updates~~ 2013-06-18
     - ~~Cancel~~ 2013-06-18
     - ~~On My Way (en route)~~ 2013-06-18
     - ~~I've Arrived~~ 2013-06-18
@@ -31,15 +31,14 @@ Todos
   - allow providers to add appointment
   - ~~functional shortcode urls~~ 2013-06-19
   - twilio integration
+  - provider location tracking
   - appointment ETA -- https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
   - provider/appointment queue status
-  - appointments listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19
-    - figure out auth token situation for api access -- don't hit api? use server?
   - ~~customer feedback~~ 2013-06-19
-  - change appointment
+    - figure out auth token situation for api access -- don't hit api? use server?
   - queue
 - appointment tags
 - metadata fields (ability for companies/providers to add custom fields to appointments)
@@ -48,6 +47,7 @@ Todos
 - auto "next"
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
 - activity log
+- provider appointments listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07
