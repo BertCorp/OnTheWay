@@ -16,6 +16,7 @@ OnTheWay::Application.routes.draw do
         post "appointments" => "appointments#create"
         get "appointments/:id" => "appointments#show"
         put "appointments/:id" => "appointments#update"
+        put "appointments/:id/feedback" => "appointments#feedback"
         #delete "appointments/:id" => "appointments#destroy"
       end
     end

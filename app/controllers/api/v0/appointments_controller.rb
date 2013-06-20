@@ -1,5 +1,5 @@
 class Api::V0::AppointmentsController < Api::V0::BaseApiController
-  before_filter :authenticate_provider!
+  before_filter :authenticate_provider!, :except => [:feedback]
 
   # GET /appointments.json
   def index
@@ -55,6 +55,19 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
         params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
       end
     end
+
+    if @appointment.update_attributes(params[:appointment])
+      render json: @appointment
+    else
+      render json: @appointment.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PUT /appointments/1/feedback.json
+  def feedback
+    @appointment = Appointment.find(params[:id])
+
+    params[:appointment].select! {|k,v| ["rating", "feedback"].include?(k) }
 
     if @appointment.update_attributes(params[:appointment])
       render json: @appointment

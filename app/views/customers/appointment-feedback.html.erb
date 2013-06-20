@@ -29,9 +29,9 @@
     $(document).on('pageinit', '#home', function() {
       $(document).on('click', '#submit', function(e) {
         e.preventDefault();
-        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
+        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '/feedback.json',
           // How do we handle auth token for customers?
-          data: { 'auth_token' : false, 'appointment' : { 'rating' : $('#star').raty('score'), 'feedback' : $('#feedback').val() } },
+          data: { 'appointment' : { 'rating' : $('#star').raty('score'), 'feedback' : $('#feedback').val() } },
           type: 'put',
           async: true,
           beforeSend: function() {

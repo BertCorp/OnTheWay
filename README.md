@@ -38,7 +38,7 @@ Todos
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19
   - ~~customer feedback~~ 2013-06-19
-    - figure out auth token situation for api access -- don't hit api? use server?
+    - ~~figure out auth token situation for api access~~ 2013-06-19
   - queue
 - appointment tags
 - metadata fields (ability for companies/providers to add custom fields to appointments)
