@@ -153,25 +153,46 @@
     <a href="#home-mockup" data-icon="delete" data-iconpos="notext" data-direction="reverse" data-transition="slideup" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Close" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Close</span><span class="ui-icon ui-icon-delete ui-icon-shadow"></span></span></a>
   </div>
   <div data-role="content">
-    <form class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
+    <form class="ui-bar-c ui-corner-all ui-shadow" style="padding: 0px 1em;">
+
       <div data-role="fieldcontain">
-        <label for="text-12">Text input:</label>
-        <input type="text" name="text-12" id="text-12" value="">
+        <fieldset data-role="controlgroup">
+          <legend>Customer:</legend>
+          <input type="text" name="appointment[customer][name]" id="appointment_customer_name" placeholder="Name" value="">
+          <input id="appointment_customer_email" name="appointment[customer][email]" placeholder="ex: example@onthewayhq.com" size="30" type="email" />
+          <input class="input-medium" id="appointment_customer_phone" maxlength="13" name="appointment[customer][phone]" placeholder="123-456-7890" size="13" type="tel" />
+        </fieldset>
       </div>
+
       <div data-role="fieldcontain">
-        <label for="text-13">Text input:</label>
-        <input type="text" data-clear-btn="true" name="text-13" id="text-13" value="">
+        <fieldset data-role="controlgroup">
+          <legend>When:</legend>
+          <input id="appointment_starts_at" name="appointment[starts_at][date]" type="date" value="2013-06-19" />
+          <input class="input-small" type="time" name="appointment[starts_at][time]" value="" />
+        </fieldset>
       </div>
+
       <div data-role="fieldcontain">
-        <label for="search-8">Search:</label>
-        <input type="search" name="search-8" id="search-8" value="">
+        <label for="appointment_location">Where:</label>
+        <textarea cols="40" rows="8" name="appointment[location]" id="appointment_location"></textarea>
       </div>
+
       <div data-role="fieldcontain">
-        <label for="textarea-12">Textarea:</label>
-        <textarea cols="40" rows="8" name="textarea-12" id="textarea-12"></textarea>
+        <label class="control-label" for="appointment_status">Status:</label>
+        <select id="appointment_status" name="appointment[status]">
+          <option value="confirmed">confirmed</option>
+          <option value="next">next</option>
+          <option value="en route">en route</option>
+          <option value="arrived">arrived</option>
+          <option value="finished">finished</option>
+          <option value="canceled">canceled</option>
+        </select>
       </div>
-      <a href="#" data-role="button" data-theme="b">Save</a>
+
     </form>
+
+    <a href="#" data-role="button" data-theme="b">Save</a>
+
   </div>
 
 </div><!-- /page -->

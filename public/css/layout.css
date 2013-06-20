@@ -665,7 +665,7 @@ h2.jqm-home-widget {
   text-decoration: none;
 }
 .ui-icon-none .ui-icon { background-image: none; }
-
+.ui-field-contain input.ui-input-text, .ui-field-contain textarea.ui-input-text, .ui-field-contain .ui-input-search, .ui-field-contain div.ui-input-text { margin: 0 0 5px 0; }
 /* Borrowed from Bootstrap */
 .label, .badge {
   display: inline-block;
