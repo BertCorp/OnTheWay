@@ -103,7 +103,31 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         return status.toUpperCase();
     }
     return status;
-  }
+  } // formatAppointmentStatus
+
+  function handleErrors(request, preferred_message) {
+    $('#notification-bar p').html('');
+    $('#notification-bar').hide();
+    var responseText = JSON.parse(request.responseText);
+    if (request.status == '401') {
+      if (responseText.message) {
+        alert(responseText.message);
+      } else {
+        alert('Invalid login attempt. Please make sure your credentials are accurate.');
+      }
+    } else if (request.status == '422') {
+      if (preferred_message) {
+        alert(preferred_message);
+      } else if (responseText.message) {
+        alert(responseText.message);
+      } else {
+        alert('An error has occurred. Please check to make sure you supplied the necessary information.');
+      }
+    } else {
+      // This callback function will trigger on unsuccessful action
+      alert('A network error has occurred. Please try again!');
+    }
+  } // handleErrors
 
   function renderAppointment(appointment_id) {
     current_appointment_id = appointment_id;
@@ -267,16 +291,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
           error: function (request) {
             //console.log(request);
             //console.log(request.responseText);
-            if (request.status == '401') {
-              if (request.responseText.message) {
-                alert(request.responseText.message);
-              } else {
-                alert('Invalid login attempt. Please make sure your credentials are accurate.');
-              }
-            } else {
-              // This callback function will trigger on unsuccessful action
-              alert('A network error has occurred. Please try again!');
-            }
+            handleErrors(request);
           }
         });
       } else {
@@ -350,15 +365,14 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         // upon success,
         if (DEVELOPMENT) console.log(result);
         appointments[appointments_key[current_appointment_id]] = result;
+        setStorage('appointments', appointments);
         renderAppointment(current_appointment_id);
         // update appointments? do results return updated appointments? or just returning #home refresh?
         $('#dialog-success h3').html("Appointment status has been updated.");
         $.mobile.changePage("#dialog-success", {transition: 'pop', role: 'dialog'});
       },
       error: function(request) {
-        // notify user about error checking for updates?
-        //console.log(request);
-        alert('There was an error updating this appointment\'s status.');
+        handleErrors(request, 'There was an error updating this appointment\'s status.');
       }
     });
   });
@@ -428,23 +442,58 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         },
         success: function(result) {
           // upon success,
-          // update appointments? do results return updated appointments? or just returning #home refresh?
+          appointments[appointments_key[current_appointment_id]] = result;
+          setStorage('appointments', appointments);
+          renderAppointments();
           // go back to #home
           $.mobile.changePage("#home");
         },
         error: function(request) {
           // notify user about error checking for updates?
           //console.log(request);
-          alert('There was an error canceling this appointment.');
+          handleErrors(request, 'There was an error canceling this appointment. Please try again or use the web console.');
         }
       });
     });
   });
 
   $(document).on('pageinit', '#appointment-add', function() {
+    current_appointment_id = false;
     var today = new Date();
     var m = today.getMonth() + 1;
     $('#appointment_starts_at').val(today.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + today.getDate());
+
+    $(document).on('click', '#appointment-submit', function(e) {
+      // do validation on the data
+      e.preventDefault();
+      if (($('#appointment_customer_name').val().length > 0) && ($('#appointment_customer_phone').val().length > 0) && ($('#appointment_starts_at').val().length > 0) && ($('#appointment_location').val().length > 0)) {
+        var data = $('#appointment-add form').serialize();
+        data['auth_token'] = credentials.auth_token;
+        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments.json',
+          data: data,
+          type: 'post',
+          async: true,
+          beforeSend: function() {
+            setNotification('Saving new appointment...');
+          },
+          complete: function() {
+            clearNotification();
+          },
+          success: function(result) {
+            // upon success,
+            last_fetched_at = false;
+            // go back to #home, which should update and show new appointment
+            $.mobile.changePage("#home");
+          },
+          error: function(request) {
+            handleErrors(request);
+          }
+        });
+      } else {
+        alert('Please fill in all necessary fields.');
+      }
+    });
+
   });
 
   //$(document).on("pagehide", '#gps_map', function() {

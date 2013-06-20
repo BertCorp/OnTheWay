@@ -3,6 +3,10 @@ class Company < ActiveRecord::Base
   has_many :providers
   has_many :customers, :through => :appointments
 
+  validates_presence_of :name
+  validates_presence_of :email
+  validates_presence_of :phone
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
          # :token_authenticatable, :confirmable,
