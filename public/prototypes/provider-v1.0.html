@@ -54,7 +54,7 @@
   <div data-role="header" class="jqm-header">
     <a href="#settings-options" data-rel="dialog" data-icon="gear" data-iconpos="notext" data-transition="slideup" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Settings" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Settings</span><span class="ui-icon ui-icon-gear ui-icon-shadow"></span></span></a>
     <h1 class="jqm-logo"><a href="#home" data-transition="fade"><img src="../images/logo-white.png" alt="OnTheWay"></a></h1>
-    <a href="#" data-icon="plus" data-iconpos="notext" data-transition="slide" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Add New Appointment" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Add New Appointment</span><span class="ui-icon ui-icon-plus ui-icon-shadow"></span></span></a>
+    <a href="#appointment-add" data-icon="plus" data-iconpos="notext" data-transition="slideup" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Add New Appointment" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Add New Appointment</span><span class="ui-icon ui-icon-plus ui-icon-shadow"></span></span></a>
   </div><!-- /header -->
 
   <div data-role="content" class="jqm-content jqm-fullwidth">
@@ -75,6 +75,57 @@
   <div data-role="content" data-theme="d">
     <a href="#" id="logout" data-role="button" data-transition="slide" data-direction="reverse" data-theme="b">Logout</a>
     <a href="#home" data-role="button" data-rel="back" data-theme="c">Cancel</a>
+  </div>
+
+</div><!-- /page -->
+
+<div data-role="page" id="appointment-add" class="jqm-demos">
+
+  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
+    <h1>Appointment</h1>
+    <a href="#home" data-icon="delete" data-iconpos="notext" data-direction="reverse" data-transition="slideup" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Close" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Close</span><span class="ui-icon ui-icon-delete ui-icon-shadow"></span></span></a>
+  </div>
+  <div data-role="content">
+    <form class="ui-bar-c ui-corner-all ui-shadow" style="padding: 0px 1em;">
+
+      <div data-role="fieldcontain">
+        <fieldset data-role="controlgroup">
+          <legend>Customer:</legend>
+          <input type="text" name="appointment[customer][name]" id="appointment_customer_name" placeholder="Name" value="">
+          <input id="appointment_customer_email" name="appointment[customer][email]" placeholder="ex: example@onthewayhq.com" size="30" type="email" />
+          <input class="input-medium" id="appointment_customer_phone" maxlength="13" name="appointment[customer][phone]" placeholder="123-456-7890" size="13" type="tel" />
+        </fieldset>
+      </div>
+
+      <div data-role="fieldcontain">
+        <fieldset data-role="controlgroup">
+          <legend>When:</legend>
+          <input id="appointment_starts_at" name="appointment[starts_at][date]" type="date" value="" />
+          <input class="input-small" type="time" name="appointment[starts_at][time]" value="" />
+        </fieldset>
+      </div>
+
+      <div data-role="fieldcontain">
+        <label for="appointment_location">Where:</label>
+        <textarea cols="40" rows="8" name="appointment[location]" id="appointment_location"></textarea>
+      </div>
+
+      <div data-role="fieldcontain">
+        <label class="control-label" for="appointment_status">Status:</label>
+        <select id="appointment_status" name="appointment[status]">
+          <option value="confirmed">confirmed</option>
+          <option value="next">next</option>
+          <option value="en route">en route</option>
+          <option value="arrived">arrived</option>
+          <option value="finished">finished</option>
+          <option value="canceled">canceled</option>
+        </select>
+      </div>
+
+    </form>
+
+    <a href="#" data-role="button" data-theme="b">Save</a>
+
   </div>
 
 </div><!-- /page -->

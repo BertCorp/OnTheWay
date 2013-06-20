@@ -441,9 +441,11 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     });
   });
 
-  //$(document).on('pageshow', '#directions', function() {
-  //  demo.add('directions', $('#map_canvas_1').gmap('get', 'getCurrentPosition')).load('directions');
-  //});
+  $(document).on('pageinit', '#appointment-add', function() {
+    var today = new Date();
+    var m = today.getMonth() + 1;
+    $('#appointment_starts_at').val(today.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + today.getDate());
+  });
 
   //$(document).on("pagehide", '#gps_map', function() {
   //  demo.add('directions', function() { $('#map_canvas_1').gmap('clearWatch'); }).load('directions');
