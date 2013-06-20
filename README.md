@@ -28,12 +28,12 @@ Todos
     - ~~On My Way (en route)~~ 2013-06-18
     - ~~I've Arrived~~ 2013-06-18
     - ~~I'm Finished~~ 2013-06-18
-  - allow providers to add appointment
   - ~~functional shortcode urls~~ 2013-06-19
-  - twilio integration
+  - allow providers to add appointment
   - provider location tracking
   - appointment ETA -- https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
   - provider/appointment queue status
+  - twilio integration
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19
@@ -48,6 +48,7 @@ Todos
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
 - activity log
 - provider appointments listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
+- full CRM functionality
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07
