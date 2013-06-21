@@ -53,17 +53,31 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
   function setNotification(message) {
     if (DEVELOPMENT) console.log(message);
     $('#notification-bar p').html(message);
-    $('#notification-bar').slideDown("fast");
+    $('#notification-bar').slideDown(200);
   }
 
   function clearNotification() {
     setTimeout(function() {
-      $('#notification-bar').slideUp("slow", function() {
+      $('#notification-bar').slideUp(600, function() {
         $('#notification-bar p').html('');
         $(this).hide();
       });
     }, 2000);
   }
+
+  function startTracking() {
+    $('#tracking-bar p').html("Currently tracking your location...");
+    $('#tracking-bar').slideDown(200);
+    $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').animate({ top: '18px' }, 200);
+  } // startTracking
+
+  function stopTracking() {
+    $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').animate({ top: '0px' }, 600);
+    $('#tracking-bar').slideUp(600, function() {
+      $('#tracking-bar p').html('');
+      $(this).hide();
+    });
+  } // stopTracking
 
 ////////////////////////// Appointment Functions //////////////////////////////
 
@@ -227,6 +241,8 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         appointment_item = appointment_item.replace(/{{status}}/g, formatAppointmentStatus(appointments[x].status));
         appointment_item = appointment_item.replace(/{{label-class}}/g, getAppointmentLabelClass(appointments[x].status));
         $('ul#appointments-container').append(appointment_item);
+        // start tracking if we need to for any app.
+        if ((appointments[x].status == 'en route') || (appointments[x].status == 'arrived')) startTracking();
       }
       $('#date-' + current_date + ' span.ui-li-count').html(current_count);
     }
@@ -374,6 +390,8 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         // upon success,
         if (DEVELOPMENT) console.log(result);
         appointments[appointments_key[current_appointment_id]] = result;
+        if (result.status == 'en route') startTracking();
+        if (result.status == 'finished') stopTracking();
         setStorage('appointments', appointments);
         renderAppointment(current_appointment_id);
         // update appointments? do results return updated appointments? or just returning #home refresh?
