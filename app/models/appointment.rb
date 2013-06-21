@@ -70,8 +70,6 @@ class Appointment < ActiveRecord::Base
       return arrived_at
     when "en route"
       return en_route_at
-    when "next"
-      return next_at
     when "confirmed"
       return confirmed_at
     else
@@ -80,7 +78,7 @@ class Appointment < ActiveRecord::Base
   end
 
   def statuses
-    ['requested', 'confirmed', 'next', 'en route', 'arrived', 'finished', 'canceled']
+    ['requested', 'confirmed', 'en route', 'arrived', 'finished', 'canceled']
   end
 
   def as_json(args={})

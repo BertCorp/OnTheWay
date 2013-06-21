@@ -72,7 +72,6 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       case "finished" :
         return "label-success";
         break;
-      case "next" :
       case "en route" :
       case "arrived" :
       case "in progress" :
@@ -97,7 +96,6 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         return "IN PROGRESS";
         break;
       case "en route" :
-      case "next" :
       case "missed" :
       case "late" :
         return status.toUpperCase();
@@ -170,7 +168,6 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     // should put info underneath, depending on what the status is...
     var status_time = 'Created: ' + appointment.created_at.slice(0, -6)  + '<br/>';
     if (appointment.confirmed_at) status_time += 'Confirmed: ' + appointment.confirmed_at.slice(0, -6)  + '<br/>';
-    if (appointment.next_at)      status_time += 'Next: ' + appointment.next_at.slice(0, -6)  + '<br/>';
     if (appointment.en_route_at)  status_time += 'En Route: ' + appointment.en_route_at.slice(0, -6)  + '<br/>';
     if (appointment.arrived_at)   status_time += 'Arrived: ' + appointment.arrived_at.slice(0, -6)  + '<br/>';
     if (appointment.finished_at)  status_time += 'Finished: ' + appointment.finished_at.slice(0, -6)  + '<br/>';
@@ -389,7 +386,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     });
   });
 
-  $(document).on('pageinit', '#directions', function() {
+  $(document).on('pagebeforeshow', '#directions', function() {
     var self, map_initial = {};
     demo.add('directions', function() {
       $("#map_canvas_1").gmap({'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI':true, 'callback': function() {

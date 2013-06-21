@@ -39,8 +39,9 @@ Todos
     - ~~figure out auth token situation for api access~~ 2013-06-19
   - auto update queue/eta
   - provider tracking
+    - if provider hasn't marked job as finished, send him a friendly reminder to.
 - appointment ETA -- https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
-- provider/appointment queue status
+- ~~provider/appointment queue status~~
 - twilio integration
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
 
