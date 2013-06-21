@@ -20,5 +20,8 @@ class Provider < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
   attr_accessible :company_id, :name, :phone, :authentication_token
 
+  def queue
+    appointments.where(['(appointments.starts_at BETWEEN ? AND ?) AND (status != ?) AND (status != ?)', DateTime.now.beginning_of_day, DateTime.now.end_of_day, 'finished', 'canceled']).order('appointments.starts_at ASC')
+  end
 
 end

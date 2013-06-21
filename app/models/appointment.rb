@@ -39,6 +39,14 @@ class Appointment < ActiveRecord::Base
   attr_accessible :provider_location, :status
   attr_accessible :confirmed_at, :next_at, :en_route_at, :arrived_at, :finished_at
 
+  def queue_position
+    queue = provider.queue
+    queue.each_with_index do |a, i|
+      return i if a.id == self.id
+    end
+    false
+  end
+
   def self.find_by_shortcode(code)
     i = AnyBase.decode(code, ([*0..9,*'a'..'z'] - %w[i o u 0 1 3]).join)
     self.find(i)

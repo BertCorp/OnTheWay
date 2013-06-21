@@ -7,6 +7,8 @@ class CustomersController < ApplicationController
 
     if @appointment.status == 'finished'
       render 'customers/appointment-feedback', layout: false
+    elsif (@appointment.status == 'canceled') || (@appointment.starts_at > DateTime.now.end_of_day)
+      render 'customers/appointment-invalid', layout: false
     else
       render layout: false
     end

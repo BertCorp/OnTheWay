@@ -97,7 +97,7 @@
     <p style="font-size: 20px;"><strong><%= (@appointment.starts_at.today?) ? 'Today' : "#{@appointment.starts_at.strftime('%Y-%m-%d')}" %></strong></p>
 
     <% if @appointment.status != 'canceled' %>
-    <p>Based on our delivery schedule, there are <strong>4</strong> people in front of you.</p>
+    <p>Based on our delivery schedule, <% if @appointment.queue_position < 1 %>you are <strong>next</strong>!<% else %>there are <strong><%= @appointment.queue_position %></strong> people in front of you.<% end %></p>
 
     <p>And we expect to arrive at:</p>
 
@@ -108,7 +108,7 @@
     <p style="font-size: 40px; margin: 40px 0px; color: #ff9999;">CANCELED</p>
     <% end %>
 
-    <% if ['next', 'en route', 'arrived'].include? @appointment.status %>
+    <% if ['next', 'en route', 'arrived'].include?(@appointment.status) || (@appointment.queue_position < 1) %>
     <div class="ui-grid-solo">
       <div class="ui-block-a"><a href="#directions" data-role="button" data-icon="info" data-transition="slide">View on Map</a></div>
     </div>
