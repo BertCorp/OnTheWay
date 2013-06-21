@@ -181,8 +181,11 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     $('#detail #appointment-shorturl').html('<a href="' + appointment.shorturl + '">' + appointment.shorturl + '</a>');
     // update Directions page
     $('#directions #to').val(appointment.location.replace(/\r\n/g, ' '));
-    // update other subpages
-
+    // update edit appointment page
+    $('#edit_appointment_starts_at').val(appointment.starts_at.substr(0, 10));
+    $('#edit_appointment_starts_at_time').val(appointment.starts_at.substr(11, 5));
+    $('#edit_appointment_location').val(appointment.location);
+    $('#edit_appointment_status').val(appointment.status);
   } // renderAppointment
 
   function renderAppointments() {
@@ -472,7 +475,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     var m = today.getMonth() + 1;
     $('#appointment_starts_at').val(today.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + today.getDate());
 
-    $(document).on('click', '#appointment-submit', function(e) {
+    $(document).on('click', '#appointment-add .appointment-submit', function(e) {
       // do validation on the data
       e.preventDefault();
       if (($('#appointment_customer_name').val().length > 0) && ($('#appointment_customer_phone').val().length > 0) && ($('#appointment_starts_at').val().length > 0) && ($('#appointment_location').val().length > 0)) {
@@ -491,6 +494,42 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
           success: function(result) {
             // upon success,
             last_fetched_at = false;
+            // go back to #home, which should update and show new appointment
+            $.mobile.changePage("#home");
+          },
+          error: function(request) {
+            handleErrors(request);
+          }
+        });
+      } else {
+        alert('Please fill in all necessary fields.');
+      }
+    });
+
+  });
+
+  $(document).on('pageinit', '#appointment-edit', function() {
+    $(document).on('click', '#appointment-edit .appointment-submit', function(e) {
+      // do validation on the data
+      e.preventDefault();
+      if (($('#edit_appointment_starts_at').val().length > 0) && ($('#edit_appointment_location').val().length > 0)) {
+        var data = $('#appointment-edit form').serialize();
+        data['auth_token'] = credentials.auth_token;
+        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
+          data: data,
+          type: 'put',
+          async: true,
+          beforeSend: function() {
+            setNotification('Saving appointment...');
+          },
+          complete: function() {
+            clearNotification();
+          },
+          success: function(result) {
+            // upon success,
+            last_fetched_at = false;
+            appointments[appointments_key[current_appointment_id]] = result;
+            setStorage('appointments', appointments);
             // go back to #home, which should update and show new appointment
             $.mobile.changePage("#home");
           },

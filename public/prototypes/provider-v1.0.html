@@ -51,10 +51,10 @@
 
 <div data-role="page" id="home" class="jqm-demos">
 
-  <div data-role="header" class="jqm-header">
-    <a href="#settings-options" data-rel="dialog" data-icon="gear" data-iconpos="notext" data-transition="slideup" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Settings" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Settings</span><span class="ui-icon ui-icon-gear ui-icon-shadow"></span></span></a>
+  <div data-role="header" class="ui-icon-nodisc jqm-header">
+    <a href="#settings-options" data-rel="dialog" data-icon="gear" data-iconshadow="false" data-iconpos="notext" data-transition="slideup" class="ui-btn-left jqm-home" title="Settings" data-theme="b">Settings</a>
     <h1 class="jqm-logo"><a href="#home" data-transition="fade"><img src="../images/logo-white.png" alt="OnTheWay"></a></h1>
-    <a href="#appointment-add" data-icon="plus" data-iconpos="notext" data-transition="slideup" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Add New Appointment" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Add New Appointment</span><span class="ui-icon ui-icon-plus ui-icon-shadow"></span></span></a>
+    <a href="#appointment-add" data-icon="plus" data-iconshadow="false" data-iconpos="notext" data-transition="slideup" class="ui-btn-right jqm-home" title="Add New Appointment" data-theme="b">Add New Appointment</a>
   </div><!-- /header -->
 
   <div data-role="content" class="jqm-content jqm-fullwidth">
@@ -81,9 +81,9 @@
 
 <div data-role="page" id="appointment-add" class="jqm-demos">
 
-  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
+  <div data-role="header" class="ui-icon-nodisc jqm-header ui-header ui-bar-b" role="banner">
     <h1>Appointment</h1>
-    <a href="#home" data-icon="delete" data-iconpos="notext" data-direction="reverse" data-transition="slideup" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Close" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Close</span><span class="ui-icon ui-icon-delete ui-icon-shadow"></span></span></a>
+    <a href="#home" data-icon="delete" data-iconshadow="false" data-iconpos="notext" data-direction="reverse" data-transition="slideup" class="ui-btn-right jqm-home" title="Close" data-theme="b">Close</a>
   </div>
   <div data-role="content">
     <form class="ui-bar-c ui-corner-all ui-shadow" style="padding: 0px 1em;">
@@ -124,7 +124,7 @@
 
     </form>
 
-    <a href="#" id="appointment-submit" data-role="button" data-theme="b">Save</a>
+    <a href="#" class="appointment-submit" data-role="button" data-theme="b">Save</a>
 
   </div>
 
@@ -132,10 +132,10 @@
 
 <div data-role="page" id="detail" class="jqm-demos">
 
-  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
-    <a href="#home" data-icon="back" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back ui-icon-shadow"></span></span></a>
+  <div data-role="header" class="ui-icon-nodisc jqm-header ui-header ui-bar-b" role="banner">
+    <a href="#home" data-iconshadow="false" data-icon="back" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home" title="Home" data-theme="b">Back</a>
     <h1></h1>
-    <a href="#directions" data-icon="info" data-iconpos="notext" data-transition="slide" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Map" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Map</span><span class="ui-icon ui-icon-info ui-icon-shadow"></span></span></a>
+    <a href="#directions" data-iconshadow="false" data-icon="info" data-iconpos="notext" data-transition="slide" class="ui-btn-right jqm-home" title="Map" data-theme="b">Map</a>
   </div><!-- /header -->
 
   <div data-role="content">
@@ -167,7 +167,7 @@
 
     <div>
       <p>
-        <!--<a href="#" style="float: right;">(change)</a>-->
+        <a href="#appointment-edit" class="ui-icon-nodisc" data-role="button" data-iconshadow="false" data-icon="edit" data-iconpos="notext" data-transition="slideup" data-theme="b" style="float: right;">Change</a>
         <strong>Appointment:</strong><br/>
         <span id="appointment-when"></span><br/>
       </p>
@@ -181,7 +181,6 @@
         <a href="#directions" data-role="button" data-icon="info" data-transition="slide">View Map</a>
       </p>
 
-      <p>Queue #: 2 / ETA: 13:30</p>
       <p>Short url: <span id="appointment-shorturl"></span></p>
     </div>
 
@@ -189,12 +188,54 @@
 
 </div><!-- /page -->
 
+<div data-role="page" id="appointment-edit" class="jqm-demos">
+
+  <div data-role="header" class="jqm-header ui-header ui-bar-b ui-icon-nodisc" role="banner">
+    <h1>Edit</h1>
+    <a href="#detail" data-icon="delete" data-iconshadow="false" data-iconpos="notext" data-direction="reverse" data-transition="slideup" class="ui-btn-right jqm-home" title="Close" data-theme="b">Close</a>
+  </div>
+  <div data-role="content">
+    <form class="ui-bar-c ui-corner-all ui-shadow" style="padding: 0px 1em;">
+
+      <div data-role="fieldcontain">
+        <fieldset data-role="controlgroup">
+          <legend>When:</legend>
+          <input id="edit_appointment_starts_at" name="appointment[starts_at][date]" type="date" value="" />
+          <input id="edit_appointment_starts_at_time" type="time" name="appointment[starts_at][time]" value="" />
+        </fieldset>
+      </div>
+
+      <div data-role="fieldcontain">
+        <label for="edit_appointment_location">Where:</label>
+        <textarea cols="40" rows="8" name="appointment[location]" id="edit_appointment_location" placeholder="1012 N. Ashland Ave. Apt 3A Chicago IL, 60622" required="required"></textarea>
+      </div>
+
+      <div data-role="fieldcontain">
+        <label class="control-label" for="edit_appointment_status">Status:</label>
+        <select id="edit_appointment_status" name="appointment[status]">
+          <option value="confirmed">confirmed</option>
+          <option value="next">next</option>
+          <option value="en route">en route</option>
+          <option value="arrived">arrived</option>
+          <option value="finished">finished</option>
+          <option value="canceled">canceled</option>
+        </select>
+      </div>
+
+    </form>
+
+    <a href="#" class="appointment-submit" data-role="button" data-theme="b">Save</a>
+
+  </div>
+
+</div><!-- /page -->
+
 <div data-role="page" id="directions" class="jqm-demos">
 
-  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
-    <a href="#detail" data-icon="back" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back ui-icon-shadow"></span></span></a>
+  <div data-role="header" class="ui-icon-nodisc jqm-header ui-header ui-bar-b" role="banner">
+    <a href="#detail" data-icon="back" data-iconshadow="false" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home" title="Home" data-theme="b">Back</a>
     <h1>Map &amp; Directions</h1>
-    <a href="#" id="directions-recenter" data-icon="refresh" data-iconpos="notext" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">ReCenter</span><span class="ui-icon ui-icon-refresh ui-icon-shadow"></span></span></a>
+    <a href="#" id="directions-recenter" data-icon="refresh" data-iconshadow="false" data-iconpos="notext" class="ui-btn-right jqm-home" title="Home" data-theme="b">ReCenter</a>
   </div>
   <div data-role="content">
     <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
@@ -209,7 +250,7 @@
       </p>
       <!--<a id="submit" href="#" data-role="button" data-icon="search">Get Directions</a>-->
     </div>
-    <div id="results" class="ui-listview ui-listview-inset ui-shadow" style="display:none;">
+    <div id="results" class="ui-listview ui-listview-inset" style="display:none;">
       <div class="ui-li ui-li-divider ui-btn ui-bar-b">Driving Directions</div>
       <div id="directions_list"></div>
       <!--<div class="ui-li ui-li-divider ui-btn ui-bar-b"></div>-->

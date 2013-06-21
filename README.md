@@ -30,6 +30,7 @@ Todos
     - ~~I'm Finished~~ 2013-06-18
   - ~~functional shortcode urls~~ 2013-06-19
   - ~~allow providers to add appointment~~ 2013-06-20
+  - ~~change appointment info~~ 2013-06-21
   - provider location tracking
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
@@ -41,20 +42,19 @@ Todos
 - appointment ETA -- https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
 - provider/appointment queue status
 - twilio integration
-- auto "next"
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
 
 
 Down the Road
 =============
 - Providers
-  - edit/change appointment
   - appointment tags
   - metadata fields (ability for companies/providers to add custom fields to appointments)
   - better offline handling
   - listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
 - activity log
 - full CRM functionality
+- auto "next"
 
 
 =========

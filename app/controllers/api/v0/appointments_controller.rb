@@ -53,12 +53,18 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
   def update
     @appointment = current_provider.appointments.find(params[:id])
 
+    params[:appointment][:starts_at] = "#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}" if params[:appointment][:starts_at]
+
     # do what you need to do...
     if (params[:appointment][:status])
       # save the proper status timestamps -- dont need requested, canceled
-      if !['requested', 'canceled'].includes?(params[:appointment][:status]) && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
+      if !['requested', 'canceled'].include?(params[:appointment][:status]) && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
         params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
       end
+
+      params[:appointment][:en_route_at] = nil if !['finished', 'arrived', 'en route', 'canceled'].include? params[:appointment][:status]
+      params[:appointment][:arrived_at] = nil if !['finished', 'arrived', 'canceled'].include? params[:appointment][:status]
+      params[:appointment][:finished_at] = nil if (params[:appointment][:status] != 'finished')
     end
 
     if @appointment.update_attributes(params[:appointment])
