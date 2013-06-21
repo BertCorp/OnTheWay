@@ -1,12 +1,18 @@
 //////////////////////// Storage of local variables ///////////////////////////
-var DEVELOPMENT = true;
-var PROTOCOL = 'http://'; // DEVELOPMENT
-var DOMAIN = 'localhost:3000'; // DEVELOPMENT
-//var DOMAIN = 'www.onthewayhq.com'; // PRODUCTION
-//var PROTOCAL = 'https://'; // PRODUCTION (YET TO BE IMPLEMENTED)
-var API_PATH = '/api/v0';
-var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
-    var currentLocation = {},
+        var DEVELOPMENT = true,
+               PROTOCOL = 'http://', // DEVELOPMENT
+                 DOMAIN = 'localhost:3000', // DEVELOPMENT
+               //DOMAIN = 'www.onthewayhq.com', // PRODUCTION
+             //PROTOCAL = 'https://', // PRODUCTION (YET TO BE IMPLEMENTED)
+               API_PATH = '/api/v0',
+             mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 },
+               tracking = {
+                            'tracker_id'      : false,
+                            'start'           : {},
+                            'current'         : {},
+                            'timestamp'       : false,
+                            'appointment_id'  : false
+                          },
             credentials = {},
            appointments = false,
        appointments_key = {},
@@ -65,13 +71,64 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     }, 2000);
   }
 
-  function startTracking() {
+  function startTracking(appointment_id) {
+    if (!navigator.geolocation) {
+      alert("Unable to properly track your position.");
+      return false;
+    }
+    console.log('startTracking -- ' + appointment_id);
     $('#tracking-bar p').html("Currently tracking your location...");
     $('#tracking-bar').slideDown(200);
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').animate({ top: '18px' }, 200);
+    tracking['appointment_id'] = appointment_id;
+    // get current position
+    navigator.geolocation.getCurrentPosition(function(position) {
+      //coords: { accuracy: 37, latitude: 41.9072343, longitude: -87.67032619999999 }, timestamp: 1371849376725
+      tracking['start'] = position.coords;
+      tracking['current'] = position.coords;
+      tracking['timestamp'] = position.timestamp;
+      updateTracking(appointment_id);
+    });
   } // startTracking
 
+  function updateTracking(appointment_id) {
+    if (!tracking['timestamp']) tracking = getStorage('tracking');
+    if (DEVELOPMENT) console.log('updateTracking');
+    if (DEVELOPMENT) console.log(tracking);
+
+    $('#tracking-bar p').html("Currently tracking your location...");
+    $('#tracking-bar').show();
+    $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').css({ top: '18px' });
+
+    tracking['tracker_id'] = navigator.geolocation.watchPosition(function(position) {
+      if (DEVELOPMENT) console.log("updateTracking -- watchPosition");
+      tracking['current'] = position.coords;
+      tracking['timestamp'] = position.timestamp;
+      setStorage('tracking', tracking); // store locally
+      if (DEVELOPMENT) console.log(tracking);
+      // ajax to server
+        // update apartment ETA based on returned value.
+    }, function() {
+      //console.log('watchPosition -- error!');
+    }, {
+      enableHighAccuracy: true,
+      //timeout: 60000,
+      maximumAge: 0
+    });
+    setStorage('tracking', tracking); // store locally
+  } // updateTracking
+
   function stopTracking() {
+    // stop watching provider's position
+    if (navigator.geolocation && tracking && tracking['tracker_id'])
+      navigator.geolocation.clearWatch(tracking['tracker_id']);
+    // reset tracker variable.
+    tracking['tracker_id'] = false;
+    tracking['start'] = {};
+    tracking['current'] = {};
+    tracking['timestamp'] = false;
+    tracking['appointment_id'] = false;
+
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').animate({ top: '0px' }, 600);
     $('#tracking-bar').slideUp(600, function() {
       $('#tracking-bar p').html('');
@@ -157,7 +214,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
     $('#progress-btn-container').show();
     if (appointment.status == 'requested') {
       $('#progress-btn-container a').attr('data-status', 'confirmed').find('span span').html('Mark as Confirmed');
-    } else if ((appointment.status == 'confirmed') && ((new Date(appointment.starts_at).getTime() - $.now()) < 1000*60*60*4)) {
+    } else if ((!appointment.en_route_at) && ((new Date(appointment.starts_at).getTime() - $.now()) < 1000*60*60*4)) {
       $('#progress-btn-container a').attr('data-status', 'en route').find('span span').html('On My Way');
     } else if ($.inArray(appointment.status, ['en route', 'late']) >= 0) {
       $('#progress-btn-container a').attr('data-status', 'arrived').find('span span').html("I've Arrived");
@@ -210,6 +267,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
       var appointment = $('#appointment-tmpl').html();
       var current_date = false;
       var current_count = 0;
+      var is_tracking = false;
       for (x in appointments) {
         if (!current_date || (current_date != appointments[x].starts_at.substr(0,10))) {
           // update last date divider's appointment count
@@ -242,9 +300,13 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         appointment_item = appointment_item.replace(/{{label-class}}/g, getAppointmentLabelClass(appointments[x].status));
         $('ul#appointments-container').append(appointment_item);
         // start tracking if we need to for any app.
-        if ((appointments[x].status == 'en route') || (appointments[x].status == 'arrived')) startTracking();
+        if (appointments[x].status == 'en route') {
+          is_tracking = true;
+          if (!tracking['timestamp']) updateTracking(appointments[x].id);
+        }
       }
       $('#date-' + current_date + ' span.ui-li-count').html(current_count);
+      if (!is_tracking) stopTracking();
     }
     $('ul#appointments-container').listview('refresh');
   } // renderAppointments
@@ -390,7 +452,7 @@ var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
         // upon success,
         if (DEVELOPMENT) console.log(result);
         appointments[appointments_key[current_appointment_id]] = result;
-        if (result.status == 'en route') startTracking();
+        if (result.status == 'en route') startTracking(current_appointment_id);
         if (result.status == 'finished') stopTracking();
         setStorage('appointments', appointments);
         renderAppointment(current_appointment_id);
