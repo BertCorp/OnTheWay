@@ -32,7 +32,10 @@ Todos
   - ~~allow providers to add appointment~~ 2013-06-20
   - ~~change appointment info~~ 2013-06-20
   - ~~provider location tracking~~ 2013-06-21
-  - fix directions to work with tracking.
+  - ~~fix directions to work with tracking.~~ 2013-06-22
+  - ~~clear add appointment fields on save.~~ 2013-06-22
+  - ~~stop tracking on logout.~~ 2013-06-22
+  - ~~double alert empty field after logout.~~ 2013-06-22
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19

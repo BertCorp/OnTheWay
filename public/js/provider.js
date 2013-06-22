@@ -1,9 +1,9 @@
 //////////////////////// Storage of local variables ///////////////////////////
-        var DEVELOPMENT = false,
+        var DEVELOPMENT = true,
                PROTOCOL = 'http://', // DEVELOPMENT
-                 //DOMAIN = 'localhost:3000', // DEVELOPMENT
+                 DOMAIN = 'localhost:3000', // DEVELOPMENT
                //PROTOCAL = 'https://', // PRODUCTION (YET TO BE IMPLEMENTED)
-              DOMAIN = 'www.onthewayhq.com', // PRODUCTION
+                 //DOMAIN = 'www.onthewayhq.com', // PRODUCTION
                API_PATH = '/api/v0',
                     map = false,
          is_viewing_map = false,
@@ -451,50 +451,49 @@
     if (credentials = getStorage('credentials')) {
       $.mobile.changePage("#home");
     }
-
-    $(document).on('click', '#submit', function(e) { // catch the form's submit event
-      e.preventDefault();
-      if (($('#email').val().length > 0) && ($('#password').val().length > 0)) {
-        // Send data to server through ajax call
-        // action is functionality we want to call and outputJSON is our data
-        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/login.json',
-          //data: { "provider" : { "email" : $('#email').val(), "password" : $('#password').val() } },
-          data: $('form#login-form').serialize(),
-          type: 'post',
-          async: true,
-          beforeSend: function() {
-            // This callback function will trigger before data is sent
-            $.mobile.showPageLoadingMsg(true); // This will show ajax spinner
-          },
-          complete: function() {
-            // This callback function will trigger on data sent/received complete
-            $.mobile.hidePageLoadingMsg(); // This will hide ajax spinner
-          },
-          success: function (result) {
-            credentials = result;
-            setStorage('credentials', credentials);
-            $.mobile.changePage("#home");
-          },
-          error: function (request) {
-            //console.log(request);
-            //console.log(request.responseText);
-            handleErrors(request);
-          }
-        });
-      } else {
-        alert('Please fill in all fields.');
-      }
-      return false; // cancel original event to prevent form submitting
-    });
   });
 
-  $(document).on('pageinit', '#settings-options', function() {
-    $('a#logout').click(function(e) {
-      credentials = {};
-      removeStorage('credentials');
-      $.mobile.changePage("#login");
-      return false;
-    });
+  $(document).on('click', '#submit', function(e) { // catch the form's submit event
+    e.preventDefault();
+    if (($('#email').val().length > 0) && ($('#password').val().length > 0)) {
+      // Send data to server through ajax call
+      // action is functionality we want to call and outputJSON is our data
+      $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/login.json',
+        //data: { "provider" : { "email" : $('#email').val(), "password" : $('#password').val() } },
+        data: $('form#login-form').serialize(),
+        type: 'post',
+        async: true,
+        beforeSend: function() {
+          // This callback function will trigger before data is sent
+          $.mobile.showPageLoadingMsg(true); // This will show ajax spinner
+        },
+        complete: function() {
+          // This callback function will trigger on data sent/received complete
+          $.mobile.hidePageLoadingMsg(); // This will hide ajax spinner
+        },
+        success: function (result) {
+          credentials = result;
+          setStorage('credentials', credentials);
+          $.mobile.changePage("#home");
+        },
+        error: function (request) {
+          //console.log(request);
+          //console.log(request.responseText);
+          handleErrors(request);
+        }
+      });
+    } else {
+      alert('Please fill in all fields.');
+    }
+    return false; // cancel original event to prevent form submitting
+  });
+
+  $(document).on('click', 'a#logout', function(e) {
+    credentials = {};
+    removeStorage('credentials');
+    stopTracking();
+    $.mobile.changePage("#login");
+    return false;
   });
 
   $(document).on('pagebeforeshow', '#home', function() {
@@ -592,7 +591,7 @@
     if (e.which == 13) prepDirections();
   });
 
-  $(document).on('pageinit', '#dialog-cancel-confirm', function() {
+  //$(document).on('pageinit', '#dialog-cancel-confirm', function() {
     $(document).on('click', '#cancel-appointment', function() {
       $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
         data: { 'auth_token' : credentials.auth_token, 'appointment' : { 'status' : 'canceled' } },
@@ -619,48 +618,48 @@
         }
       });
     });
-  });
+  //});
 
-  $(document).on('pageinit', '#appointment-add', function() {
+  $(document).on('pagebeforeshow', '#appointment-add', function() {
     current_appointment_id = false;
+    $('#appointment-add form').find('input, select, textarea').val('');
     var today = new Date();
     var m = today.getMonth() + 1;
     $('#appointment_starts_at').val(today.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + today.getDate());
-
-    $(document).on('click', '#appointment-add .appointment-submit', function(e) {
-      // do validation on the data
-      e.preventDefault();
-      if (($('#appointment_customer_name').val().length > 0) && ($('#appointment_customer_phone').val().length > 0) && ($('#appointment_starts_at').val().length > 0) && ($('#appointment_location').val().length > 0)) {
-        var data = $('#appointment-add form').serialize();
-        data['auth_token'] = credentials.auth_token;
-        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments.json',
-          data: data,
-          type: 'post',
-          async: true,
-          beforeSend: function() {
-            setNotification('Saving new appointment...');
-          },
-          complete: function() {
-            clearNotification();
-          },
-          success: function(result) {
-            // upon success,
-            last_fetched_at = false;
-            // go back to #home, which should update and show new appointment
-            $.mobile.changePage("#home");
-          },
-          error: function(request) {
-            handleErrors(request);
-          }
-        });
-      } else {
-        alert('Please fill in all necessary fields.');
-      }
-    });
-
   });
 
-  $(document).on('pageinit', '#appointment-edit', function() {
+  $(document).on('click', '#appointment-add .appointment-submit', function(e) {
+    // do validation on the data
+    e.preventDefault();
+    if (($('#appointment_customer_name').val().length > 0) && ($('#appointment_customer_phone').val().length > 0) && ($('#appointment_starts_at').val().length > 0) && ($('#appointment_location').val().length > 0)) {
+      var data = $('#appointment-add form').serialize();
+      data['auth_token'] = credentials.auth_token;
+      $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments.json',
+        data: data,
+        type: 'post',
+        async: true,
+        beforeSend: function() {
+          setNotification('Saving new appointment...');
+        },
+        complete: function() {
+          clearNotification();
+        },
+        success: function(result) {
+          // upon success,
+          last_fetched_at = false;
+          // go back to #home, which should update and show new appointment
+          $.mobile.changePage("#home");
+        },
+        error: function(request) {
+          handleErrors(request);
+        }
+      });
+    } else {
+      alert('Please fill in all necessary fields.');
+    }
+  });
+
+  //$(document).on('pageinit', '#appointment-edit', function() {
     $(document).on('click', '#appointment-edit .appointment-submit', function(e) {
       // do validation on the data
       e.preventDefault();
@@ -694,7 +693,7 @@
       }
     });
 
-  });
+  //});
 
   //$(document).on("pagehide", '#gps_map', function() {
   //  demo.add('directions', function() { $('#map_canvas_1').gmap('clearWatch'); }).load('directions');
