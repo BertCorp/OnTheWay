@@ -6,6 +6,7 @@
              //PROTOCAL = 'https://', // PRODUCTION (YET TO BE IMPLEMENTED)
                API_PATH = '/api/v0',
                     map = false,
+         is_viewing_map = false,
                tracking = {
                             'tracker_id'      : false,
                             'start'           : {},
@@ -103,6 +104,9 @@
 
     tracking['tracker_id'] = navigator.geolocation.watchPosition(function(position) {
       if (DEVELOPMENT) console.log("updateTracking -- watchPosition");
+      // update map if we are viewing it.
+      updateCurrentLocationMarker();
+
       tracking['current'] = position.coords;
       tracking['timestamp'] = position.timestamp;
       setStorage('tracking', tracking); // store locally
@@ -113,7 +117,7 @@
       //console.log('watchPosition -- error!');
     }, {
       enableHighAccuracy: true,
-      //timeout: 60000,
+      timeout: 6000,
       maximumAge: 0
     });
     setStorage('tracking', tracking); // store locally
@@ -346,13 +350,21 @@
     var from = $('#directions-from').val();
     // if we dont have a to location, use the appointment's specificied location, stored in the input field's data-location field
     if ($('#directions-to').val() == '') $('#directions-to').val($('#directions-to').attr('data-location'));
-    console.log('prepDirections');
     //$('#directions-list').html('');
     if (from == 'Current Location') {
       setNotification('Finding your current location...');
       $('a#directions-recenter').hide();
       $('#directions-to, #directions-from').attr('disabled', 'disabled');
+      // stop watching user's location for a sec.
+      if (tracking['tracker_id']) navigator.geolocation.clearWatch(tracking['tracker_id']);
+      // to let us go grab provider's current location.
       navigator.geolocation.getCurrentPosition(function(position) {
+        if (tracking['tracker_id']) {
+          tracking['current'] = position.coords;
+          tracking['timestamp'] = position.timestamp;
+          setStorage('tracking', tracking); // store locally
+          updateTracking();
+        }
         var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
         map.get('map').panTo(latlng);
         map.search({ 'location': latlng }, function(results, status) {
@@ -381,13 +393,23 @@
   } // prepDirections
 
   function getDirections(from) {
-    console.log('getDirections');
     map.displayDirections({ 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
-      console.log(response);
-      console.log(status);
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
     });
   } // getDirections
+
+  function updateCurrentLocationMarker() {
+    console.log(is_viewing_map);
+    console.log(tracking['current']);
+    if (is_viewing_map) {
+      var latlng = new google.maps.LatLng(tracking['current'].latitude, tracking['current'].longitude);
+      if ( !map.get('markers').provider ) {
+        map.addMarker({ 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
+      } else {
+        map.get('markers').provider.setPosition(latlng);
+      }
+    }
+  } // updateCurrentLocationMarker
 
 ////////////////////////////// Page Functions /////////////////////////////////
 
@@ -555,8 +577,14 @@
   $(document).on('pagebeforeshow', '#directions', function() {
     // On each time we open the map, we want the provider's current location.
     // The to field should already be set to the address
+    is_viewing_map = true;
     $('#directions-from').val('Current Location');
+    $("#directions-map").gmap('clear', 'services');
     prepDirections();
+  });
+
+  $(document).on('pagebeforehide', '#directions', function() {
+    is_viewing_map = false;
   });
 
   $(document).on('click', 'a#directions-recenter', prepDirections);
