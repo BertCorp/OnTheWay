@@ -3,8 +3,8 @@ class AppointmentsController < ApplicationController
   # GET /appointments
   def index
     Rails.logger.info Date.today.to_time
-    @upcoming_appointments = current_company.appointments.where(['("appointments"."starts_at" >= ?) AND (("appointments"."status" != "canceled") AND ("appointments"."status" != "finished"))', DateTime.now.beginning_of_day]).order('"appointments"."starts_at" ASC')
-    @past_appointments = current_company.appointments.where(['("appointments"."starts_at" < ?) OR (("appointments"."status" = "canceled") OR ("appointments"."status" = "finished"))', DateTime.now.beginning_of_day]).order('"appointments"."starts_at" DESC')
+    @upcoming_appointments = current_company.appointments.where(["(appointments.starts_at >= ?) AND ((appointments.status != 'canceled') AND (appointments.status != 'finished'))", DateTime.now.beginning_of_day]).order("appointments.starts_at ASC")
+    @past_appointments = current_company.appointments.where(["(appointments.starts_at < ?) OR ((appointments.status = 'canceled') OR (appointments.status = 'finished'))", DateTime.now.beginning_of_day]).order("appointments.starts_at DESC")
   end
 
   # GET /appointments/1
