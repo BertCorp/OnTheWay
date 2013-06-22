@@ -1,5 +1,5 @@
 class Api::V0::AppointmentsController < Api::V0::BaseApiController
-  before_filter :authenticate_provider!, :except => [:feedback]
+  before_filter :authenticate_provider!, :except => [:feedback, :tracking_show]
 
   # GET /appointments.json
   def index
@@ -84,6 +84,27 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
       render json: @appointment
     else
       render json: { message: "There was an error submitting your appointment feedback.", errors: @appointment.errors }, status: :unprocessable_entity
+    end
+  end
+
+  # GET /appointments/1/tracking.json
+  def tracking_show
+    @appointment = Appointment.find(params[:id])
+    if @tracking = $redis.get("provider-#{@appointment.provider.id}")
+      render json: ActiveSupport::JSON.decode(@tracking)
+    else
+      render json: { message: "There was an error getting provider's current location." }, status: :unprocessable_entity
+    end
+  end
+
+  # PUT /appointments/1/tracking.json
+  def tracking_update
+    @appointment = current_provider.appointments.find(params[:id])
+    # figure out ETA based on new info?
+    if @tracking = $redis.set("provider-#{current_provider.id}", params[:tracking].to_json)
+      render json: {}
+    else
+      render json: { message: "There was an error updating your current location." }, status: :unprocessable_entity
     end
   end
 

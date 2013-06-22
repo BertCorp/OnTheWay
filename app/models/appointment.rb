@@ -35,9 +35,9 @@ class Appointment < ActiveRecord::Base
   validates_presence_of :provider
   validates_presence_of :customer
 
-  attr_accessible :company_id, :customer_id, :provider_id, :starts_at, :location, :rating, :feedback
-  attr_accessible :provider_location, :status
-  attr_accessible :confirmed_at, :next_at, :en_route_at, :arrived_at, :finished_at
+  attr_accessible :company_id, :customer_id, :provider_id, :starts_at, :location
+  attr_accessible :status, :notes, :rating, :feedback
+  attr_accessible :confirmed_at, :en_route_at, :arrived_at, :finished_at
 
   def queue_position
     queue = provider.queue

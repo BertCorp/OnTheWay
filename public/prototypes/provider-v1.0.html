@@ -115,6 +115,11 @@
       </div>
 
       <div data-role="fieldcontain">
+        <label for="appointment_notes">Notes:</label>
+        <textarea cols="40" rows="8" name="appointment[notes]" id="appointment_notes"></textarea>
+      </div>
+
+      <div data-role="fieldcontain">
         <label class="control-label" for="appointment_status">Status:</label>
         <select id="appointment_status" name="appointment[status]">
           <option value="confirmed">confirmed</option>
@@ -184,6 +189,11 @@
         <a href="#directions" data-role="button" data-icon="info" data-transition="slide">View Map</a>
       </p>
 
+      <p>
+        Notes:<br/>
+        <span id="appointment-notes"></span>
+      </p>
+
       <p>Short url: <span id="appointment-shorturl"></span></p>
     </div>
 
@@ -211,6 +221,11 @@
       <div data-role="fieldcontain">
         <label for="edit_appointment_location">Where:</label>
         <textarea cols="40" rows="8" name="appointment[location]" id="edit_appointment_location" placeholder="1012 N. Ashland Ave. Apt 3A Chicago IL, 60622" required="required"></textarea>
+      </div>
+
+      <div data-role="fieldcontain">
+        <label for="edit_appointment_notes">Notes:</label>
+        <textarea cols="40" rows="8" name="appointment[notes]" id="edit_appointment_notes"></textarea>
       </div>
 
       <div data-role="fieldcontain">

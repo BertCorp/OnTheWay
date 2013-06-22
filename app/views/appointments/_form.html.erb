@@ -52,6 +52,13 @@
   </div>
 
   <div class="control-group">
+    <label class="control-label" for="appointment_notes">Notes</label>
+    <div class="controls">
+      <%= f.text_area :notes, :class => 'input-xlarge', :rows => "3" %>
+    </div>
+  </div>
+
+  <div class="control-group">
     <label class="control-label" for="appointment_status">Status</label>
     <div class="controls">
       <%= f.select :status, @appointment.statuses, :include_blank => true %>
@@ -63,14 +70,6 @@
     <label class="string optional control-label" for="appointment_confirmed_at">Confirmed At</label>
     <div class="controls">
       <input id="appointment_confirmed_at" name="appointment[confirmed_at]" class="input-large" type="text" value="<%= @appointment.confirmed_at %>" />
-    </div>
-  </div>
-  <% end %>
-  <% if @appointment.next_at %>
-  <div class="control-group string optional appointment_next_at">
-    <label class="string optional control-label" for="appointment_next_at">Next At</label>
-    <div class="controls">
-      <input id="appointment_next_at" name="appointment[next_at]" class="input-large" type="text" value="<%= @appointment.next_at %>" />
     </div>
   </div>
   <% end %>

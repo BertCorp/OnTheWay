@@ -87,11 +87,12 @@
       tracking['start'] = position.coords;
       tracking['current'] = position.coords;
       tracking['timestamp'] = position.timestamp;
-      updateTracking(appointment_id);
+      updateTracking();
+      track();
     });
   } // startTracking
 
-  function updateTracking(appointment_id) {
+  function track() {
     if (!tracking['timestamp']) tracking = getStorage('tracking');
     if (DEVELOPMENT) console.log('updateTracking');
     if (DEVELOPMENT) console.log(tracking);
@@ -106,8 +107,8 @@
       tracking['timestamp'] = position.timestamp;
       setStorage('tracking', tracking); // store locally
       if (DEVELOPMENT) console.log(tracking);
-      // ajax to server
-        // update apartment ETA based on returned value.
+      // upload tracker to server
+      updateTracking();
     }, function() {
       //console.log('watchPosition -- error!');
     }, {
@@ -116,6 +117,25 @@
       maximumAge: 0
     });
     setStorage('tracking', tracking); // store locally
+  } // track
+
+  function updateTracking() {
+    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + tracking['appointment_id'] + '/tracking.json',
+      data: { 'auth_token' : credentials.auth_token, 'tracking' : tracking },
+      type: 'put',
+      async: true,
+      beforeSend: function() {},
+      complete: function() {},
+      success: function(result) {
+        // upon success,
+        //if (DEVELOPMENT) console.log(result);
+        // update appointment ETA?
+      },
+      error: function(request) {
+        setNotification('There was an error updating your location...');
+        setTimeout(clearNotification, 3000);
+      }
+    });
   } // updateTracking
 
   function stopTracking() {
@@ -246,6 +266,7 @@
     $('#detail #appointment-status-times').html(status_time);
 
     $('#detail #appointment-location').html(appointment.location);
+    $('#detail #appointment-notes').html(appointment.notes.replace(/\n/g, '<br />'));
     $('#detail #appointment-shorturl').html('<a href="' + appointment.shorturl + '">' + appointment.shorturl + '</a>');
     // update Directions page
     $('#directions #to').val(appointment.location.replace(/\r\n/g, ' '));
@@ -254,6 +275,8 @@
     $('#edit_appointment_starts_at_time').val(appointment.starts_at.substr(11, 5));
     $('#edit_appointment_location').val(appointment.location);
     $('#edit_appointment_status').val(appointment.status);
+    $('#edit_appointment_notes').html(appointment.notes);
+
   } // renderAppointment
 
   function renderAppointments() {
@@ -302,7 +325,10 @@
         // start tracking if we need to for any app.
         if (appointments[x].status == 'en route') {
           is_tracking = true;
-          if (!tracking['timestamp']) updateTracking(appointments[x].id);
+          if (!tracking['timestamp']) {
+            tracking['appointment_id'] = appointments[x].id;
+            track(appointments[x].id);
+          }
         }
       }
       $('#date-' + current_date + ' span.ui-li-count').html(current_count);
