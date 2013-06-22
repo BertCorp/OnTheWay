@@ -5,7 +5,7 @@
                //DOMAIN = 'www.onthewayhq.com', // PRODUCTION
              //PROTOCAL = 'https://', // PRODUCTION (YET TO BE IMPLEMENTED)
                API_PATH = '/api/v0',
-             mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 },
+                    map = false,
                tracking = {
                             'tracker_id'      : false,
                             'start'           : {},
@@ -76,7 +76,7 @@
       alert("Unable to properly track your position.");
       return false;
     }
-    console.log('startTracking -- ' + appointment_id);
+    if (DEVELOPMENT) console.log('startTracking -- ' + appointment_id);
     $('#tracking-bar p').html("Currently tracking your location...");
     $('#tracking-bar').slideDown(200);
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').animate({ top: '18px' }, 200);
@@ -266,10 +266,11 @@
     $('#detail #appointment-status-times').html(status_time);
 
     $('#detail #appointment-location').html(appointment.location);
-    $('#detail #appointment-notes').html(appointment.notes.replace(/\n/g, '<br />'));
+    if (appointment.notes) $('#detail #appointment-notes').html(appointment.notes.replace(/\n/g, '<br />'));
     $('#detail #appointment-shorturl').html('<a href="' + appointment.shorturl + '">' + appointment.shorturl + '</a>');
     // update Directions page
-    $('#directions #to').val(appointment.location.replace(/\r\n/g, ' '));
+    $('#directions-to').val(appointment.location.replace(/\r\n/g, ' '));
+    $('#directions-to').attr('data-location', appointment.location.replace(/\r\n/g, ' '));
     // update edit appointment page
     $('#edit_appointment_starts_at').val(appointment.starts_at.substr(0, 10));
     $('#edit_appointment_starts_at_time').val(appointment.starts_at.substr(11, 5));
@@ -336,6 +337,57 @@
     }
     $('ul#appointments-container').listview('refresh');
   } // renderAppointments
+
+  function prepDirections() {
+    // set customer's (destination) location (done elsewhere in renderAppointment).
+    // get provider's location.
+    // if we are watching provider's position, use that location, otherwise, go grab it.
+    if ($('#directions-from').val() == '') $('#directions-from').val('Current Location');
+    var from = $('#directions-from').val();
+    // if we dont have a to location, use the appointment's specificied location, stored in the input field's data-location field
+    if ($('#directions-to').val() == '') $('#directions-to').val($('#directions-to').attr('data-location'));
+    console.log('prepDirections');
+    //$('#directions-list').html('');
+    if (from == 'Current Location') {
+      setNotification('Finding your current location...');
+      $('a#directions-recenter').hide();
+      $('#directions-to, #directions-from').attr('disabled', 'disabled');
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+        map.get('map').panTo(latlng);
+        map.search({ 'location': latlng }, function(results, status) {
+          clearNotification();
+          $('a#directions-recenter').show();
+          $('#directions-to, #directions-from').removeAttr("disabled");
+
+          if ( status === 'OK' ) {
+            getDirections(results[0].formatted_address);
+          } else {
+            alert('There was an problem getting your current position.');
+          }
+        });
+      }, function() {
+        clearNotification();
+        $('a#directions-recenter').show();
+        $('#directions-to, #directions-from').removeAttr("disabled");
+        alert('Things were taking too long, so we gave up. Feel free to try again.');
+      }, {
+        enableHighAccuracy : true,
+        timeout : 5000
+      });
+    } else {
+      getDirections(from);
+    }
+  } // prepDirections
+
+  function getDirections(from) {
+    console.log('getDirections');
+    map.displayDirections({ 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
+      console.log(response);
+      console.log(status);
+      ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
+    });
+  } // getDirections
 
 ////////////////////////////// Page Functions /////////////////////////////////
 
@@ -479,7 +531,7 @@
         if (DEVELOPMENT) console.log(result);
         appointments[appointments_key[current_appointment_id]] = result;
         if (result.status == 'en route') startTracking(current_appointment_id);
-        if (result.status == 'finished') stopTracking();
+        if ((result.status == 'arrived') || (result.status == 'finished')) stopTracking();
         setStorage('appointments', appointments);
         renderAppointment(current_appointment_id);
         // update appointments? do results return updated appointments? or just returning #home refresh?
@@ -492,55 +544,24 @@
     });
   });
 
+  $(document).on('pageinit', '#directions', function() {
+    // on init of directions page, setup map.
+    // 'center': '57.7973333,12.0502107', 'zoom': 10,
+    $("#directions-map").gmap({ 'disableDefaultUI':true, 'callback': function() {
+      map = this;
+    }});
+  });
+
   $(document).on('pagebeforeshow', '#directions', function() {
-    var self, map_initial = {};
-    demo.add('directions', function() {
-      $("#map_canvas_1").gmap({'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI':true, 'callback': function() {
-        self = this;
+    // On each time we open the map, we want the provider's current location.
+    // The to field should already be set to the address
+    $('#directions-from').val('Current Location');
+    prepDirections();
+  });
 
-        self.getCurrentPosition( function(position, status) {
-          if ( status === 'OK' ) {
-            //console.log(position.coords);
-            var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-            self.get('map').panTo(latlng);
-            self.search({ 'location': latlng }, function(results, status) {
-              if ( status === 'OK' ) {
-                //$('#from').val(results[0].formatted_address);
-                self.displayDirections({ 'origin': results[0].formatted_address, 'destination': $('#to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions_list')}, function(response, status) {
-                  ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
-                  setTimeout(function() {
-                    if (DEVELOPMENT) console.log('ETA: ' + $('#directions_list .adp-summary').text());
-                    map_initial['center'] = self.get('map').getCenter();
-                    map_initial['zoom'] = self.get('map').getZoom();
-                  }, 100);
-                });
-              }
-            });
-          } else {
-            alert('Unable to get current position.');
-          }
-        });
-
-        self.watchPosition(function(position, status) {
-          if ( status === 'OK' ) {
-            //console.log(position.coords);
-            var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            if ( !self.get('markers').client ) {
-              self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
-            } else {
-              self.get('markers').client.setPosition(latlng);
-              //map.panTo(latlng);
-            }
-          }
-        });
-      }});
-    }).load('directions');
-
-    $(document).on('click', 'a#directions-recenter', function(e) {
-      e.preventDefault();
-      self.get('map').setCenter(map_initial['center']);
-      self.get('map').setZoom(map_initial['zoom']);
-    });
+  $(document).on('click', 'a#directions-recenter', prepDirections);
+  $(document).on('keypress', '#directions-to, #directions-from', function(e) {
+    if (e.which == 13) prepDirections();
   });
 
   $(document).on('pageinit', '#dialog-cancel-confirm', function() {

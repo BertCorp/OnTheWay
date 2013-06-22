@@ -256,20 +256,20 @@
   </div>
   <div data-role="content">
     <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
-      <div id="map_canvas_1" style="height:300px;"></div>
-      <p>
-        <label for="from">From</label>
-        <input id="from" class="ui-bar-c" type="text" value="Current Location" disabled="disabled" />
-      </p>
-      <p>
-        <label for="to">To</label>
-        <input id="to" class="ui-bar-c" type="text" value="" />
-      </p>
+      <div id="directions-map" style="height:300px;"></div>
+      <div data-role="fieldcontain">
+        <label for="directions-from"><img src="http://maps.gstatic.com/mapfiles/markers2/icon_greenA.png" style="height: 20px;"> From</label>
+        <input id="directions-from" class="ui-bar-c" type="text" value="Current Location" data-clear-btn="true" />
+      </div>
+      <div data-role="fieldcontain">
+        <label for="directions-to"><img src="http://maps.gstatic.com/mapfiles/markers2/icon_greenB.png" style="height: 20px;"> To</label>
+        <input id="directions-to" class="ui-bar-c" type="text" value="" data-clear-btn="true" />
+      </div>
       <!--<a id="submit" href="#" data-role="button" data-icon="search">Get Directions</a>-->
     </div>
     <div id="results" class="ui-listview ui-listview-inset" style="display:none;">
       <div class="ui-li ui-li-divider ui-btn ui-bar-b">Driving Directions</div>
-      <div id="directions_list"></div>
+      <div id="directions-list"></div>
       <!--<div class="ui-li ui-li-divider ui-btn ui-bar-b"></div>-->
     </div>
   </div>
