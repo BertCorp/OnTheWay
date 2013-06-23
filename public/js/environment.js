@@ -23,7 +23,7 @@ OnTheWay.config = {
     domain    : 'localhost:3000'
   },
   production : {
-    protocol  : 'https://',
+    protocol  : 'http://',
     domain    : 'www.onthewayhq.com'
   }
 };
