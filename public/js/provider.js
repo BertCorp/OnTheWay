@@ -105,10 +105,10 @@
     $('#tracking-bar').show();
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').css({ top: '18px' });
 
-    alert(tracking['tracker_id']);
+    alert("track: " + tracking['tracker_id']);
     tracking['tracker_id'] = navigator.geolocation.watchPosition(function(position) {
       if (DEVELOPMENT) console.log("tracking -- watchPosition: " + tracking['tracker_id']);
-      alert(tracking['tracker_id']);
+      alert("watchPosition: " + tracking['tracker_id']);
       tracking['current'] = position.coords;
       tracking['timestamp'] = position.timestamp;
       setStorage('tracking', tracking); // store locally
@@ -124,8 +124,9 @@
       }
       // upload tracker to server
       updateTracking();
-    }, function() {
+    }, function(error) {
       console.log('watchPosition -- error! -- ' + tracking['tracker_id']);
+      alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
     }, {
       enableHighAccuracy: true,
       timeout: 6000,
