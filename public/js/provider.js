@@ -92,7 +92,7 @@
   } // startTracking
 
   function track() {
-    if (!tracking['timestamp']) tracking = getStorage('tracking');
+    //if (!tracking['timestamp']) tracking = getStorage('tracking');
     if (DEVELOPMENT) console.log('updateTracking');
     if (DEVELOPMENT) console.log(tracking);
 
@@ -102,13 +102,12 @@
 
     tracking['tracker_id'] = navigator.geolocation.watchPosition(function(position) {
       if (DEVELOPMENT) console.log("updateTracking -- watchPosition");
-      // update map if we are viewing it.
-      updateCurrentLocationMarker();
-
       tracking['current'] = position.coords;
       tracking['timestamp'] = position.timestamp;
       setStorage('tracking', tracking); // store locally
       if (DEVELOPMENT) console.log(tracking);
+      // update map if we are viewing it.
+      updateCurrentLocationMarker();
       // upload tracker to server
       updateTracking();
     }, function() {
@@ -122,7 +121,11 @@
   } // track
 
   function updateTracking() {
-    if (tracking['appointment_id'] == 'undefined') return stopTracking();
+    if (tracking['appointment_id'] == 'undefined') {
+      alert('Bad appointment_id! Stopping tracking!');
+      alert(tracking);
+      return stopTracking();
+    }
     $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + tracking['appointment_id'] + '/tracking.json',
       data: { 'auth_token' : credentials.auth_token, 'tracking' : tracking },
       type: 'put',
@@ -360,7 +363,7 @@
           is_tracking = true;
           if (!tracking['timestamp']) {
             tracking['appointment_id'] = appointments[x].id;
-            track(appointments[x].id);
+            track();
           }
         }
       }
