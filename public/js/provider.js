@@ -93,15 +93,20 @@
 
   function track() {
     //if (!tracking['timestamp']) tracking = getStorage('tracking');
-    if (DEVELOPMENT) console.log('updateTracking');
+    if (DEVELOPMENT) console.log('tracking:' + tracking['tracker_id']);
     if (DEVELOPMENT) console.log(tracking);
+
+    if (tracking['tracker_id']) {
+      console.log('REPEAT: ' + tracking['tracker_id'] + ' -- ' + tracking['appointment_id']);
+      navigator.geolocation.clearWatch(tracking['tracker_id']);
+    }
 
     $('#tracking-bar p').html("Currently tracking your location...");
     $('#tracking-bar').show();
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').css({ top: '18px' });
 
     tracking['tracker_id'] = navigator.geolocation.watchPosition(function(position) {
-      if (DEVELOPMENT) console.log("updateTracking -- watchPosition");
+      if (DEVELOPMENT) console.log("tracking -- watchPosition: " + tracking['tracker_id']);
       tracking['current'] = position.coords;
       tracking['timestamp'] = position.timestamp;
       setStorage('tracking', tracking); // store locally
@@ -117,6 +122,7 @@
       timeout: 6000,
       maximumAge: 0
     });
+    console.log(tracking);
     setStorage('tracking', tracking); // store locally
   } // track
 
@@ -134,7 +140,6 @@
       complete: function() {},
       success: function(result) {
         // upon success,
-        //if (DEVELOPMENT) console.log(result);
         // update appointment ETA?
       },
       error: function(request) {
@@ -361,6 +366,8 @@
         // start tracking if we need to for any app.
         if (appointments[x].status == 'en route') {
           is_tracking = true;
+          console.log('render!');
+          console.log(tracking);
           if (!tracking['timestamp']) {
             tracking['appointment_id'] = appointments[x].id;
             track();
@@ -482,6 +489,7 @@
   });
 
   $(document).on('click', '#submit', function(e) { // catch the form's submit event
+    removeStorage('appointments');
     e.preventDefault();
     if (($('#email').val().length > 0) && ($('#password').val().length > 0)) {
       // Send data to server through ajax call
