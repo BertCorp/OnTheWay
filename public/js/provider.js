@@ -5,8 +5,9 @@
                  DOMAIN = OnTheWay.config[ENVIRONMENT]['domain'],
                API_PATH = '/api/v0',
          is_viewing_map = false,
+             tracker_id = false,
+             timeout_id = false,
                tracking = {
-                            'tracker_id'      : false,
                             'start'           : {},
                             'current'         : {},
                             'timestamp'       : false,
@@ -70,7 +71,21 @@
     }, 2000);
   }
 
+  function clearTracking() {
+    if (DEVELOPMENT) console.log('tracker_id: ' + tracker_id + ' // timeout_id: ' + timeout_id);
+    if (tracker_id) {
+      if (navigator.geolocation)
+        navigator.geolocation.clearWatch(tracker_id);
+      tracker_id = false;
+    }
+    if (timeout_id) {
+      clearTimeout(timeout_id);
+      timeout_id = false;
+    }
+  } // clearTracking
+
   function startTracking(appointment_id) {
+    clearTracking();
     if (!navigator.geolocation) {
       alert("Unable to properly track your position.");
       return false;
@@ -87,32 +102,22 @@
       tracking['current'] = position.coords;
       tracking['timestamp'] = position.timestamp;
       updateTracking();
-      track();
+      timeout_id = setTimeout(track, 10000);
     });
   } // startTracking
 
   function track() {
-    //if (!tracking['timestamp']) tracking = getStorage('tracking');
-    if (DEVELOPMENT) console.log('tracking:' + tracking['tracker_id']);
-    if (DEVELOPMENT) console.log(tracking);
-
-    if (tracking['tracker_id']) {
-      console.log('REPEAT: ' + tracking['tracker_id'] + ' -- ' + tracking['appointment_id']);
-      navigator.geolocation.clearWatch(tracking['tracker_id']);
-    }
-
+    clearTracking();
     $('#tracking-bar p').html("Currently tracking your location...");
     $('#tracking-bar').show();
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').css({ top: '18px' });
 
-    alert("track: " + tracking['tracker_id']);
-    tracking['tracker_id'] = navigator.geolocation.watchPosition(function(position) {
+    tracker_id = navigator.geolocation.watchPosition(function(position) {
       if (position.coords.accuracy < 100) {
-        if (DEVELOPMENT) console.log("tracking -- watchPosition: " + tracking['tracker_id']);
+        if (DEVELOPMENT) console.log("tracking -- watchPosition: " + tracker_id);
         //alert("watchPosition: " + tracking['tracker_id']);
         tracking['current'] = position.coords;
         tracking['timestamp'] = position.timestamp;
-        setStorage('tracking', tracking); // store locally
         if (DEVELOPMENT) console.log(tracking);
         // update map if we are viewing it.
         if (is_viewing_map) {
@@ -123,30 +128,30 @@
             $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
           }
         }
-        navigator.geolocation.clearWatch(tracking['tracker_id']);
-        tracking['tracker_id'] = false;
-        setTimeout('track()', 10000);
+        clearTracking();
+        timeout_id = setTimeout(track, 10000);
         // upload tracker to server
         updateTracking();
       }
     }, function(error) {
-      console.log('watchPosition -- error! -- ' + tracking['tracker_id']);
+      console.log('watchPosition -- error! -- ' + tracker_id + ' // code: ' + error.code + ' -- ' + 'message: ' + error.message);
+      clearTracking();
       alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+      timeout_id = setTimeout(track, 5000);
     }, {
       enableHighAccuracy: true,
-      timeout: 6000,
-      maximumAge: 10*1000   // every 10 seconds!
+      //timeout: 60000,
+      maximumAge: 0
     });
     console.log(tracking);
-    setStorage('tracking', tracking); // store locally
   } // track
 
   function updateTracking() {
-    if (tracking['appointment_id'] == 'undefined') {
-      alert('Bad appointment_id! Stopping tracking!');
-      alert(tracking);
+    // don't proceed if we have a bad appointment_id. something broke.
+    if (!tracking['appointment_id'] || (tracking['appointment_id'] == 'undefined')) {
       return stopTracking();
     }
+    // update server with latest tracking info.
     $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + tracking['appointment_id'] + '/tracking.json',
       data: { 'auth_token' : credentials.auth_token, 'tracking' : tracking },
       type: 'put',
@@ -165,11 +170,7 @@
   } // updateTracking
 
   function stopTracking() {
-    // stop watching provider's position
-    if (navigator.geolocation && tracking && tracking['tracker_id'])
-      navigator.geolocation.clearWatch(tracking['tracker_id']);
-    // reset tracker variable.
-    tracking['tracker_id'] = false;
+    clearTracking();
     tracking['start'] = {};
     tracking['current'] = {};
     tracking['timestamp'] = false;
@@ -332,7 +333,6 @@
     $('#edit_appointment_location').val(appointment.location);
     $('#edit_appointment_status').val(appointment.status);
     $('#edit_appointment_notes').html(appointment.notes);
-
   } // renderAppointment
 
   function renderAppointments() {
@@ -381,12 +381,9 @@
         // start tracking if we need to for any app.
         if (appointments[x].status == 'en route') {
           is_tracking = true;
-          console.log('render!');
-          console.log(tracking);
-          if (!tracking['timestamp']) {
-            tracking['appointment_id'] = appointments[x].id;
-            track();
-          }
+          clearTracking();
+          tracking['appointment_id'] = appointments[x].id;
+          track();
         }
       }
       $('#date-' + current_date + ' span.ui-li-count').html(current_count);
@@ -409,14 +406,15 @@
       $('a#directions-recenter').hide();
       $('#directions-to, #directions-from').attr('disabled', 'disabled');
       // stop watching user's location for a sec.
-      if (tracking['tracker_id']) navigator.geolocation.clearWatch(tracking['tracker_id']);
+      clearTracking();
       // to let us go grab provider's current location.
       navigator.geolocation.getCurrentPosition(function(position) {
-        if (tracking['tracker_id']) {
-          tracking['current'] = position.coords;
-          tracking['timestamp'] = position.timestamp;
-          track();
-        }
+        // update latest tracking info and save to server.
+        tracking['current'] = position.coords;
+        tracking['timestamp'] = position.timestamp;
+        updateTracking();
+        timeout_id = setTimeout(track, 10000);  // dont forgot to restart tracking.
+
         var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
         $("#directions-map").gmap('get', 'map').panTo(latlng);
         $("#directions-map").gmap('search', { 'location': latlng }, function(results, status) {
@@ -435,9 +433,11 @@
         $('a#directions-recenter').show();
         $('#directions-to, #directions-from').removeAttr("disabled");
         alert('Things were taking too long, so we gave up. Feel free to try again.');
+        track(); // restart tracking
       }, {
-        enableHighAccuracy : true,
-        timeout : 5000
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
       });
     } else {
       getDirections(from);

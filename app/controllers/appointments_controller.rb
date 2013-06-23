@@ -60,7 +60,7 @@ class AppointmentsController < ApplicationController
     params[:appointment][:starts_at] = "#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}"
 
     # save the proper status timestamps
-    if (params[:appointment][:status] != 'requested') && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
+    if (params[:appointment][:status] != 'requested') && (params[:appointment][:status] != 'canceled') && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
       params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
     end
 
