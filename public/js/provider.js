@@ -108,7 +108,7 @@
     alert("track: " + tracking['tracker_id']);
     tracking['tracker_id'] = navigator.geolocation.watchPosition(function(position) {
       if (DEVELOPMENT) console.log("tracking -- watchPosition: " + tracking['tracker_id']);
-      alert("watchPosition: " + tracking['tracker_id']);
+      //alert("watchPosition: " + tracking['tracker_id']);
       tracking['current'] = position.coords;
       tracking['timestamp'] = position.timestamp;
       setStorage('tracking', tracking); // store locally
