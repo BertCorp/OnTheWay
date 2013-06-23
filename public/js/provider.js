@@ -1,9 +1,9 @@
 //////////////////////// Storage of local variables ///////////////////////////
-        var DEVELOPMENT = false,
+        var DEVELOPMENT = true,
                PROTOCOL = 'http://', // DEVELOPMENT
-                 //DOMAIN = 'localhost:3000', // DEVELOPMENT
+                 DOMAIN = 'localhost:3000', // DEVELOPMENT
                //PROTOCAL = 'https://', // PRODUCTION (YET TO BE IMPLEMENTED)
-                 DOMAIN = 'www.onthewayhq.com', // PRODUCTION
+                 //DOMAIN = 'www.onthewayhq.com', // PRODUCTION
                API_PATH = '/api/v0',
                     map = false,
          is_viewing_map = false,
@@ -124,6 +124,7 @@
   } // track
 
   function updateTracking() {
+    if (tracking['appointment_id'] == 'undefined') return stopTracking();
     $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + tracking['appointment_id'] + '/tracking.json',
       data: { 'auth_token' : credentials.auth_token, 'tracking' : tracking },
       type: 'put',
@@ -399,8 +400,8 @@
   } // getDirections
 
   function updateCurrentLocationMarker() {
-    console.log(is_viewing_map);
-    console.log(tracking['current']);
+    if (DEVELOPMENT) console.log(is_viewing_map);
+    if (DEVELOPMENT) console.log(tracking['current']);
     if (is_viewing_map) {
       var latlng = new google.maps.LatLng(tracking['current'].latitude, tracking['current'].longitude);
       if ( !map.get('markers').provider ) {
@@ -537,6 +538,7 @@
 
   $(document).on('click', '#progress-btn-container a', function() {
     var status = $(this).attr('data-status');
+    if (status == 'arrived') stopTracking();
     $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
       data: { 'auth_token' : credentials.auth_token, 'appointment' : { 'status' : status } },
       type: 'put',
@@ -593,6 +595,7 @@
 
   //$(document).on('pageinit', '#dialog-cancel-confirm', function() {
     $(document).on('click', '#cancel-appointment', function() {
+      stopTracking();
       $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
         data: { 'auth_token' : credentials.auth_token, 'appointment' : { 'status' : 'canceled' } },
         type: 'put',
