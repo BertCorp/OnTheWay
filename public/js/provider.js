@@ -84,8 +84,12 @@
     }
   } // clearTracking
 
-  function startTracking(appointment_id) {
+  function getProviderPosition(success, error, options) {
     clearTracking();
+    return navigator.geolocation.watchPosition(success, error, options);
+  } // getProviderPosition
+
+  function startTracking(appointment_id) {
     if (!navigator.geolocation) {
       alert("Unable to properly track your position.");
       return false;
@@ -96,38 +100,25 @@
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').animate({ top: '18px' }, 200);
     tracking['appointment_id'] = appointment_id;
     // get current position
-    navigator.geolocation.getCurrentPosition(function(position) {
-      //coords: { accuracy: 37, latitude: 41.9072343, longitude: -87.67032619999999 }, timestamp: 1371849376725
-      tracking['start'] = position.coords;
-      tracking['current'] = position.coords;
-      tracking['timestamp'] = position.timestamp;
-      updateTracking();
-      timeout_id = setTimeout(track, 10000);
-    });
+    track();
   } // startTracking
 
   function track() {
-    clearTracking();
     $('#tracking-bar p').html("Currently tracking your location...");
     $('#tracking-bar').show();
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').css({ top: '18px' });
 
-    tracker_id = navigator.geolocation.watchPosition(function(position) {
+    tracker_id = getProviderPosition(function(position) {
       if (position.coords.accuracy < 100) {
         if (DEVELOPMENT) console.log("tracking -- watchPosition: " + tracker_id);
         //alert("watchPosition: " + tracking['tracker_id']);
+        if (!tracking['start'])
+          tracking['start'] = position.coords;
         tracking['current'] = position.coords;
         tracking['timestamp'] = position.timestamp;
         if (DEVELOPMENT) console.log(tracking);
         // update map if we are viewing it.
-        if (is_viewing_map) {
-          var latlng = new google.maps.LatLng(tracking['current'].latitude, tracking['current'].longitude);
-          if (p = $("#directions-map").gmap('get', 'markers').provider) {
-            p.setPosition(latlng);
-          } else {
-            $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
-          }
-        }
+        updateProviderOnMap(position.coords);
         clearTracking();
         timeout_id = setTimeout(track, 10000);
         // upload tracker to server
@@ -143,7 +134,6 @@
       //timeout: 60000,
       maximumAge: 0
     });
-    console.log(tracking);
   } // track
 
   function updateTracking() {
@@ -405,15 +395,14 @@
       setNotification('Finding your current location...');
       $('a#directions-recenter').hide();
       $('#directions-to, #directions-from').attr('disabled', 'disabled');
-      // stop watching user's location for a sec.
-      clearTracking();
-      // to let us go grab provider's current location.
-      navigator.geolocation.getCurrentPosition(function(position) {
+      getProviderPosition(function(position) {
         // update latest tracking info and save to server.
+        tracking['start'] = position.coords;
         tracking['current'] = position.coords;
         tracking['timestamp'] = position.timestamp;
-        updateTracking();
+        updateProviderOnMap(position.coords);
         timeout_id = setTimeout(track, 10000);  // dont forgot to restart tracking.
+        updateTracking();
 
         var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
         $("#directions-map").gmap('get', 'map').panTo(latlng);
@@ -449,6 +438,17 @@
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
     });
   } // getDirections
+
+  function updateProviderOnMap(coords) {
+    if (is_viewing_map) {
+      var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+      if (p = $("#directions-map").gmap('get', 'markers').provider) {
+        p.setPosition(latlng);
+      } else {
+        $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
+      }
+    }
+  } // updateProviderOnMap
 
 ////////////////////////////// Page Functions /////////////////////////////////
 
