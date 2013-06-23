@@ -127,13 +127,13 @@
         updateTracking();
       }
     }, function(error) {
-      console.log('watchPosition -- error! -- ' + tracker_id + ' // code: ' + error.code + ' -- ' + 'message: ' + error.message);
-      clearTracking();
-      alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
-      timeout_id = setTimeout(track, 5000);
+      if (DEVELOPMENT) console.log('watchPosition -- error! -- ' + tracker_id + ' // code: ' + error.code + ' -- ' + 'message: ' + error.message);
+      // if it's a timeout, we're good. anything else, we don't know how to handle yet.
+      if (error.code != 3) alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+      track(); // try again.
     }, {
       enableHighAccuracy: true,
-      //timeout: 60000,
+      timeout: 20000,
       maximumAge: 0
     });
   } // track
@@ -411,8 +411,13 @@
         }
       }, function() {
         clearNotification();
-        searchDirections(tracking['current']);
-        track(); // restart tracking
+        if (tracking['current']) {
+          searchDirections(tracking['current']);
+          track(); // restart tracking
+        } else {
+          prepDirections();
+          alert('There was an problem getting your current position. Feel free to try again.');
+        }
       }, {
         enableHighAccuracy: true,
         timeout: 15000,
@@ -440,7 +445,7 @@
   } // searchDirections
 
   function getDirections(from) {
-    if (DEVELOPMENT) console.log("Directions: " + from);
+    if (DEVELOPMENT) console.log("Directions: " + from + " -- " + $('#directions-to').val());
     $("#directions-map").gmap('displayDirections', { 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
     });
@@ -454,6 +459,7 @@
       } else {
         $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
       }
+      $('#directions-map').gmap('refresh');
     }
   } // updateProviderOnMap
 
