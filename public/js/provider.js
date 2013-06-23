@@ -105,18 +105,27 @@
     $('#tracking-bar').show();
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').css({ top: '18px' });
 
+    alert(tracking['tracker_id']);
     tracking['tracker_id'] = navigator.geolocation.watchPosition(function(position) {
       if (DEVELOPMENT) console.log("tracking -- watchPosition: " + tracking['tracker_id']);
+      alert(tracking['tracker_id']);
       tracking['current'] = position.coords;
       tracking['timestamp'] = position.timestamp;
       setStorage('tracking', tracking); // store locally
       if (DEVELOPMENT) console.log(tracking);
       // update map if we are viewing it.
-      updateCurrentLocationMarker();
+      if (is_viewing_map) {
+        var latlng = new google.maps.LatLng(tracking['current'].latitude, tracking['current'].longitude);
+        if (p = $("#directions-map").gmap('get', 'markers').provider) {
+          p.setPosition(latlng);
+        } else {
+          $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
+        }
+      }
       // upload tracker to server
       updateTracking();
     }, function() {
-      //console.log('watchPosition -- error!');
+      console.log('watchPosition -- error! -- ' + tracking['tracker_id']);
     }, {
       enableHighAccuracy: true,
       timeout: 6000,
@@ -434,17 +443,6 @@
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
     });
   } // getDirections
-
-  function updateCurrentLocationMarker() {
-    if (is_viewing_map) {
-      var latlng = new google.maps.LatLng(tracking['current'].latitude, tracking['current'].longitude);
-      if (p = $("#directions-map").gmap('get', 'markers').provider) {
-        p.setPosition(latlng);
-      } else {
-        $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
-      }
-    }
-  } // updateCurrentLocationMarker
 
 ////////////////////////////// Page Functions /////////////////////////////////
 
