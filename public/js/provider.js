@@ -120,7 +120,7 @@
     }, {
       enableHighAccuracy: true,
       timeout: 6000,
-      maximumAge: 0
+      maximumAge: 10*1000   // every 10 seconds!
     });
     console.log(tracking);
     setStorage('tracking', tracking); // store locally
