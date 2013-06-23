@@ -1,9 +1,8 @@
 //////////////////////// Storage of local variables ///////////////////////////
-        var DEVELOPMENT = true,
-               PROTOCOL = 'http://', // DEVELOPMENT
-                 DOMAIN = 'localhost:3000', // DEVELOPMENT
-               //PROTOCAL = 'https://', // PRODUCTION (YET TO BE IMPLEMENTED)
-                 //DOMAIN = 'www.onthewayhq.com', // PRODUCTION
+        var ENVIRONMENT = OnTheWay.getEnv(),
+            DEVELOPMENT = (ENVIRONMENT != 'production'),
+               PROTOCOL = OnTheWay.config[ENVIRONMENT]['protocol'],
+                 DOMAIN = OnTheWay.config[ENVIRONMENT]['domain'],
                API_PATH = '/api/v0',
                     map = false,
          is_viewing_map = false,
