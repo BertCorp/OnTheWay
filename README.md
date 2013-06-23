@@ -38,6 +38,7 @@ Todos
   - ~~double alert empty field after logout.~~ 2013-06-22
   - view provider position on current appointment map.
   - function buttons on directions page.
+  - clean up logging situation.
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19

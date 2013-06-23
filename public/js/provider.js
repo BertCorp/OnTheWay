@@ -4,7 +4,6 @@
                PROTOCOL = OnTheWay.config[ENVIRONMENT]['protocol'],
                  DOMAIN = OnTheWay.config[ENVIRONMENT]['domain'],
                API_PATH = '/api/v0',
-                    map = false,
          is_viewing_map = false,
                tracking = {
                             'tracker_id'      : false,
@@ -379,7 +378,7 @@
     var from = $('#directions-from').val();
     // if we dont have a to location, use the appointment's specificied location, stored in the input field's data-location field
     if ($('#directions-to').val() == '') $('#directions-to').val($('#directions-to').attr('data-location'));
-    //$('#directions-list').html('');
+    $('#directions-list').html('');
     if (from == 'Current Location') {
       setNotification('Finding your current location...');
       $('a#directions-recenter').hide();
@@ -394,8 +393,8 @@
           track();
         }
         var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-        map.get('map').panTo(latlng);
-        map.search({ 'location': latlng }, function(results, status) {
+        $("#directions-map").gmap('get', 'map').panTo(latlng);
+        $("#directions-map").gmap('search', { 'location': latlng }, function(results, status) {
           clearNotification();
           $('a#directions-recenter').show();
           $('#directions-to, #directions-from').removeAttr("disabled");
@@ -421,25 +420,18 @@
   } // prepDirections
 
   function getDirections(from) {
-    map.displayDirections({ 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
+    $("#directions-map").gmap('displayDirections', { 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
     });
   } // getDirections
 
   function updateCurrentLocationMarker() {
-    if (DEVELOPMENT) {
-      console.log(is_viewing_map);
-      console.log(tracking['current']);
-    } else {
-      alert("Is viewing the map: " + is_viewing_map + " for: " + current_appointment_id);
-      alert(tracking["appointment_id"] + " - " + tracking['current'].latitude + ' // ' + tracking['current'].longitude);
-    }
     if (is_viewing_map) {
       var latlng = new google.maps.LatLng(tracking['current'].latitude, tracking['current'].longitude);
-      if ( !map.get('markers').provider ) {
-        map.addMarker({ 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
+      if (p = $("#directions-map").gmap('get', 'markers').provider) {
+        p.setPosition(latlng);
       } else {
-        map.get('markers').provider.setPosition(latlng);
+        $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
       }
     }
   } // updateCurrentLocationMarker
@@ -582,7 +574,7 @@
     // on init of directions page, setup map.
     // 'center': '57.7973333,12.0502107', 'zoom': 10,
     $("#directions-map").gmap({ 'disableDefaultUI':true, 'callback': function() {
-      map = this;
+      //map = this;
     }});
   });
 
