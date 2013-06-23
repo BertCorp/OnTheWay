@@ -124,7 +124,8 @@
           }
         }
         navigator.geolocation.clearWatch(tracking['tracker_id']);
-        setTimeout('track', 10*1000);
+        tracking['tracker_id'] = false;
+        setTimeout('track()', 10000);
         // upload tracker to server
         updateTracking();
       }
