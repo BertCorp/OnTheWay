@@ -36,6 +36,8 @@ Todos
   - ~~clear add appointment fields on save.~~ 2013-06-22
   - ~~stop tracking on logout.~~ 2013-06-22
   - ~~double alert empty field after logout.~~ 2013-06-22
+  - view provider position on current appointment map.
+  - function buttons on directions page.
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19
@@ -44,10 +46,10 @@ Todos
   - auto update queue/eta
   - provider tracking
 - appointment ETA -- https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
-- ~~provider/appointment queue status~~ 2013-06-20
 - twilio integration
+  - ~~account setup and funded~~ 2013-06-22
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
-- ~~appointment notes~~ 2013-06-21
+
 
 
 Down the Road
@@ -58,6 +60,7 @@ Down the Road
   - better offline handling
   - listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
   - if provider hasn't marked job as finished, send him a friendly reminder to.
+  - edit appointment customer info
 - activity log
 - full CRM functionality
 - auto "next"
@@ -76,4 +79,6 @@ Down the Road
 - ~~[bug] fix api appointment order~~ 2013-06-18
   - ~~resolve "when" field naming conflict~~ 2013-06-18
 - ~~fix appointment date/time timezone issues~~ 2013-06-18
-
+- ~~provider/appointment queue status~~ 2013-06-20
+- ~~appointment notes~~ 2013-06-21
+- ~~environment based config for js apps~~ 2013-06-22

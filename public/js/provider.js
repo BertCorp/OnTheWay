@@ -399,8 +399,13 @@
   } // getDirections
 
   function updateCurrentLocationMarker() {
-    if (DEVELOPMENT) console.log(is_viewing_map);
-    if (DEVELOPMENT) console.log(tracking['current']);
+    if (DEVELOPMENT) {
+      console.log(is_viewing_map);
+      console.log(tracking['current']);
+    } else {
+      alert("Is viewing the map: " + is_viewing_map + " for: " + current_appointment_id);
+      alert(tracking["appointment_id"] + " - " + tracking['current'].latitude + ' // ' + tracking['current'].longitude);
+    }
     if (is_viewing_map) {
       var latlng = new google.maps.LatLng(tracking['current'].latitude, tracking['current'].longitude);
       if ( !map.get('markers').provider ) {
