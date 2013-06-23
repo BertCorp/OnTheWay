@@ -107,23 +107,27 @@
 
     alert("track: " + tracking['tracker_id']);
     tracking['tracker_id'] = navigator.geolocation.watchPosition(function(position) {
-      if (DEVELOPMENT) console.log("tracking -- watchPosition: " + tracking['tracker_id']);
-      //alert("watchPosition: " + tracking['tracker_id']);
-      tracking['current'] = position.coords;
-      tracking['timestamp'] = position.timestamp;
-      setStorage('tracking', tracking); // store locally
-      if (DEVELOPMENT) console.log(tracking);
-      // update map if we are viewing it.
-      if (is_viewing_map) {
-        var latlng = new google.maps.LatLng(tracking['current'].latitude, tracking['current'].longitude);
-        if (p = $("#directions-map").gmap('get', 'markers').provider) {
-          p.setPosition(latlng);
-        } else {
-          $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
+      if (position.coords.accuracy < 100) {
+        if (DEVELOPMENT) console.log("tracking -- watchPosition: " + tracking['tracker_id']);
+        //alert("watchPosition: " + tracking['tracker_id']);
+        tracking['current'] = position.coords;
+        tracking['timestamp'] = position.timestamp;
+        setStorage('tracking', tracking); // store locally
+        if (DEVELOPMENT) console.log(tracking);
+        // update map if we are viewing it.
+        if (is_viewing_map) {
+          var latlng = new google.maps.LatLng(tracking['current'].latitude, tracking['current'].longitude);
+          if (p = $("#directions-map").gmap('get', 'markers').provider) {
+            p.setPosition(latlng);
+          } else {
+            $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
+          }
         }
+        navigator.geolocation.clearWatch(tracking['tracker_id']);
+        setTimeout('track', 10*1000);
+        // upload tracker to server
+        updateTracking();
       }
-      // upload tracker to server
-      updateTracking();
     }, function(error) {
       console.log('watchPosition -- error! -- ' + tracking['tracker_id']);
       alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
