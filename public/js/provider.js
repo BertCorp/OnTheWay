@@ -86,7 +86,10 @@
 
   function getProviderPosition(success, error, options) {
     clearTracking();
-    return navigator.geolocation.watchPosition(success, error, options);
+    console.log("Get Provider Position!");
+    var watch_id = navigator.geolocation.watchPosition(success, error, options);
+    console.log("WatchID: " + watch_id);
+    return watch_id;
   } // getProviderPosition
 
   function startTracking(appointment_id) {
@@ -110,8 +113,7 @@
 
     tracker_id = getProviderPosition(function(position) {
       if (position.coords.accuracy < 100) {
-        if (DEVELOPMENT) console.log("tracking -- watchPosition: " + tracker_id);
-        //alert("watchPosition: " + tracking['tracker_id']);
+        if (DEVELOPMENT) console.log("track: " + tracker_id);
         if (!tracking['start'])
           tracking['start'] = position.coords;
         tracking['current'] = position.coords;
@@ -395,37 +397,25 @@
       setNotification('Finding your current location...');
       $('a#directions-recenter').hide();
       $('#directions-to, #directions-from').attr('disabled', 'disabled');
-      getProviderPosition(function(position) {
-        // update latest tracking info and save to server.
-        tracking['start'] = position.coords;
-        tracking['current'] = position.coords;
-        tracking['timestamp'] = position.timestamp;
-        updateProviderOnMap(position.coords);
-        timeout_id = setTimeout(track, 10000);  // dont forgot to restart tracking.
-        updateTracking();
+      tracker_id = getProviderPosition(function(position) {
+        if (position.coords.accuracy < 100) {
+          // update latest tracking info and save to server.
+          tracking['start'] = position.coords;
+          tracking['current'] = position.coords;
+          tracking['timestamp'] = position.timestamp;
+          updateProviderOnMap(position.coords);
+          timeout_id = setTimeout(track, 10000);  // dont forgot to restart tracking.
+          updateTracking();
 
-        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-        $("#directions-map").gmap('get', 'map').panTo(latlng);
-        $("#directions-map").gmap('search', { 'location': latlng }, function(results, status) {
-          clearNotification();
-          $('a#directions-recenter').show();
-          $('#directions-to, #directions-from').removeAttr("disabled");
-
-          if ( status === 'OK' ) {
-            getDirections(results[0].formatted_address);
-          } else {
-            alert('There was an problem getting your current position.');
-          }
-        });
+          searchDirections(position.coords);
+        }
       }, function() {
         clearNotification();
-        $('a#directions-recenter').show();
-        $('#directions-to, #directions-from').removeAttr("disabled");
-        alert('Things were taking too long, so we gave up. Feel free to try again.');
+        searchDirections(tracking['current']);
         track(); // restart tracking
       }, {
         enableHighAccuracy: true,
-        timeout: 5000,
+        timeout: 15000,
         maximumAge: 0
       });
     } else {
@@ -433,7 +423,24 @@
     }
   } // prepDirections
 
+  function searchDirections(coords) {
+    var latlng = new google.maps.LatLng(coords.latitude, coords.longitude)
+    $("#directions-map").gmap('get', 'map').panTo(latlng);
+    $("#directions-map").gmap('search', { 'location': latlng }, function(results, status) {
+      clearNotification();
+      $('a#directions-recenter').show();
+      $('#directions-to, #directions-from').removeAttr("disabled");
+
+      if ( status === 'OK' ) {
+        getDirections(results[0].formatted_address);
+      } else {
+        alert('There was an problem getting your current position.');
+      }
+    });
+  } // searchDirections
+
   function getDirections(from) {
+    if (DEVELOPMENT) console.log("Directions: " + from);
     $("#directions-map").gmap('displayDirections', { 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
     });
