@@ -222,6 +222,35 @@
     }
   } // handleErrors
 
+  function checkAppointments() {
+    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments.json',
+      data: { 'auth_token' : credentials.auth_token },
+      type: 'get',
+      async: true,
+      beforeSend: function() {
+        setNotification('Checking server for new appointments...');
+      },
+      complete: function() {
+        clearNotification();
+      },
+      success: function(result) {
+        last_fetched_at = $.now();
+        appointments = result;
+        setStorage('appointments', appointments);
+        for (x in appointments) {
+          appointments_key[appointments[x].id] = x;
+        }
+        renderAppointments();
+      },
+      error: function(request) {
+        // notify user about error checking for updates?
+        //console.log(request);
+        setNotification('There was an error retrieving updated appointments.');
+        setTimeout(clearNotification, 5000);
+      }
+    });
+  } // checkAppointments
+
   function renderAppointment(appointment_id) {
     current_appointment_id = appointment_id;
     appointment = appointments[appointments_key[appointment_id]];
@@ -362,8 +391,7 @@
         if (tracking['tracker_id']) {
           tracking['current'] = position.coords;
           tracking['timestamp'] = position.timestamp;
-          setStorage('tracking', tracking); // store locally
-          updateTracking();
+          track();
         }
         var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
         map.get('map').panTo(latlng);
@@ -507,33 +535,10 @@
     // only check for updates every 5 minutes
     if (last_fetched_at && (($.now() - last_fetched_at) < 1000*60*5)) return true;
     // then check with server to see if we have updated list and load in new list.
-    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments.json',
-      data: { 'auth_token' : credentials.auth_token },
-      type: 'get',
-      async: true,
-      beforeSend: function() {
-        setNotification('Checking server for new appointments...');
-      },
-      complete: function() {
-        clearNotification();
-      },
-      success: function(result) {
-        last_fetched_at = $.now();
-        appointments = result;
-        setStorage('appointments', appointments);
-        for (x in appointments) {
-          appointments_key[appointments[x].id] = x;
-        }
-        renderAppointments();
-      },
-      error: function(request) {
-        // notify user about error checking for updates?
-        //console.log(request);
-        setNotification('There was an error retrieving updated appointments.');
-        setTimeout(clearNotification, 5000);
-      }
-    });
+    checkAppointments();
   });
+  // clicking the logo should check for new appointments (until we have pull to refresh)
+  $(document).on('click', '#home h1.jqm-logo img', checkAppointments);
 
   $(document).on('click', '.appointments a', function(e) {
     var appointment_id = $(this).parents('.appointments').attr('id').substr('appointment-'.length);
@@ -548,10 +553,12 @@
       type: 'put',
       async: true,
       beforeSend: function() {
-        setNotification('Updating appointment status...');
+        //setNotification('Updating appointment status...');
+        $.mobile.loading('show', { textVisible : false, textonly: false });
       },
       complete: function() {
-        clearNotification();
+        //clearNotification();
+        $.mobile.loading('hide');
       },
       success: function(result) {
         // upon success,
@@ -605,10 +612,12 @@
         type: 'put',
         async: true,
         beforeSend: function() {
-          setNotification('Canceling appointment...');
+          //setNotification('Canceling appointment...');
+          $.mobile.loading('show', { textVisible : false, textonly: false });
         },
         complete: function() {
-          clearNotification();
+          //clearNotification();
+          $.mobile.loading('hide');
         },
         success: function(result) {
           // upon success,
@@ -646,10 +655,12 @@
         type: 'post',
         async: true,
         beforeSend: function() {
-          setNotification('Saving new appointment...');
+          //setNotification('Saving new appointment...');
+          $.mobile.loading('show', { textVisible : false, textonly: false });
         },
         complete: function() {
-          clearNotification();
+          //clearNotification();
+          $.mobile.loading('hide');
         },
         success: function(result) {
           // upon success,
@@ -678,10 +689,12 @@
           type: 'put',
           async: true,
           beforeSend: function() {
-            setNotification('Saving appointment...');
+            //setNotification('Saving appointment...');
+            $.mobile.loading('show', { textVisible : false, textonly: false });
           },
           complete: function() {
-            clearNotification();
+            //clearNotification();
+            $.mobile.loading('hide');
           },
           success: function(result) {
             // upon success,
