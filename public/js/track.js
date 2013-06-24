@@ -56,7 +56,7 @@ $.track = {
     }, // failure
     options : {
       enableHighAccuracy: true,
-      timeout: 20000,
+      timeout: 60000,
       maximumAge: 0
     } // options
   }, // watch

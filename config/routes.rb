@@ -32,10 +32,6 @@ OnTheWay::Application.routes.draw do
     delete "logout" => "devise/sessions#destroy", :as => "destroy_company_session"
   end
 
-  resources :providers
-  resources :customers
-  resources :appointments
-
   get "p/:id" => redirect("/prototypes/provider-v1.0.html?id=:id")
   get "a/:id" => "customers#appointment"
 
@@ -44,6 +40,10 @@ OnTheWay::Application.routes.draw do
   get "test/provider" => "pages#provider"
   get "providers/track" => "providers#get_position"
   post "providers/track" => "providers#set_position"
+
+  resources :providers
+  resources :customers
+  resources :appointments
 
   get "mobile" => redirect("/provider")
   get "provider" => redirect("/mockups/provider-v1.0.html")

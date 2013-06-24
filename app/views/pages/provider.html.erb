@@ -29,7 +29,7 @@
       console.log(position.coords);
       // lets store in redis.
       $.post('/providers/track', { position: position }, function(data) {
-        console.log("Stored: " + data);
+        console.log("Stored: " + JSON.stringify(position));
       });
 
       var latitude = position.coords.latitude;
