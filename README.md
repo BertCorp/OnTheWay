@@ -46,7 +46,6 @@ Todos
     - ~~don't grab current location again if recently fetched. just start watching.~~ 2013-06-24
     - ~~make sure initial server update happens.~~ 2013-06-24
     - make sure watching works.
-  - function buttons on directions page.
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19
@@ -73,6 +72,7 @@ Down the Road
 - activity log
 - full CRM functionality
 - auto "next"
+- function buttons on directions page.
 
 
 =========

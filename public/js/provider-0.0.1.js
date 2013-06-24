@@ -161,6 +161,7 @@
   } // checkAppointments
 
   function renderAppointment(appointment_id) {
+    $('#directions-map').gmap('clear', 'markers');
     current_appointment_id = appointment_id;
     appointment = appointments[appointments_key[appointment_id]];
     log("Current appointment is now: " + current_appointment_id + "\n" + JSON.stringify(appointment));
