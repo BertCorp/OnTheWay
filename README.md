@@ -36,9 +36,11 @@ Todos
   - ~~clear add appointment fields on save.~~ 2013-06-22
   - ~~stop tracking on logout.~~ 2013-06-22
   - ~~double alert empty field after logout.~~ 2013-06-22
-  - view provider position on current appointment map.
+  - ~~view provider position on current appointment map.~~ 2013-06-22
+  - ~~clean up logging situation.~~ 2013-06-23
   - function buttons on directions page.
-  - clean up logging situation.
+  - fix tracking
+  - add spinner/loader while trying to find location
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19
@@ -83,3 +85,4 @@ Down the Road
 - ~~provider/appointment queue status~~ 2013-06-20
 - ~~appointment notes~~ 2013-06-21
 - ~~environment based config for js apps~~ 2013-06-22
+- ~~versioned provider js and now rely on server version before local fallback~~ 2013-06-23

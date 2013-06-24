@@ -21,6 +21,15 @@
 
 ///////////////////////////// Utility Functions ///////////////////////////////
 
+  function log(message) {
+    if (DEVELOPMENT) {
+      var callerFunc = arguments.callee.caller.toString();
+      callerFuncName = (callerFunc.substring(callerFunc.indexOf("function") + 8, callerFunc.indexOf("(")) || "anoynmous")
+      console.log("--" + callerFuncName + ":");
+      console.log(message);
+    }
+  } // log
+
   // Feature detect + local reference
   var storage = (function() {
         var uid = new Date,
@@ -57,7 +66,7 @@
 
   // Notification bar
   function setNotification(message) {
-    if (DEVELOPMENT) console.log(message);
+    log(message);
     $('#notification-bar p').html(message);
     $('#notification-bar').slideDown(200);
   }
@@ -72,7 +81,7 @@
   }
 
   function clearTracking() {
-    if (DEVELOPMENT) console.log('tracker_id: ' + tracker_id + ' // timeout_id: ' + timeout_id);
+    log('tracker_id: ' + tracker_id + ' // timeout_id: ' + timeout_id);
     if (tracker_id) {
       if (navigator.geolocation)
         navigator.geolocation.clearWatch(tracker_id);
@@ -86,18 +95,18 @@
 
   function getProviderPosition(success, error, options) {
     clearTracking();
-    console.log("Get Provider Position!");
+    log("Get Provider Position!");
     var watch_id = navigator.geolocation.watchPosition(success, error, options);
-    console.log("WatchID: " + watch_id);
+    log("WatchID: " + watch_id);
     return watch_id;
   } // getProviderPosition
 
   function startTracking(appointment_id) {
     if (!navigator.geolocation) {
-      alert("Unable to properly track your position.");
+      alert("Unable to track your position. This is either because your device doesn't allow it or you didn't give us permission.");
       return false;
     }
-    if (DEVELOPMENT) console.log('startTracking -- ' + appointment_id);
+    log('startTracking -- ' + appointment_id);
     $('#tracking-bar p').html("Currently tracking your location...");
     $('#tracking-bar').slideDown(200);
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').animate({ top: '18px' }, 200);
@@ -113,12 +122,12 @@
 
     tracker_id = getProviderPosition(function(position) {
       if (position.coords.accuracy < 100) {
-        if (DEVELOPMENT) console.log("track: " + tracker_id);
+        log("track: " + tracker_id);
         if (!tracking['start'])
           tracking['start'] = position.coords;
         tracking['current'] = position.coords;
         tracking['timestamp'] = position.timestamp;
-        if (DEVELOPMENT) console.log(tracking);
+        log(tracking);
         // update map if we are viewing it.
         updateProviderOnMap(position.coords);
         clearTracking();
@@ -127,7 +136,7 @@
         updateTracking();
       }
     }, function(error) {
-      if (DEVELOPMENT) console.log('watchPosition -- error! -- ' + tracker_id + ' // code: ' + error.code + ' -- ' + 'message: ' + error.message);
+      log('watchPosition -- error! -- ' + tracker_id + ' // code: ' + error.code + ' -- ' + 'message: ' + error.message);
       // if it's a timeout, we're good. anything else, we don't know how to handle yet.
       if (error.code != 3) alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
       track(); // try again.
@@ -162,6 +171,7 @@
   } // updateTracking
 
   function stopTracking() {
+    log("STOP ALL TRACKING!");
     clearTracking();
     tracking['start'] = {};
     tracking['current'] = {};
@@ -269,7 +279,7 @@
   function renderAppointment(appointment_id) {
     current_appointment_id = appointment_id;
     appointment = appointments[appointments_key[appointment_id]];
-    if (DEVELOPMENT) console.log(appointment);
+    log(appointment);
     // update Details page with appointment/customer data.
     $('#detail h1').html(appointment.customer.name);
     $('#detail #customer-name').html(appointment.customer.name);
@@ -416,7 +426,7 @@
           track(); // restart tracking
         } else {
           prepDirections();
-          alert('There was an problem getting your current position. Feel free to try again.');
+          //alert('There was an problem getting your current position. Feel free to try again.');
         }
       }, {
         enableHighAccuracy: true,
@@ -429,23 +439,16 @@
   } // prepDirections
 
   function searchDirections(coords) {
+    clearNotification();
+    $('a#directions-recenter').show();
+    $('#directions-to, #directions-from').removeAttr("disabled");
     var latlng = new google.maps.LatLng(coords.latitude, coords.longitude)
     $("#directions-map").gmap('get', 'map').panTo(latlng);
-    $("#directions-map").gmap('search', { 'location': latlng }, function(results, status) {
-      clearNotification();
-      $('a#directions-recenter').show();
-      $('#directions-to, #directions-from').removeAttr("disabled");
-
-      if ( status === 'OK' ) {
-        getDirections(results[0].formatted_address);
-      } else {
-        alert('There was an problem getting your current position.');
-      }
-    });
+    getDirections(latlng);
   } // searchDirections
 
   function getDirections(from) {
-    if (DEVELOPMENT) console.log("Directions: " + from + " -- " + $('#directions-to').val());
+    log("Directions: " + from + " -- " + $('#directions-to').val());
     $("#directions-map").gmap('displayDirections', { 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
     });
@@ -453,11 +456,15 @@
 
   function updateProviderOnMap(coords) {
     if (is_viewing_map) {
-      var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
-      if (p = $("#directions-map").gmap('get', 'markers').provider) {
-        p.setPosition(latlng);
+      if (""+current_appointment_id == ""+tracking['appointment_id']) {
+        var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+        if (p = $("#directions-map").gmap('get', 'markers').provider) {
+          p.setPosition(latlng);
+        } else {
+          $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
+        }
       } else {
-        $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
+        $('#directions-map').gmap('clear', 'markers');
       }
       $('#directions-map').gmap('refresh');
     }
@@ -481,7 +488,6 @@
       },
       success: function(result) {
         // update based on results
-        //console.log(result);
         if (result.protocol) {
           PROTOCOL = result.protocol;
         }
@@ -582,7 +588,7 @@
       },
       success: function(result) {
         // upon success,
-        if (DEVELOPMENT) console.log(result);
+        log(result);
         appointments[appointments_key[current_appointment_id]] = result;
         if (result.status == 'en route') startTracking(current_appointment_id);
         if ((result.status == 'arrived') || (result.status == 'finished')) stopTracking();
