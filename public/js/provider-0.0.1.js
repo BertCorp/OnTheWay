@@ -291,20 +291,20 @@
     $('#directions-list').html('');
     if (from == 'Current Location') {
       // if we are already tracking the provider's location, let's just use the last known update...
-      if ($.track.current.timestamp && (($.track.current.timestamp + $.track.ttl) > $.now())) {
+      log("Compare: " + ($.track.current.timestamp + $.track.ttl) + " -- " + $.now());
+      if ($.track.current && $.track.current.timestamp && (($.track.current.timestamp + $.track.ttl) > $.now())) {
         log("Use cached current location: " + JSON.stringify($.track.current));
         searchDirections($.track.current);
       } else {
         // otherwise, let's get the user's current location:
         setNotification('Finding your current location...');
         $.mobile.loading('show', { textVisible : false, textonly: false });
-        if ($.track.watch.id) navigator.geolocation.clearWatch($.track.watch.id);
-        $.track.watch.id = navigator.geolocation.watchPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(function(position) {
           if (position.coords.accuracy < $.track.threshold) {
             log("prepDirections:watchPosition:success // new position: " + JSON.stringify(position));
             $.mobile.loading('hide');
             $.track.current = position.coords;
-            $.track.current.timestamp = position.timestamp;
+            $.track.current.timestamp = $.now(); //position.timestamp;
             $.track.updateServer();
             searchDirections(position.coords);
           } else {
@@ -322,7 +322,7 @@
           }
         }, {
           enableHighAccuracy: true,
-          timeout: 15000,
+          timeout: 10000,
           maximumAge: 0
         });
       }

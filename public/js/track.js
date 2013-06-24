@@ -6,7 +6,7 @@ $.track = {
   current         : {},
   destination     : {},
   threshold       : 200,
-  ttl             : (1000*60*15),
+  ttl             : (1000*60*20),
 
   // check to see if we can use geolocation
   check : function() {
@@ -35,6 +35,7 @@ $.track = {
       }
     }, // stop
     success : function(position) {
+      log("track.watch.success -- " + JSON.stringify(position));
       if (position.coords.accuracy <= $.track.threshold) {
         // should this be tracked only on start?
         /*if (!$.track.start.timestamp) {
@@ -42,7 +43,7 @@ $.track = {
           $.track.start.timestamp = position.timestamp;
         }*/
         $.track.current = position.coords;
-        $.track.current.timestamp = position.timestamp;
+        $.track.current.timestamp = $.now();//position.timestamp;
         // update map if we are viewing it.
         updateProviderOnMap(position.coords);
         $.track.updateServer();
@@ -56,7 +57,7 @@ $.track = {
     }, // failure
     options : {
       enableHighAccuracy: true,
-      timeout: 60000,
+      timeout: 10000,
       maximumAge: 0
     } // options
   }, // watch
@@ -113,9 +114,9 @@ $.track = {
     navigator.geolocation.getCurrentPosition(function(position) {
       if (position.coords.accuracy <= $.track.threshold) {
         $.track.origin = position.coords;
-        $.track.origin.timestamp = position.timestamp;
+        $.track.origin.timestamp = $.now(); //position.timestamp;
         $.track.current = position.coords;
-        $.track.current.timestamp = position.timestamp;
+        $.track.current.timestamp = $.now(); //position.timestamp;
         log("Got new current (start) location: " + JSON.stringify(position.coords));
         // upload tracker to server
         $.track.updateServer();
