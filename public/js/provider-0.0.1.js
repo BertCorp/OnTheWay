@@ -298,9 +298,10 @@
         // otherwise, let's get the user's current location:
         setNotification('Finding your current location...');
         $.mobile.loading('show', { textVisible : false, textonly: false });
-        navigator.geolocation.getCurrentPosition(function(position) {
+        if ($.track.watch.id) navigator.geolocation.clearWatch($.track.watch.id);
+        $.track.watch.id = navigator.geolocation.watchPosition(function(position) {
           if (position.coords.accuracy < $.track.threshold) {
-            log("prepDirections:getCurrentLocation:success // new position: " + JSON.stringify(position));
+            log("prepDirections:watchPosition:success // new position: " + JSON.stringify(position));
             $.mobile.loading('hide');
             $.track.current = position.coords;
             $.track.current.timestamp = position.timestamp;
@@ -308,7 +309,7 @@
             searchDirections(position.coords);
           } else {
             // if we are below the threshold, let's try again.
-            log("prepDirections:getCurrentLocation:success // below threshold: " + position.coords.accuracy);
+            log("prepDirections:watchPosition:success // below threshold: " + position.coords.accuracy);
             prepDirections(); // try again.
           }
         }, function(error) {

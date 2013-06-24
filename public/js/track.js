@@ -65,6 +65,7 @@ $.track = {
     // don't proceed if we have a bad appointment_id. something broke.
     //if (!$.track.appointment_id) return $.track.stop();
     var appointment_id = ($.track.appointment_id) ? $.track.appointment_id : current_appointment_id;
+    if (!appointment_id) return false;
     var tracking = { 'current' : $.track.current, 'timestamp' : $.now() };
     if ($.track.appointment_id) tracking.appointment_id = $.track.appointment_id;
     if ($.track.origin) tracking.origin = $.track.origin;
