@@ -522,8 +522,8 @@
     // on init of directions page, setup map.
     // 'center': '57.7973333,12.0502107', 'zoom': 10,
     var options = { scrollwheel : false, streetViewControl : false, mapTypeControl : false};
-    //$("#directions-map").gmap(options);
-    new google.maps.Map(document.getElementById("mapContainer"), options);
+    $("#directions-map").gmap(options);
+    //new google.maps.Map(document.getElementById("mapContainer"), options);
   });
 
   $(document).on('pagebeforeshow', '#directions', function() {
