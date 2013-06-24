@@ -39,11 +39,12 @@
       var mapOptions = {
         zoom: 15,
         center: coords,
-        mapTypeControl: true,
+        mapTypeControl: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       if (marker) {
         marker.setPosition(coords);
+        center.setPosition(coords);
       } else {
         map = new google.maps.Map(document.getElementById("mapContainer"), mapOptions);
         marker = new google.maps.Marker({

@@ -367,14 +367,14 @@
               anchor: new google.maps.Point(11,11)
             }
           }));
-          $("#directions-map").gmap('addOverlay', new google.maps.Circle({
+          /*$("#directions-map").gmap('addOverlay', new google.maps.Circle({
             center: latlng,
             radius: coords.accuracy,
             fillColor: '#0000cc',
             fillOpacity: 0.25,
             strokeColor: '#0000cc',
             strokeOpacity: 0.5
-          }));
+          }));*/
         }
       } else {
         $('#directions-map').gmap('clear', 'markers');
@@ -517,7 +517,9 @@
   $(document).on('pageinit', '#directions', function() {
     // on init of directions page, setup map.
     // 'center': '57.7973333,12.0502107', 'zoom': 10,
-    $("#directions-map").gmap({ scrollwheel : false, streetViewControl : false, mapTypeControl : false});
+    var options = { scrollwheel : false, streetViewControl : false, mapTypeControl : false};
+    //$("#directions-map").gmap(options);
+    new google.maps.Map(document.getElementById("mapContainer"), options);
   });
 
   $(document).on('pagebeforeshow', '#directions', function() {
