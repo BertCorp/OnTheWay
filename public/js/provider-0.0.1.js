@@ -313,7 +313,7 @@
             prepDirections(); // try again.
           }
         }, function(error) {
-          log('prepDirections:getCurrentLocation:failure // code: ' + error.code + ' -- ' + 'message: ' + error.message);
+          log('prepDirections:watchPosition:failure // code: ' + error.code + ' -- ' + 'message: ' + error.message);
           // if it's a timeout, we're good. anything else, we don't know how to handle yet.
           if (error.code == 3) {
             prepDirections(); // try again.
@@ -342,10 +342,11 @@
 
   function getDirections(from) {
     log("Directions: " + from + " -- " + $('#directions-to').val());
-    $("#directions-map").gmap('displayDirections', { 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
+    log("DISABLED FOR TESTING!!!");
+    /*$("#directions-map").gmap('displayDirections', { 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
       $('#directions-map').gmap('refresh');
-    });
+    });*/
   } // getDirections
 
   function updateProviderOnMap(coords) {
