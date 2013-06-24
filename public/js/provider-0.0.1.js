@@ -518,6 +518,10 @@
     });
   });
 
+  $(document).on('pagebeforeshow', '#detail', function() {
+    if (!current_appointment_id) $.mobile.changePage("#home");
+  });
+
   $(document).on('pageinit', '#directions', function() {
     // on init of directions page, setup map.
     // 'center': '57.7973333,12.0502107', 'zoom': 10,
@@ -527,6 +531,7 @@
   });
 
   $(document).on('pagebeforeshow', '#directions', function() {
+    if (!current_appointment_id) $.mobile.changePage("#home");
     // On each time we open the map, we want the provider's current location.
     // The to field should already be set to the address
     is_viewing_map = true;
