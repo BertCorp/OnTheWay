@@ -22,6 +22,7 @@
 <script type="text/javascript">
 
   var marker = null;
+  var circle = null;
   var map = null;
   var watch_id = false;
   if (navigator.geolocation) {
@@ -51,6 +52,16 @@
           map: map,
           title: "Your current location!"
         });
+        circle = new google.maps.Circle({
+          center: coords,
+          radius: position.coords.accuracy,
+          map: map,
+          fillColor: '#0000cc',
+          fillOpacity: 0.25,
+          strokeColor: '#0000cc',
+          strokeOpacity: 0.5
+        });
+        map.fitBounds(circle.getBounds());
       }
     }, function(err) {
       alert("Uhoh! We had an error.");

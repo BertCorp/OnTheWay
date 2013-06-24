@@ -343,6 +343,7 @@
     log("Directions: " + from + " -- " + $('#directions-to').val());
     $("#directions-map").gmap('displayDirections', { 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
+      $('#directions-map').gmap('refresh');
     });
   } // getDirections
 
@@ -355,7 +356,25 @@
           p.setPosition(latlng);
         } else {
           //$("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
-          $("#directions-map").gmap('addOverlay', new GMarker({ 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : { url : 'http://i.stack.imgur.com/orZ4x.png', size: new google.maps.Size(22, 22), origin: new google.maps.Point(0, 0), anchor: new google.maps.Point(11,11) } }));
+          $("#directions-map").gmap('addOverlay', new GMarker({
+            'id': 'provider',
+            'position': latlng,
+            'bounds': true,
+            'icon' : {
+              url : 'http://i.stack.imgur.com/orZ4x.png',
+              size: new google.maps.Size(22, 22),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(11,11)
+            }
+          }));
+          $("#directions-map").gmap('addOverlay', new google.maps.Circle({
+            center: latlng,
+            radius: coords.accuracy,
+            fillColor: '#0000cc',
+            fillOpacity: 0.25,
+            strokeColor: '#0000cc',
+            strokeOpacity: 0.5
+          }));
         }
       } else {
         $('#directions-map').gmap('clear', 'markers');
@@ -498,9 +517,7 @@
   $(document).on('pageinit', '#directions', function() {
     // on init of directions page, setup map.
     // 'center': '57.7973333,12.0502107', 'zoom': 10,
-    $("#directions-map").gmap({ 'disableDefaultUI':true, 'callback': function() {
-      //map = this;
-    }});
+    $("#directions-map").gmap({ scrollwheel : false, streetViewControl : false, mapTypeControl : false});
   });
 
   $(document).on('pagebeforeshow', '#directions', function() {
