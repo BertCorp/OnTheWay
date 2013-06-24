@@ -23,10 +23,8 @@
 
   function log(message) {
     if (DEVELOPMENT) {
-      var callerFunc = arguments.callee.caller.toString();
-      callerFuncName = (callerFunc.substring(callerFunc.indexOf("function") + 8, callerFunc.indexOf("(")) || "anoynmous")
-      console.log("--" + callerFuncName + ":");
       console.log(message);
+      console.log((new Error).stack.split("\n").slice(2,5).join("\n"));
     }
   } // log
 
