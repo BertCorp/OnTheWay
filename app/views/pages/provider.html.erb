@@ -44,8 +44,8 @@
       };
       if (marker) {
         marker.setPosition(coords);
-        center.setCenter(coords);
-        center.setRadius(position.coords.accuracy);
+        circle.setCenter(coords);
+        circle.setRadius(position.coords.accuracy);
       } else {
         map = new google.maps.Map(document.getElementById("mapContainer"), mapOptions);
         marker = new google.maps.Marker({
