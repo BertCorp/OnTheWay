@@ -101,10 +101,21 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
   def tracking_update
     @appointment = current_provider.appointments.find(params[:id])
     # figure out ETA based on new info?
-    if @tracking = $redis.set("provider-#{current_provider.id}", params[:tracking].to_json)
+    if @tracking = $redis.set("provider-#{@appointment.provider.id}", params[:tracking].to_json)
       render json: {}
     else
       render json: { message: "There was an error updating your current location." }, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /appointments/1/tracking.json
+  def tracking_destroy
+    @appointment = current_provider.appointments.find(params[:id])
+    if @appointment
+      $redis.del("provider-#{@appointment.provider.id}")
+      head :no_content
+    else
+      render json: { message: "I'm sorry, Dave. I'm afraid I can't do that." }, status: :unauthorized
     end
   end
 

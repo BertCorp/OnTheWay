@@ -38,9 +38,15 @@ Todos
   - ~~double alert empty field after logout.~~ 2013-06-22
   - ~~view provider position on current appointment map.~~ 2013-06-22
   - ~~clean up logging situation.~~ 2013-06-23
-  - function buttons on directions page.
+  - ~~add spinner/loader while trying to find location~~ 2013-06-23
   - fix tracking
-  - add spinner/loader while trying to find location
+    - ~~restructure~~ 2013-06-23
+    - ~~be more efficient~~ 2013-06-23
+    - store current location when fetched.
+    - don't grab current location again if recently fetched. just start watching.
+    - make sure initial server update happens.
+    - make sure watching works.
+  - function buttons on directions page.
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19
