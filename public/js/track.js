@@ -6,6 +6,7 @@ $.track = {
   current         : {},
   destination     : {},
   threshold       : 200,
+  ttl             : (1000*60*15),
 
   // check to see if we can use geolocation
   check : function() {
@@ -20,19 +21,21 @@ $.track = {
   watch : {
     id : false,
     start : function() {
-      if ($.track.watch.id) $.track.watch.stop();
+      $.track.watch.stop();
       $.track.watch.id = navigator.geolocation.watchPosition($.track.watch.success, $.track.watch.failure, $.track.watch.options);
       log("Start Watching: " + $.track.watch.id);
       return $.track.watch.id;
     }, // start
     stop : function() {
-      var watch_id = $.track.watch.id;
-      $.track.watch.id = false;
-      log("Stop Watching: " + watch_id);
-      return (watch_id) ? navigator.geolocation.clearWatch(watch_id) : false;
+      if ($.track.watch.id) {
+        var watch_id = $.track.watch.id;
+        $.track.watch.id = false;
+        log("Stop Watching: " + watch_id);
+        return navigator.geolocation.clearWatch(watch_id);
+      }
     }, // stop
     success : function(position) {
-      if (position.coords.accuracy < $.track.thresold) {
+      if (position.coords.accuracy <= $.track.threshold) {
         // should this be tracked only on start?
         /*if (!$.track.start.timestamp) {
           $.track.start = position.coords;
@@ -60,10 +63,15 @@ $.track = {
   // Update the OnTheWay servers with this tracking data, so we can let the customer know.
   updateServer : function() {
     // don't proceed if we have a bad appointment_id. something broke.
-    if (!$.track.appointment_id) return $.track.stop();
+    //if (!$.track.appointment_id) return $.track.stop();
+    var appointment_id = ($.track.appointment_id) ? $.track.appointment_id : current_appointment_id;
+    var tracking = { 'current' : $.track.current, 'timestamp' : $.now() };
+    if ($.track.appointment_id) tracking.appointment_id = $.track.appointment_id;
+    if ($.track.origin) tracking.origin = $.track.origin;
+
     // update server with latest tracking info.
-    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + $.track.appointment_id + '/tracking.json',
-      data: { 'auth_token' : credentials.auth_token, 'tracking' : { 'appointment_id' : $.track.appointment_id, 'origin' : $.track.origin, 'current' : $.track.current } },
+    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json',
+      data: { 'auth_token' : credentials.auth_token, 'tracking' : tracking },
       type: 'put',
       async: true,
       beforeSend: function() {},
@@ -94,8 +102,15 @@ $.track = {
   // get a provider's current (start) location before starting to watch/track their location.
   startLocation : function() {
     log("Get user's current (start) location!");
+    // if we already have a current location that isn't too old, just use that
+    if ($.track.current.timestamp && (($.track.current.timestamp + $.track.ttl) > $.now())) {
+      $.track.origin = $.track.current;
+      $.track.updateServer();
+      return $.track.watch.start();
+    }
+
     navigator.geolocation.getCurrentPosition(function(position) {
-      if (position.coords.accuracy < $.track.thresold) {
+      if (position.coords.accuracy <= $.track.threshold) {
         $.track.origin = position.coords;
         $.track.origin.timestamp = position.timestamp;
         $.track.current = position.coords;
@@ -105,8 +120,8 @@ $.track = {
         $.track.updateServer();
         $.track.watch.start();
       } else {
-        // if we are below the threshold, let's try again.
-        log("getStartLocation:success // below threshold: " + position.coords.accuracy);
+        // if we are beyond the threshold, let's try again.
+        log("getStartLocation:success // above threshold: " + position.coords.accuracy);
         $.track.startLocation();
       }
     }, function(error) {
@@ -116,7 +131,7 @@ $.track = {
       $.track.startLocation(); // try again
     }, {
       enableHighAccuracy: true,
-      timeout: 20000,
+      timeout: 30000,
       maximumAge: 0
     });
   }, // startLocation
@@ -140,7 +155,6 @@ $.track = {
     $.track.watch.stop();
     $.track.origin = {};
     $.track.current = {};
-    $.track.destination = {};
     // clear notifications for user.
     $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').animate({ top: '0px' }, 600);
     $('#tracking-bar').slideUp(600, function() {

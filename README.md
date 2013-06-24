@@ -42,9 +42,9 @@ Todos
   - fix tracking
     - ~~restructure~~ 2013-06-23
     - ~~be more efficient~~ 2013-06-23
-    - store current location when fetched.
-    - don't grab current location again if recently fetched. just start watching.
-    - make sure initial server update happens.
+    - ~~store current location when fetched.~~ 2013-06-24
+    - ~~don't grab current location again if recently fetched. just start watching.~~ 2013-06-24
+    - ~~make sure initial server update happens.~~ 2013-06-24
     - make sure watching works.
   - function buttons on directions page.
 - mobile prototype for customers

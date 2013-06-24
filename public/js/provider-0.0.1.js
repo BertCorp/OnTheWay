@@ -15,8 +15,7 @@
 
   function log(message) {
     if (DEVELOPMENT) {
-      console.log(message);
-      console.log((new Error).stack.split("\n").slice(2,5).join("\n"));
+      console.log(message + "\n" + (new Error).stack.split("\n").slice(2,5).join("\n"));
     }
   } // log
 
@@ -291,7 +290,8 @@
     $('#directions-list').html('');
     if (from == 'Current Location') {
       // if we are already tracking the provider's location, let's just use the last known update...
-      if ($.track.watch.id) {
+      if ($.track.current.timestamp && (($.track.current.timestamp + $.track.ttl) > $.now())) {
+        log("Use cached current location: " + JSON.stringify($.track.current));
         searchDirections($.track.current);
       } else {
         // otherwise, let's get the user's current location:
@@ -299,7 +299,11 @@
         $.mobile.loading('show', { textVisible : false, textonly: false });
         navigator.geolocation.getCurrentPosition(function(position) {
           if (position.coords.accuracy < $.track.threshold) {
+            log("prepDirections:getCurrentLocation:success // new position: " + JSON.stringify(position));
             $.mobile.loading('hide');
+            $.track.current = position.coords;
+            $.track.current.timestamp = position.timestamp;
+            $.track.updateServer();
             searchDirections(position.coords);
           } else {
             // if we are below the threshold, let's try again.
@@ -343,17 +347,18 @@
 
   function updateProviderOnMap(coords) {
     if (is_viewing_map) {
+      log("Is Viewing Map: " + current_appointment_id + " == " + $.track.appointment_id);
       if ((""+current_appointment_id) == (""+$.track.appointment_id)) {
         var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
         if (p = $("#directions-map").gmap('get', 'markers').provider) {
           p.setPosition(latlng);
         } else {
-          $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
+          //$("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
+          $("#directions-map").gmap('addOverlay', new GMarker({ 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' }));
         }
       } else {
         $('#directions-map').gmap('clear', 'markers');
       }
-      $('#directions-map').gmap('refresh');
     }
   } // updateProviderOnMap
 
