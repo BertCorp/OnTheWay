@@ -25,52 +25,55 @@
   var circle = null;
   var map = null;
   var watch_id = false;
-  if (navigator.geolocation) {
-    watch_id = navigator.geolocation.watchPosition(function(position){
-      console.log(position.coords);
-      // lets store in redis.
-      $.post('/providers/track', { position: position }, function(data) {
-        console.log("Stored: " + JSON.stringify(position));
-      });
 
-      var latitude = position.coords.latitude;
-      var longitude = position.coords.longitude;
-      var coords = new google.maps.LatLng(latitude, longitude);
-      var mapOptions = {
-        zoom: 15,
-        center: coords,
-        mapTypeControl: false,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      if (marker) {
-        marker.setPosition(coords);
-        circle.setCenter(coords);
-        circle.setRadius(position.coords.accuracy);
-      } else {
-        map = new google.maps.Map(document.getElementById("mapContainer"), mapOptions);
-        marker = new google.maps.Marker({
-          icon : { url : 'http://i.stack.imgur.com/orZ4x.png', size: new google.maps.Size(22, 22), origin: new google.maps.Point(0, 0), anchor: new google.maps.Point(11,11) },
-          position: coords,
-          map: map,
-          title: "Your current location!"
+  setTimeout(function() {
+    if (navigator.geolocation) {
+      watch_id = navigator.geolocation.watchPosition(function(position){
+        console.log(position.coords);
+        // lets store in redis.
+        $.post('/providers/track', { position: position }, function(data) {
+          console.log("Stored: " + JSON.stringify(position));
         });
-        circle = new google.maps.Circle({
+
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var coords = new google.maps.LatLng(latitude, longitude);
+        var mapOptions = {
+          zoom: 15,
           center: coords,
-          radius: position.coords.accuracy,
-          map: map,
-          fillColor: '#0000cc',
-          fillOpacity: 0.25,
-          strokeColor: '#0000cc',
-          strokeOpacity: 0.5
-        });
-        map.fitBounds(circle.getBounds());
-      }
-    }, function(err) {
-      alert("Uhoh! We had an error.");
-    }, { enableHighAccuracy : true, timeout : 60000, maximumAge : 0 });
-  } else {
-    alert("Geolocation API is not supported in your browser.");
-  }
+          mapTypeControl: false,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        if (marker) {
+          marker.setPosition(coords);
+          circle.setCenter(coords);
+          circle.setRadius(position.coords.accuracy);
+        } else {
+          map = new google.maps.Map(document.getElementById("mapContainer"), mapOptions);
+          marker = new google.maps.Marker({
+            icon : { url : 'http://i.stack.imgur.com/orZ4x.png', size: new google.maps.Size(22, 22), origin: new google.maps.Point(0, 0), anchor: new google.maps.Point(11,11) },
+            position: coords,
+            map: map,
+            title: "Your current location!"
+          });
+          circle = new google.maps.Circle({
+            center: coords,
+            radius: position.coords.accuracy,
+            map: map,
+            fillColor: '#0000cc',
+            fillOpacity: 0.25,
+            strokeColor: '#0000cc',
+            strokeOpacity: 0.5
+          });
+          map.fitBounds(circle.getBounds());
+        }
+      }, function(err) {
+        alert("Uhoh! We had an error.");
+      }, { enableHighAccuracy : true, timeout : 60000, maximumAge : 0 });
+    } else {
+      alert("Geolocation API is not supported in your browser.");
+    }
+  }, 10000);
 
 </script>
 
