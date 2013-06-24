@@ -355,7 +355,7 @@
           p.setPosition(latlng);
         } else {
           //$("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
-          $("#directions-map").gmap('addOverlay', new GMarker({ 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' }));
+          $("#directions-map").gmap('addOverlay', new GMarker({ 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : { url : 'http://i.stack.imgur.com/orZ4x.png', size: new google.maps.Size(22, 22), origin: new google.maps.Point(0, 0), anchor: new google.maps.Point(11,11) } }));
         }
       } else {
         $('#directions-map').gmap('clear', 'markers');
