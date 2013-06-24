@@ -1,16 +1,31 @@
-
-<h3>Current Location:</h3>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= content_for?(:title) ? yield(:title) : "OnMyWay" %></title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <%= yield(:head) %>
+</head>
+<body>
 
 <div id="mapContainer" style="width: 100%; height: 500px; margin: auto;"></div>
 
-<!--<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
 
   var marker = null;
   var map = null;
+  var watch_id = false;
   if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(function(position){
+    watch_id = navigator.geolocation.watchPosition(function(position){
       console.log(position.coords);
       // lets store in redis.
       $.post('/providers/track', { position: position }, function(data) {
@@ -45,3 +60,6 @@
   }
 
 </script>
+
+</body>
+</html>
