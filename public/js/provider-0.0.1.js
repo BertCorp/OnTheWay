@@ -520,7 +520,7 @@
   });
 
   $(document).on('pagebeforeshow', '#detail', function() {
-    if (!current_appointment_id) $.mobile.changePage("#home");
+    if (!current_appointment_id) { $.mobile.changePage("#home"); return; }
   });
 
   $(document).on('pageinit', '#directions', function() {
@@ -532,7 +532,7 @@
   });
 
   $(document).on('pagebeforeshow', '#directions', function() {
-    if (!current_appointment_id) $.mobile.changePage("#home");
+    if (!current_appointment_id) { $.mobile.changePage("#home"); return; }
     // On each time we open the map, we want the provider's current location.
     // The to field should already be set to the address
     is_viewing_map = true;
