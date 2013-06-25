@@ -49,14 +49,13 @@
           last_fetched_at = data.current.timestamp;
           start_location = (data.start && data.start.timestamp) ? data.start : data.current;
           $('#directions-btn-container').show();
-          var options = { scrollwheel : false, streetViewControl : false, mapTypeControl : false, zoom: 14 };
-          options.center = start_location.latitude + ',' + start_location.longitude;
-          console.log(options);
-          $("#directions-map").gmap(options);
+          $("#directions-map").gmap({ 'mapTypeId' : google.maps.DirectionsTravelMode.DRIVING, 'minZoom' : 10, 'zoom' : 15 });
           var latlng = new google.maps.LatLng(start_location.latitude, start_location.longitude);
-          $("#directions-map").gmap('get', 'map').panTo(latlng);
           $("#directions-map").gmap('displayDirections', { 'origin': latlng, 'destination': '<%= @appointment.location.gsub("\r\n", " ") %>', 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
-            console.log("Driving directions: " + JSON.stringify(response));
+            //console.log('Try zooming: ' + $('#directions-map').gmap('option', 'zoom'));
+            //$('#directions-map').gmap('option', 'zoom', 15);
+            //console.log('New zooming level?: ' + $('#directions-map').gmap('option', 'zoom'));
+            //console.log("Driving directions: " + JSON.stringify(response));
           });
         } else {
           timeout_id = setTimeout(checkAppointmentStatus, 30000);
@@ -67,6 +66,8 @@
     $(document).on('pagebeforeshow', '#directions', function() {
       if (!last_fetched_at) $.mobile.changePage("#home");
       // fetch tracking info while we are on the directions page...
+      $('#directions-map').gmap('option', 'zoom', 15);
+      timeout_id = true;
       trackProvider();
     });
 
@@ -78,10 +79,37 @@
 
     function trackProvider() {
       $.getJSON(PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json', {}, function(data) {
-        console.log("Tracking info: " + JSON.stringify(data));
-        setTimeout(function() { $('#directions-map').gmap('refresh'); }, 100);
-        if (timeout_id)
-          timeout_id = setTimeout(trackProvider, 5000);
+        //console.log("Tracking info: " + JSON.stringify(data));
+        coords = data.current;
+        //console.log('Try zooming: ' + $('#directions-map').gmap('option', 'zoom'));
+        //$('#directions-map').gmap('option', 'zoom', 15);
+
+        $('#directions-map').gmap('clear', 'markers');
+        $('#directions-map').gmap('clear', 'overlays');
+        var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+        $('#directions-map').gmap('addMarker', new google.maps.Marker({
+          'id' : 'provider',
+          position : latlng,
+          bounds : false,
+          icon : {
+            url : 'http://i.stack.imgur.com/orZ4x.png',
+            size : new google.maps.Size(22, 22),
+            origin : new google.maps.Point(0, 0),
+            anchor : new google.maps.Point(11,11)
+          }
+        }));
+        $("#directions-map").gmap('addShape', 'Circle', {
+          'id' : 'radius',
+          center : latlng,
+          radius : parseInt(coords.accuracy),
+          fillColor : '#0000cc',
+          fillOpacity : 0.25,
+          strokeColor : '#0000cc',
+          strokeOpacity : 0.5
+        });
+
+        $('#directions-map').gmap('refresh');
+        if (timeout_id) timeout_id = setTimeout(trackProvider, 5000);
       });
     } // track
 
@@ -134,8 +162,8 @@
 
 <div data-role="page" id="directions" class="jqm-demos">
 
-  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
-    <a href="#home" data-icon="back" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back ui-icon-shadow"></span></span></a>
+  <div data-role="header" class="jqm-header ui-header ui-bar-b ui-icon-nodisc" role="banner">
+    <a href="#home" data-icon="back" data-iconshadow="false" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back"></span></span></a>
     <h1>Your Appointment</h1>
   </div>
 

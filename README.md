@@ -48,13 +48,14 @@ Todos
   - ~~cancel appointment~~ 2013-06-19
   - ~~customer feedback~~ 2013-06-19
     - ~~figure out auth token situation for api access~~ 2013-06-19
+  - ~~provider tracking~~ 2013-06-25
   - auto update queue/eta
-  - provider tracking
 - appointment ETA -- https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
 - twilio integration
   - ~~account setup and funded~~ 2013-06-22
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
-
+- walkthrough apps/process
+- simplify app/process
 
 
 Down the Road
