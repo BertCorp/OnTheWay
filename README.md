@@ -73,7 +73,7 @@ Down the Road
 - full CRM functionality
 - auto "next"
 - function buttons on directions page.
-
+- timezone fix -- http://stackoverflow.com/questions/4362663/timezone-with-rails-3
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07

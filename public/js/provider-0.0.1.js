@@ -225,6 +225,7 @@
   function renderAppointments() {
     if (!appointments) appointments = getStorage('appointments');
     if (!appointments || (appointments.length <= 0)) {
+      if (!is_tracking && $.track.watch.id) $.track.stop();
       $('ul#appointments-container').html($('#empty-tmpl').html());
     } else {
       // if appointments exist, load them in.
