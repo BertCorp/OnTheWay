@@ -42,6 +42,7 @@
       var p = 'am';
       if (h >= 12) p = 'pm';
       if (h > 12) h = h-12;
+      if (m < 10) m = "0"+m;
       return h + ":" + m + p;
     } // formatTime
 
@@ -53,21 +54,34 @@
     });
 
     function checkAppointmentStatus() {
-      $.getJSON(PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json', {}, function(data) {
-        timeout_id = false;
-        console.log(data);
-        // if we get back that our appointment is tracking, then set stuff up.
-        if (data && (data.appointment_id == appointment_id)) {
-          last_fetched_at = data.current.timestamp;
-          start_location = (data.start && data.start.timestamp) ? data.start : data.current;
-          $('#directions-btn-container').show();
-          $("#directions-map").gmap({ 'mapTypeId' : google.maps.DirectionsTravelMode.DRIVING, 'minZoom' : 10, 'zoom' : 15 });
-          var latlng = new google.maps.LatLng(start_location.latitude, start_location.longitude);
-          $("#directions-map").gmap('displayDirections', { 'origin': latlng, 'destination': appointment_location, 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
-            response.timestamp = start_location.timestamp;
-            setDirectionsSummary(response);
-          });
-        } else {
+      $.ajax({
+        dataType: "json",
+        url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json',
+        data: {},
+        success: function(data) {
+          timeout_id = false;
+          //console.log(data);
+          // if we get back that our appointment is tracking, then set stuff up.
+          if (data && (data.appointment_id == appointment_id)) {
+            last_fetched_at = data.current.timestamp;
+            start_location = (data.start && data.start.timestamp) ? data.start : data.current;
+            $('#directions-btn-container').show();
+            $('#appointment-status').hide();
+            $('#appointment-en-route').show();
+            $("#directions-map").gmap({ 'mapTypeId' : google.maps.DirectionsTravelMode.DRIVING, 'minZoom' : 10, 'zoom' : 15 });
+            var latlng = new google.maps.LatLng(start_location.latitude, start_location.longitude);
+            $("#directions-map").gmap('displayDirections', { 'origin': latlng, 'destination': appointment_location, 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
+              response.timestamp = start_location.timestamp;
+              setDirectionsSummary(response);
+              timeout_id = true;
+              trackProvider();
+            });
+          } else {
+            if (data && data.queue) $('#appointment-queue').html(data.queue_text);
+            timeout_id = setTimeout(checkAppointmentStatus, 30000);
+          }
+        },
+        error: function(request) {
           timeout_id = setTimeout(checkAppointmentStatus, 30000);
         }
       });
@@ -81,57 +95,69 @@
       if (!last_fetched_at) $.mobile.changePage("#home");
       // fetch tracking info while we are on the directions page...
       $('#directions-map').gmap('option', 'zoom', 15);
-      timeout_id = true;
-      trackProvider();
+      $('#directions-map').gmap('refresh');
     });
 
     $(document).on('pagebeforehide', '#directions', function() {
-      // stop tracking if we're not on the directions page...
-      clearTimeout(timeout_id);
-      timeout_id = false;
     });
 
     function trackProvider() {
-      $.getJSON(PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json', {}, function(data) {
-        //console.log("Tracking info: " + JSON.stringify(data));
-        coords = data.current;
-        //console.log('Try zooming: ' + $('#directions-map').gmap('option', 'zoom'));
-        //$('#directions-map').gmap('option', 'zoom', 15);
-
-        $('#directions-map').gmap('clear', 'markers');
-        $('#directions-map').gmap('clear', 'overlays');
-        var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
-        $('#directions-map').gmap('addMarker', new google.maps.Marker({
-          'id' : 'provider',
-          position : latlng,
-          bounds : false,
-          icon : {
-            url : 'http://i.stack.imgur.com/orZ4x.png',
-            size : new google.maps.Size(22, 22),
-            origin : new google.maps.Point(0, 0),
-            anchor : new google.maps.Point(11,11)
+      $.ajax({
+        dataType: "json",
+        url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json',
+        data: {},
+        success: function(data) {
+          if (data && !data.current) {
+            $('#appointment-en-route').hide();
+            $('#appointment-arrived').show();
+            $('#directions-btn-container').hide();
+            return;
           }
-        }));
-        $("#directions-map").gmap('addShape', 'Circle', {
-          'id' : 'radius',
-          center : latlng,
-          radius : parseInt(coords.accuracy),
-          fillColor : '#0000cc',
-          fillOpacity : 0.25,
-          strokeColor : '#0000cc',
-          strokeOpacity : 0.5
-        });
+          //console.log(data);
+          coords = data.current;
+          //console.log('Try zooming: ' + $('#directions-map').gmap('option', 'zoom'));
+          //$('#directions-map').gmap('option', 'zoom', 15);
 
-        directionsService.route({ origin: latlng, destination: appointment_location, travelMode: google.maps.DirectionsTravelMode.DRIVING }, function(response, status) {
-          response.timestamp = coords.timestamp;
-          console.log(response);
-          if (status == google.maps.DirectionsStatus.OK) {
-            setDirectionsSummary(response);
-          }
-        });
+          $('#directions-map').gmap('clear', 'markers');
+          $('#directions-map').gmap('clear', 'overlays');
+          var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+          $('#directions-map').gmap('addMarker', new google.maps.Marker({
+            'id' : 'provider',
+            position : latlng,
+            bounds : false,
+            icon : {
+              url : 'http://i.stack.imgur.com/orZ4x.png',
+              size : new google.maps.Size(22, 22),
+              origin : new google.maps.Point(0, 0),
+              anchor : new google.maps.Point(11,11)
+            }
+          }));
+          $("#directions-map").gmap('addShape', 'Circle', {
+            'id' : 'radius',
+            center : latlng,
+            radius : parseInt(coords.accuracy),
+            fillColor : '#0000cc',
+            fillOpacity : 0.25,
+            strokeColor : '#0000cc',
+            strokeOpacity : 0.5
+          });
 
-        $('#directions-map').gmap('refresh');
-        if (timeout_id) timeout_id = setTimeout(trackProvider, 5000);
+          directionsService.route({ origin: latlng, destination: appointment_location, travelMode: google.maps.DirectionsTravelMode.DRIVING }, function(response, status) {
+            response.timestamp = coords.timestamp;
+            //console.log(response);
+            if (status == google.maps.DirectionsStatus.OK) {
+              $('#appointment-eta').html(formatTime($.now() + response['routes'][0]['legs'][0]['duration']['value']));
+              setDirectionsSummary(response);
+            }
+          });
+
+          $('#directions-map').gmap('refresh');
+          if (timeout_id) timeout_id = setTimeout(trackProvider, 5000);
+        },
+        error: function(request) {
+          //timeout_id = setTimeout(trackProvider, 30000);
+          window.location.href = window.location.href;
+        }
       });
     } // track
 
@@ -143,25 +169,39 @@
 
   <div data-role="content" style="text-align: center;">
 
-    <p><strong><%= @appointment.provider.name %></strong> from <strong><%= @appointment.company.name %></strong> has a delivery scheduled for you:</p>
+    <p><strong><%= @appointment.provider.name %></strong> from <strong><%= @appointment.company.name %></strong> has an appointment scheduled with you:</p>
 
     <p style="font-size: 20px;"><strong><%= (@appointment.starts_at.today?) ? 'Today' : "#{@appointment.starts_at.strftime('%Y-%m-%d')}" %></strong></p>
 
     <% if @appointment.status != 'canceled' %>
-    <p>Based on our delivery schedule, <% if @appointment.queue_position < 1 %>you are <strong>next</strong>!<% else %>there are <strong><%= @appointment.queue_position %></strong> people in front of you.<% end %></p>
+    <div id="appointment-status">
+      <p>Based on their schedule, <span id="appointment-queue"><% if @appointment.queue_position <= 1 %>you are <strong>next</strong>!<% else %>there are <strong><%= @appointment.queue_position+1 %></strong> people in front of you.<% end %></span></p>
 
-    <p>And we expect to arrive at:</p>
+      <p>We expect <%= @appointment.provider.name %> to arrive at:</p>
 
-    <p style="font-size: 40px; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
-    <% else %>
-    <p>Your appointment has been marked:</p>
+      <p style="font-size: 40px; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
+    </div>
+    <div id="appointment-en-route" style="display: none;">
+      <p><%= @appointment.provider.name %> is on their way!</p>
 
-    <p style="font-size: 40px; margin: 40px 0px; color: #ff9999;">CANCELED</p>
-    <% end %>
+      <p>We expect them to arrive at:</p>
+
+      <p id="appointment-eta" style="font-size: 40px; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
+    </div>
+    <div id="appointment-arrived" style="display: none;">
+      <p style="font-size: 30px; margin: 40px 0px;"><%= @appointment.provider.name %> has arrived!</p>
+    </div>
 
     <div id="directions-btn-container" class="ui-grid-solo" style="display: none;">
       <div class="ui-block-a"><a href="#directions" data-role="button" data-icon="info" data-transition="slide">View on Map</a></div>
     </div>
+    <% else %>
+    <div id="appointment-canceled">
+      <p>Your appointment has been marked:</p>
+
+      <p style="font-size: 40px; margin: 40px 0px; color: #ff9999;">CANCELED</p>
+    </div>
+    <% end %>
 
     <% unless ['finished', 'canceled', 'arrived', 'en route'].include? @appointment.status %>
     <!--<p style="text-align: center;">Has something changed? Reschedule or cancel your appointment.</p>
@@ -171,7 +211,7 @@
       <div class="ui-block-b"><a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-theme="a">Cancel</a></div>
     </div>-->
     <% end %>
-    <p>Has something changed?<br/>Please let us know:</p>
+    <p>Has something changed?<br/>Please let them know:</p>
 
     <div class="ui-grid-a">
       <div class="ui-block-a"><a href="sms:+1<%= @appointment.provider.phone.gsub(/[^0-9]/, "") %>" data-role="button" data-theme="b">Text</a></div>

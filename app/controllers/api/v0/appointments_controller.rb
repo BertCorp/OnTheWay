@@ -93,7 +93,10 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     if @tracking = $redis.get("provider-#{@appointment.provider.id}")
       render json: ActiveSupport::JSON.decode(@tracking)
     else
-      render json: { message: "There was an error getting provider's current location." }, status: :unprocessable_entity
+      queue_text = false
+      queue_text = (@appointment.queue_position <= 1) ? "you are <strong>next</strong>!" : "there are <strong>#{@appointment.queue_position}</strong> people in front of you." if @appointment.queue_position
+      render json: { queue: @appointment.queue_position, queue_text: queue_text }
+      #{ message: "There was an error getting provider's current location." }, status: :unprocessable_entity
     end
   end
 
@@ -101,6 +104,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
   def tracking_update
     @appointment = current_provider.appointments.find(params[:id])
     # figure out ETA based on new info?
+    # { start, current, appointment_id }
     if @tracking = $redis.set("provider-#{@appointment.provider.id}", params[:tracking].to_json)
       render json: {}
     else
