@@ -293,7 +293,7 @@
     if (from == 'Current Location') {
       // if we are already tracking the provider's location, let's just use the last known update...
       log("Compare: " + ($.track.current.timestamp + $.track.ttl) + " -- " + $.now());
-      if ($.track.watch.id) {
+      if ($.track.watch.id && $.track.current.timestamp) {
         log("Use last watch location coords: " + JSON.stringify($.track.current));
         searchDirections($.track.current);
       } else if ($.track.current && $.track.current.timestamp && (($.track.current.timestamp + $.track.ttl) > $.now())) {
@@ -346,11 +346,10 @@
 
   function getDirections(from) {
     log("Directions: " + from + " -- " + $('#directions-to').val());
-    log("DISABLED FOR TESTING!!!");
-    /*$("#directions-map").gmap('displayDirections', { 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
+    $("#directions-map").gmap('displayDirections', { 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
       $('#directions-map').gmap('refresh');
-    });*/
+    });
   } // getDirections
 
   function updateProviderOnMap(coords) {
