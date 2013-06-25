@@ -90,11 +90,15 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
   # GET /appointments/1/tracking.json
   def tracking_show
     @appointment = Appointment.find(params[:id])
+    queue_text = false
+    queue_text = (@appointment.queue_position <= 1) ? "you are <strong>next</strong>!" : "there are <strong>#{@appointment.queue_position}</strong> people in front of you." if @appointment.queue_position
+
     if @tracking = $redis.get("provider-#{@appointment.provider.id}")
-      render json: ActiveSupport::JSON.decode(@tracking)
+      resp = ActiveSupport::JSON.decode(@tracking)
+      resp[:queue] = @appointment.queue_position
+      resp[:queue_text] = queue_text
+      render json: resp
     else
-      queue_text = false
-      queue_text = (@appointment.queue_position <= 1) ? "you are <strong>next</strong>!" : "there are <strong>#{@appointment.queue_position}</strong> people in front of you." if @appointment.queue_position
       render json: { queue: @appointment.queue_position, queue_text: queue_text }
       #{ message: "There was an error getting provider's current location." }, status: :unprocessable_entity
     end

@@ -15,21 +15,21 @@
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script src="http://view.jquerymobile.com/1.3.1/dist/demos/_assets/js/index.js"></script>
   <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
-  <script src="../js/jquery.raty.min.js"></script>
+  <script src="/js/environment.js"></script>
+  <script src="/js/jquery.raty.min.js"></script>
   <script type="text/javascript">
 
-    var DEVELOPMENT = true;
-    var PROTOCOL = 'http://'; // DEVELOPMENT
-    var DOMAIN = 'localhost:3000'; // DEVELOPMENT
-    //var DOMAIN = 'www.onthewayhq.com'; // PRODUCTION
-    //var PROTOCAL = 'https://'; // PRODUCTION (YET TO BE IMPLEMENTED)
-    var API_PATH = '/api/v0';
-    var current_appointment_id = '<%= @appointment.id %>';
+    var ENVIRONMENT = OnTheWay.getEnv(),
+        DEVELOPMENT = (ENVIRONMENT != 'production'),
+           PROTOCOL = OnTheWay.config[ENVIRONMENT]['protocol'],
+             DOMAIN = OnTheWay.config[ENVIRONMENT]['domain'],
+           API_PATH = '/api/v0',
+     appointment_id = '<%= @appointment.id %>';
 
-    $(document).on('pageinit', '#home', function() {
+    //$(document).on('pageinit', '#home', function() {
       $(document).on('click', '#submit', function(e) {
         e.preventDefault();
-        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '/feedback.json',
+        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/feedback.json',
           // How do we handle auth token for customers?
           data: { 'appointment' : { 'rating' : $('#star').raty('score'), 'feedback' : $('#feedback').val() } },
           type: 'put',
@@ -50,7 +50,7 @@
           }
         });
       });
-    });
+    //});
 
   </script>
 </head>
@@ -64,7 +64,7 @@
       <label for="select-choice-0" class="select">
         <p style="text-align: center; font-size: 22px;">
           Looks like your appointment<br/>is all done!<br/>
-          Let us know how we did!
+          Let us know how it went!
         </p>
       </label>
 
