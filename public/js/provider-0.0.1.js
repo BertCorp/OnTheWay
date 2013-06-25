@@ -132,6 +132,7 @@
   } // handleErrors
 
   function checkAppointments() {
+    if (!credentials.auth_token) credentials = getStorage('credentials');
     $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments.json',
       data: { 'auth_token' : credentials.auth_token },
       type: 'get',
@@ -154,8 +155,12 @@
       error: function(request) {
         // notify user about error checking for updates?
         //console.log(request);
-        setNotification('There was an error retrieving updated appointments.');
-        setTimeout(clearNotification, 5000);
+        if (request.status == '401') {
+          $('a#logout').click();
+        } else {
+          setNotification('There was an error retrieving updated appointments.');
+          setTimeout(clearNotification, 5000);
+        }
       }
     });
   } // checkAppointments
