@@ -50,7 +50,6 @@
 
     $(document).on('pageinit', '#home', function() {
       // when homepage is created, do an initial ajax call to see what our status is with the provider.
-      $("#directions-map").gmap({ 'mapTypeId' : google.maps.DirectionsTravelMode.DRIVING, 'minZoom' : 10, 'zoom' : 15 });
       checkAppointmentStatus();
     });
 
@@ -91,17 +90,19 @@
       $('#directions-summary').html('' + response['routes'][0]['legs'][0]['distance']['text'] + ' away (about ' + response['routes'][0]['legs'][0]['duration']['text'] + ')<br/>as of ' + formatTime(response.timestamp));
     } // setDirectionsSummary
 
-    $(document).on('pagebeforeshow', '#directions', function() {
+    $(document).on('pageshow', '#directions', function() {
       if (!last_fetched_at) $.mobile.changePage("#home");
       // fetch tracking info while we are on the directions page...
+      $("#directions-map").gmap();
       $('#directions-map').gmap('option', 'zoom', 15);
-      $('#directions-map').gmap('refresh');
+      setTimeout(function() { $('#directions-map').gmap('refresh'); }, 200);
     });
 
     $(document).on('pagebeforehide', '#directions', function() {
     });
 
     function trackProvider() {
+      $('#directions-map').gmap('refresh');
       $.ajax({
         dataType: "json",
         url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json',
