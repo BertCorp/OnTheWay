@@ -369,7 +369,7 @@
           pr.setRadius(coords.accuracy);
         } else {
           //$("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
-          $("#directions-map").gmap('addOverlay', new GMarker({
+          $("#directions-map").gmap('addMarker', {
             id : 'provider',
             position : latlng,
             bounds : true,
@@ -379,7 +379,7 @@
               origin : new google.maps.Point(0, 0),
               anchor : new google.maps.Point(11,11)
             }
-          }));
+          });
           $("#directions-map").gmap('addOverlay', new google.maps.Circle({
             id : 'radius',
             center : latlng,
