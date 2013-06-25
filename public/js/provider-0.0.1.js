@@ -292,7 +292,10 @@
     if (from == 'Current Location') {
       // if we are already tracking the provider's location, let's just use the last known update...
       log("Compare: " + ($.track.current.timestamp + $.track.ttl) + " -- " + $.now());
-      if ($.track.current && $.track.current.timestamp && (($.track.current.timestamp + $.track.ttl) > $.now())) {
+      if ($.track.watch.id) {
+        log("Use last watch location coords: " + JSON.stringify($.track.current));
+        searchDirections($.track.current);
+      } else if ($.track.current && $.track.current.timestamp && (($.track.current.timestamp + $.track.ttl) > $.now())) {
         log("Use cached current location: " + JSON.stringify($.track.current));
         searchDirections($.track.current);
       } else {
@@ -301,7 +304,7 @@
         $.mobile.loading('show', { textVisible : false, textonly: false });
         navigator.geolocation.getCurrentPosition(function(position) {
           if (position.coords.accuracy < $.track.threshold) {
-            log("prepDirections:watchPosition:success // new position: " + JSON.stringify(position));
+            log("prepDirections:getCurrentPosition:success // new position: " + JSON.stringify(position));
             $.mobile.loading('hide');
             $.track.current = position.coords;
             $.track.current.timestamp = $.now(); //position.timestamp;
@@ -309,11 +312,11 @@
             searchDirections(position.coords);
           } else {
             // if we are below the threshold, let's try again.
-            log("prepDirections:watchPosition:success // below threshold: " + position.coords.accuracy);
+            log("prepDirections:getCurrentPosition:success // below threshold: " + position.coords.accuracy);
             prepDirections(); // try again.
           }
         }, function(error) {
-          log('prepDirections:watchPosition:failure // code: ' + error.code + ' -- ' + 'message: ' + error.message);
+          log('prepDirections:getCurrentPosition:failure // code: ' + error.code + ' -- ' + 'message: ' + error.message);
           // if it's a timeout, we're good. anything else, we don't know how to handle yet.
           if (error.code == 3) {
             prepDirections(); // try again.
