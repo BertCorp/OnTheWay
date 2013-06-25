@@ -362,36 +362,36 @@
       log("Is Viewing Map: " + current_appointment_id + " == " + $.track.appointment_id);
       if ((""+current_appointment_id) == (""+$.track.appointment_id)) {
         var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
-        if (p = $("#directions-map").gmap('get', 'markers').provider) {
+        if (p = $("#directions-map").gmap('get', 'overlays').provider) {
           p.setPosition(latlng);
-          pr = $("#directions-map").gmap('get', 'overlay').radius;
-          pr.setCenter(latlng);
-          pr.setRadius(coords.accuracy);
+          //pr = $("#directions-map").gmap('get', 'overlay').radius;
+          //pr.setCenter(latlng);
+          //pr.setRadius(coords.accuracy);
         } else {
           //$("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
-          $("#directions-map").gmap('addMarker', {
-            id : 'provider',
+          $('#directions-map').gmap('addMarker', new google.maps.Marker({
+            'id' : 'provider',
             position : latlng,
-            bounds : true,
+            bounds : false,
             icon : {
               url : 'http://i.stack.imgur.com/orZ4x.png',
               size : new google.maps.Size(22, 22),
               origin : new google.maps.Point(0, 0),
               anchor : new google.maps.Point(11,11)
             }
-          });
-          $("#directions-map").gmap('addOverlay', new google.maps.Circle({
-            id : 'radius',
+          }));
+          $("#directions-map").gmap('addShape', 'Circle', {
+            'id' : 'radius',
             center : latlng,
             radius : coords.accuracy,
             fillColor : '#0000cc',
             fillOpacity : 0.25,
             strokeColor : '#0000cc',
             strokeOpacity : 0.5
-          }));
+          });
         }
       } else {
-        $('#directions-map').gmap('clear', 'markers');
+        $('#directions-map').gmap('clear', 'overlays');
       }
     }
   } // updateProviderOnMap
