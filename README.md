@@ -11,6 +11,47 @@ OnTheWay
 
 Todos
 =====
+- twilio integration
+  - ~~account setup and funded~~ 2013-06-22
+- send daily appointment reminders
+- send text when provider is on the way to appointment
+- native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
+
+
+Down the Road
+=============
+- Providers
+  - appointment types
+  - metadata fields (ability for companies/providers to add custom fields to appointments)
+  - better offline handling
+  - listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
+  - if provider hasn't marked job as finished, send him a friendly reminder to.
+  - edit appointment customer info
+- activity log
+- simplified/mvp version
+- full CRM functionality
+- function buttons on directions page.
+- timezone fix -- http://stackoverflow.com/questions/4362663/timezone-with-rails-3
+
+=========
+- ~~(web) update input fields to html5 field types~~ 2013-06-07
+- ~~(web) proper saving of when date and time~~ 2013-06-07
+- ~~(mobile) finish functional html mockups~~
+  - ~~finish appointment list view~~ 2013-06-07
+  - ~~appointment detail view~~ 2013-06-07
+  - ~~map / directions~~ 2013-06-08
+- ~~customer appointment functional html mockups~~
+  - ~~basic appointment page~~ 2013-06-09
+  - ~~feedback/share page~~ 2013-06-10
+- ~~[bug] fix api appointment order~~ 2013-06-18
+  - ~~resolve "when" field naming conflict~~ 2013-06-18
+- ~~fix appointment date/time timezone issues~~ 2013-06-18
+- ~~provider/appointment queue status~~ 2013-06-20
+- ~~appointment notes~~ 2013-06-21
+- ~~environment based config for js apps~~ 2013-06-22
+- ~~versioned provider js and now rely on server version before local fallback~~ 2013-06-23
+- ~~install new relic~~ 2013-06-25
+- ~~up dynos~~ 2013-06-25
 - mobile prototype for providers
   - ~~update and build out api endpoint structure~~ 2013-06-16
   - ~~figure out api response structure~~ 2013-06-16
@@ -52,44 +93,6 @@ Todos
     - ~~figure out auth token situation for api access~~ 2013-06-19
   - ~~provider tracking~~ 2013-06-25
   - ~~add eta/last of on map/directions page.~~ 2013-06-25
-  - auto update queue/eta
-- appointment ETA -- https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
-- twilio integration
-  - ~~account setup and funded~~ 2013-06-22
-- native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
-- walkthrough apps/process
-- simplify app/process
-
-
-Down the Road
-=============
-- Providers
-  - appointment types
-  - metadata fields (ability for companies/providers to add custom fields to appointments)
-  - better offline handling
-  - listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
-  - if provider hasn't marked job as finished, send him a friendly reminder to.
-  - edit appointment customer info
-- activity log
-- full CRM functionality
-- auto "next"
-- function buttons on directions page.
-- timezone fix -- http://stackoverflow.com/questions/4362663/timezone-with-rails-3
-
-=========
-- ~~(web) update input fields to html5 field types~~ 2013-06-07
-- ~~(web) proper saving of when date and time~~ 2013-06-07
-- ~~(mobile) finish functional html mockups~~
-  - ~~finish appointment list view~~ 2013-06-07
-  - ~~appointment detail view~~ 2013-06-07
-  - ~~map / directions~~ 2013-06-08
-- ~~customer appointment functional html mockups~~
-  - ~~basic appointment page~~ 2013-06-09
-  - ~~feedback/share page~~ 2013-06-10
-- ~~[bug] fix api appointment order~~ 2013-06-18
-  - ~~resolve "when" field naming conflict~~ 2013-06-18
-- ~~fix appointment date/time timezone issues~~ 2013-06-18
-- ~~provider/appointment queue status~~ 2013-06-20
-- ~~appointment notes~~ 2013-06-21
-- ~~environment based config for js apps~~ 2013-06-22
-- ~~versioned provider js and now rely on server version before local fallback~~ 2013-06-23
+  - ~~auto update queue/eta~~ 2013-06-25
+- ~~basic appointment ETA~~ 2013-06-25
+  - https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
