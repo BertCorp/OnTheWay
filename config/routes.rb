@@ -32,7 +32,8 @@ OnTheWay::Application.routes.draw do
     delete "logout" => "devise/sessions#destroy", :as => "destroy_company_session"
   end
 
-  get "p/:id" => redirect("/prototypes/provider-v1.0.html?id=:id")
+  get "p" => redirect("/prototypes/provider-v1.0.html")
+  get "p:/id" => redirect("/prototypes/provider-v1.0.html")
   get "a/:id" => "customers#appointment"
 
   # test methods
