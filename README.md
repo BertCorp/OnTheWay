@@ -49,6 +49,7 @@ Todos
   - ~~customer feedback~~ 2013-06-19
     - ~~figure out auth token situation for api access~~ 2013-06-19
   - ~~provider tracking~~ 2013-06-25
+  - ~~add eta/last of on map/directions page.~~ 2013-06-25
   - auto update queue/eta
 - appointment ETA -- https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
 - twilio integration

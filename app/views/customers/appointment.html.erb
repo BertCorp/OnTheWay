@@ -30,8 +30,20 @@
                    DOMAIN = OnTheWay.config[ENVIRONMENT]['domain'],
                  API_PATH = '/api/v0',
            appointment_id = '<%= @appointment.id %>',
+     appointment_location = '<%= @appointment.location.gsub("\r\n", " ") %>',
           last_fetched_at = false,
                timeout_id = false;
+    var directionsService = new google.maps.DirectionsService();
+
+    function formatTime(timestamp) {
+      var date = new Date(parseInt(timestamp));
+      var h = date.getHours();
+      var m = date.getMinutes();
+      var p = 'am';
+      if (h >= 12) p = 'pm';
+      if (h > 12) h = h-12;
+      return h + ":" + m + p;
+    } // formatTime
 
     ////////////////////////////////////////////////////////////
 
@@ -51,17 +63,19 @@
           $('#directions-btn-container').show();
           $("#directions-map").gmap({ 'mapTypeId' : google.maps.DirectionsTravelMode.DRIVING, 'minZoom' : 10, 'zoom' : 15 });
           var latlng = new google.maps.LatLng(start_location.latitude, start_location.longitude);
-          $("#directions-map").gmap('displayDirections', { 'origin': latlng, 'destination': '<%= @appointment.location.gsub("\r\n", " ") %>', 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
-            //console.log('Try zooming: ' + $('#directions-map').gmap('option', 'zoom'));
-            //$('#directions-map').gmap('option', 'zoom', 15);
-            //console.log('New zooming level?: ' + $('#directions-map').gmap('option', 'zoom'));
-            //console.log("Driving directions: " + JSON.stringify(response));
+          $("#directions-map").gmap('displayDirections', { 'origin': latlng, 'destination': appointment_location, 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
+            response.timestamp = start_location.timestamp;
+            setDirectionsSummary(response);
           });
         } else {
           timeout_id = setTimeout(checkAppointmentStatus, 30000);
         }
       });
     } // checkAppointmentStatus
+
+    function setDirectionsSummary(response) {
+      $('#directions-summary').html('' + response['routes'][0]['legs'][0]['distance']['text'] + ' away (about ' + response['routes'][0]['legs'][0]['duration']['text'] + ')<br/>as of ' + formatTime(response.timestamp));
+    } // setDirectionsSummary
 
     $(document).on('pagebeforeshow', '#directions', function() {
       if (!last_fetched_at) $.mobile.changePage("#home");
@@ -106,6 +120,14 @@
           fillOpacity : 0.25,
           strokeColor : '#0000cc',
           strokeOpacity : 0.5
+        });
+
+        directionsService.route({ origin: latlng, destination: appointment_location, travelMode: google.maps.DirectionsTravelMode.DRIVING }, function(response, status) {
+          response.timestamp = coords.timestamp;
+          console.log(response);
+          if (status == google.maps.DirectionsStatus.OK) {
+            setDirectionsSummary(response);
+          }
         });
 
         $('#directions-map').gmap('refresh');
@@ -170,6 +192,7 @@
   <div data-role="content">
     <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
       <div id="directions-map" style="height:300px;"></div>
+      <p id="directions-summary" style="text-align: center; margin-bottom: 0px;"></p>
     </div>
   </div>
 
