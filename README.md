@@ -39,13 +39,10 @@ Todos
   - ~~view provider position on current appointment map.~~ 2013-06-22
   - ~~clean up logging situation.~~ 2013-06-23
   - ~~add spinner/loader while trying to find location~~ 2013-06-23
-  - fix tracking
+  - ~~fix tracking~~ 2013-06-24
     - ~~restructure~~ 2013-06-23
     - ~~be more efficient~~ 2013-06-23
     - ~~store current location when fetched.~~ 2013-06-24
-    - ~~don't grab current location again if recently fetched. just start watching.~~ 2013-06-24
-    - ~~make sure initial server update happens.~~ 2013-06-24
-    - make sure watching works.
 - mobile prototype for customers
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19

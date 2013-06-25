@@ -16,73 +16,74 @@
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script src="http://view.jquerymobile.com/1.3.1/dist/demos/_assets/js/index.js"></script>
   <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
-  <script type="text/javascript" src="/js/demo.js"></script>
   <script type="text/javascript" src="/js/jquery.ui.map.min.js"></script>
   <script type="text/javascript" src="/js/jquery.ui.map.extensions.js"></script>
   <script type="text/javascript" src="/js/jquery.ui.map.services.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.ui.map.overlays.min.js"></script>
+  <script type="text/javascript" src="/js/environment.js"></script>
+  <script type="text/javascript" src="/js/track.js"></script>
   <script type="text/javascript">
 
-    var DEVELOPMENT = true;
-    var PROTOCOL = 'http://'; // DEVELOPMENT
-    var DOMAIN = 'localhost:3000'; // DEVELOPMENT
-    //var DOMAIN = 'www.onthewayhq.com'; // PRODUCTION
-    //var PROTOCAL = 'https://'; // PRODUCTION (YET TO BE IMPLEMENTED)
-    var API_PATH = '/api/v0';
-    var current_appointment_id = '<%= @appointment.id %>';
-    var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
+          var ENVIRONMENT = OnTheWay.getEnv(),
+              DEVELOPMENT = (ENVIRONMENT != 'production'),
+                 PROTOCOL = OnTheWay.config[ENVIRONMENT]['protocol'],
+                   DOMAIN = OnTheWay.config[ENVIRONMENT]['domain'],
+                 API_PATH = '/api/v0',
+           appointment_id = '<%= @appointment.id %>',
+          last_fetched_at = false,
+               timeout_id = false;
 
     ////////////////////////////////////////////////////////////
 
-    $(document).on('pageinit', '#directions', function() {
-      demo.add('directions', function() {
-        $("#map_canvas_1").gmap({'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI':true, 'callback': function() {
-          var self = this;
+    $(document).on('pageinit', '#home', function() {
+      // when homepage is created, do an initial ajax call to see what our status is with the provider.
+      checkAppointmentStatus();
+    });
 
-          self.getCurrentPosition( function(position, status) {
-            if ( status === 'OK' ) {
-              var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-              self.get('map').panTo(latlng);
-              self.search({ 'location': latlng }, function(results, status) {
-                if ( status === 'OK' ) {
-                  self.displayDirections({ 'origin': results[0].formatted_address, 'destination': '<%= @appointment.location.gsub("\r\n", " ") %>', 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
-                    //console.log(status);
-                  });
-                }
-              });
-            } else {
-              alert('Unable to get current position.');
-            }
+    function checkAppointmentStatus() {
+      $.getJSON(PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json', {}, function(data) {
+        timeout_id = false;
+        console.log(data);
+        // if we get back that our appointment is tracking, then set stuff up.
+        if (data && (data.appointment_id == appointment_id)) {
+          last_fetched_at = data.current.timestamp;
+          start_location = (data.start && data.start.timestamp) ? data.start : data.current;
+          $('#directions-btn-container').show();
+          var options = { scrollwheel : false, streetViewControl : false, mapTypeControl : false, zoom: 14 };
+          options.center = start_location.latitude + ',' + start_location.longitude;
+          console.log(options);
+          $("#directions-map").gmap(options);
+          var latlng = new google.maps.LatLng(start_location.latitude, start_location.longitude);
+          $("#directions-map").gmap('get', 'map').panTo(latlng);
+          $("#directions-map").gmap('displayDirections', { 'origin': latlng, 'destination': '<%= @appointment.location.gsub("\r\n", " ") %>', 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
+            console.log("Driving directions: " + JSON.stringify(response));
           });
-        }});
-      }).load('directions');
+        } else {
+          timeout_id = setTimeout(checkAppointmentStatus, 30000);
+        }
+      });
+    } // checkAppointmentStatus
+
+    $(document).on('pagebeforeshow', '#directions', function() {
+      if (!last_fetched_at) $.mobile.changePage("#home");
+      // fetch tracking info while we are on the directions page...
+      trackProvider();
     });
 
-    /*
-    $(document).on('pageinit', '#dialog-cancel-confirm', function() {
-      $(document).on('click', '#cancel-appointment', function() {
-        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
-          // How do we handle auth token for customers?
-          data: { 'auth_token' : false, 'appointment' : { 'status' : 'canceled' } },
-          type: 'put',
-          async: true,
-          beforeSend: function() {
-          },
-          complete: function() {
-            $.mobile.loading('hide');
-          },
-          success: function(result) {
-            // go back to #home
-            $.mobile.changePage("#home");
-          },
-          error: function(request) {
-            // notify user about error checking for updates?
-            //console.log(request);
-            alert('There was an error canceling your appointment. Try calling.');
-          }
-        });
-      });
+    $(document).on('pagebeforehide', '#directions', function() {
+      // stop tracking if we're not on the directions page...
+      clearTimeout(timeout_id);
+      timeout_id = false;
     });
-    */
+
+    function trackProvider() {
+      $.getJSON(PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json', {}, function(data) {
+        console.log("Tracking info: " + JSON.stringify(data));
+        setTimeout(function() { $('#directions-map').gmap('refresh'); }, 100);
+        if (timeout_id)
+          timeout_id = setTimeout(trackProvider, 5000);
+      });
+    } // track
 
   </script>
 </head>
@@ -108,11 +109,9 @@
     <p style="font-size: 40px; margin: 40px 0px; color: #ff9999;">CANCELED</p>
     <% end %>
 
-    <% if ['next', 'en route', 'arrived'].include?(@appointment.status) || (@appointment.queue_position < 1) %>
-    <div class="ui-grid-solo">
+    <div id="directions-btn-container" class="ui-grid-solo" style="display: none;">
       <div class="ui-block-a"><a href="#directions" data-role="button" data-icon="info" data-transition="slide">View on Map</a></div>
     </div>
-    <% end %>
 
     <% unless ['finished', 'canceled', 'arrived', 'en route'].include? @appointment.status %>
     <!--<p style="text-align: center;">Has something changed? Reschedule or cancel your appointment.</p>
@@ -122,7 +121,7 @@
       <div class="ui-block-b"><a href="#dialog-cancel-confirm" data-role="button" data-rel="dialog" data-theme="a">Cancel</a></div>
     </div>-->
     <% end %>
-    <p>Has something changed?<br/>Please let them know:</p>
+    <p>Has something changed?<br/>Please let us know:</p>
 
     <div class="ui-grid-a">
       <div class="ui-block-a"><a href="sms:+1<%= @appointment.provider.phone.gsub(/[^0-9]/, "") %>" data-role="button" data-theme="b">Text</a></div>
@@ -141,7 +140,9 @@
   </div>
 
   <div data-role="content">
-    <div id="map_canvas_1" style="height:300px;"></div>
+    <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
+      <div id="directions-map" style="height:300px;"></div>
+    </div>
   </div>
 
 </div>
