@@ -4,12 +4,12 @@ OnTheWay
 - Customer Web Panel: http://www.onthewayhq.com
   - demo@onthewayhq.com
 - Provider Mobile Web App: http://otwhq.com/p
+  - demo2@onthewayhq.com
 
 
 Mockups
 =======
 - Provider Mobile App: http://www.onthewayhq.com/mobile/
-  - demo2@onthewayhq.com
 - Customer Appointment: http://www.onthewayhq.com/customer/
 - Customer Feedback: http://www.onthewayhq.com/feedback/
 
