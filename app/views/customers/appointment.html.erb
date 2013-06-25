@@ -87,7 +87,7 @@
     } // checkAppointmentStatus
 
     function setDirectionsSummary(response) {
-      $('#directions-summary').html('' + response['routes'][0]['legs'][0]['distance']['text'] + ' away (about ' + response['routes'][0]['legs'][0]['duration']['text'] + ')<br/>as of ' + formatTime(response.timestamp));
+      $('#directions-summary').html('' + response['routes'][0]['legs'][0]['distance']['text'] + ' away (about ' + response['routes'][0]['legs'][0]['duration']['text'] + ')<br/>Last update at: ' + formatTime(response.timestamp));
     } // setDirectionsSummary
 
     $(document).on('pageshow', '#directions', function() {
