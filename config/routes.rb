@@ -21,6 +21,7 @@ OnTheWay::Application.routes.draw do
 
         get "appointments/:id/tracking" => "appointments#tracking_show"
         put "appointments/:id/tracking" => "appointments#tracking_update"
+        delete "appointments/:id/tracking" => "appointments#tracking_destroy"
       end
     end
   end
@@ -31,18 +32,19 @@ OnTheWay::Application.routes.draw do
     delete "logout" => "devise/sessions#destroy", :as => "destroy_company_session"
   end
 
-  resources :providers
-  resources :customers
-  resources :appointments
-
-  get "p/:id" => redirect("/prototypes/provider-v1.0.html?id=:id")
+  get "p" => redirect("/prototypes/provider-v1.0.html")
+  get "p:/id" => redirect("/prototypes/provider-v1.0.html")
   get "a/:id" => "customers#appointment"
 
   # test methods
-  #get "customer" => "pages#customer"
-  #get "provider" => "pages#provider"
-  #get "providers/track" => "providers#get_position"
-  #post "providers/track" => "providers#set_position"
+  get "test/customer" => "pages#customer"
+  get "test/provider" => "pages#provider"
+  get "providers/track" => "providers#get_position"
+  post "providers/track" => "providers#set_position"
+
+  resources :providers
+  resources :customers
+  resources :appointments
 
   get "mobile" => redirect("/provider")
   get "provider" => redirect("/mockups/provider-v1.0.html")

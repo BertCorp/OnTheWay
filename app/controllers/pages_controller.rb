@@ -11,10 +11,12 @@ class PagesController < ApplicationController
 
   def provider
     # store location
+    render :layout => false;
   end
 
   def customer
     # show location
+    render :layout => false;
   end
 
 end

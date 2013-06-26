@@ -5,14 +5,6 @@
                  DOMAIN = OnTheWay.config[ENVIRONMENT]['domain'],
                API_PATH = '/api/v0',
          is_viewing_map = false,
-             tracker_id = false,
-             timeout_id = false,
-               tracking = {
-                            'start'           : {},
-                            'current'         : {},
-                            'timestamp'       : false,
-                            'appointment_id'  : false
-                          },
             credentials = {},
            appointments = false,
        appointments_key = {},
@@ -23,10 +15,7 @@
 
   function log(message) {
     if (DEVELOPMENT) {
-      var callerFunc = arguments.callee.caller.toString();
-      callerFuncName = (callerFunc.substring(callerFunc.indexOf("function") + 8, callerFunc.indexOf("(")) || "anoynmous")
-      console.log("--" + callerFuncName + ":");
-      console.log(message);
+      console.log(message + "\n" + (new Error).stack.split("\n").slice(2,5).join("\n"));
     }
   } // log
 
@@ -79,111 +68,6 @@
       });
     }, 2000);
   }
-
-  function clearTracking() {
-    log('tracker_id: ' + tracker_id + ' // timeout_id: ' + timeout_id);
-    if (tracker_id) {
-      if (navigator.geolocation)
-        navigator.geolocation.clearWatch(tracker_id);
-      tracker_id = false;
-    }
-    if (timeout_id) {
-      clearTimeout(timeout_id);
-      timeout_id = false;
-    }
-  } // clearTracking
-
-  function getProviderPosition(success, error, options) {
-    clearTracking();
-    log("Get Provider Position!");
-    var watch_id = navigator.geolocation.watchPosition(success, error, options);
-    log("WatchID: " + watch_id);
-    return watch_id;
-  } // getProviderPosition
-
-  function startTracking(appointment_id) {
-    if (!navigator.geolocation) {
-      alert("Unable to track your position. This is either because your device doesn't allow it or you didn't give us permission.");
-      return false;
-    }
-    log('startTracking -- ' + appointment_id);
-    $('#tracking-bar p').html("Currently tracking your location...");
-    $('#tracking-bar').slideDown(200);
-    $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').animate({ top: '18px' }, 200);
-    tracking['appointment_id'] = appointment_id;
-    // get current position
-    track();
-  } // startTracking
-
-  function track() {
-    $('#tracking-bar p').html("Currently tracking your location...");
-    $('#tracking-bar').show();
-    $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').css({ top: '18px' });
-
-    tracker_id = getProviderPosition(function(position) {
-      if (position.coords.accuracy < 100) {
-        log("track: " + tracker_id);
-        if (!tracking['start'])
-          tracking['start'] = position.coords;
-        tracking['current'] = position.coords;
-        tracking['timestamp'] = position.timestamp;
-        log(tracking);
-        // update map if we are viewing it.
-        updateProviderOnMap(position.coords);
-        clearTracking();
-        timeout_id = setTimeout(track, 10000);
-        // upload tracker to server
-        updateTracking();
-      }
-    }, function(error) {
-      log('watchPosition -- error! -- ' + tracker_id + ' // code: ' + error.code + ' -- ' + 'message: ' + error.message);
-      // if it's a timeout, we're good. anything else, we don't know how to handle yet.
-      if (error.code != 3) alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
-      track(); // try again.
-    }, {
-      enableHighAccuracy: true,
-      timeout: 20000,
-      maximumAge: 0
-    });
-  } // track
-
-  function updateTracking() {
-    // don't proceed if we have a bad appointment_id. something broke.
-    if (!tracking['appointment_id'] || (tracking['appointment_id'] == 'undefined')) {
-      return stopTracking();
-    }
-    // update server with latest tracking info.
-    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + tracking['appointment_id'] + '/tracking.json',
-      data: { 'auth_token' : credentials.auth_token, 'tracking' : tracking },
-      type: 'put',
-      async: true,
-      beforeSend: function() {},
-      complete: function() {},
-      success: function(result) {
-        // upon success,
-        // update appointment ETA?
-      },
-      error: function(request) {
-        setNotification('There was an error updating your location...');
-        setTimeout(clearNotification, 3000);
-      }
-    });
-  } // updateTracking
-
-  function stopTracking() {
-    log("STOP ALL TRACKING!");
-    clearTracking();
-    tracking['start'] = {};
-    tracking['current'] = {};
-    tracking['timestamp'] = false;
-    tracking['appointment_id'] = false;
-
-    $('.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page').animate({ top: '0px' }, 600);
-    $('#tracking-bar').slideUp(600, function() {
-      $('#tracking-bar p').html('');
-      $(this).hide();
-    });
-  } // stopTracking
 
 ////////////////////////// Appointment Functions //////////////////////////////
 
@@ -248,6 +132,7 @@
   } // handleErrors
 
   function checkAppointments() {
+    if (!credentials.auth_token) credentials = getStorage('credentials');
     $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments.json',
       data: { 'auth_token' : credentials.auth_token },
       type: 'get',
@@ -270,16 +155,21 @@
       error: function(request) {
         // notify user about error checking for updates?
         //console.log(request);
-        setNotification('There was an error retrieving updated appointments.');
-        setTimeout(clearNotification, 5000);
+        if (request.status == '401') {
+          $('a#logout').click();
+        } else {
+          setNotification('There was an error retrieving updated appointments.');
+          setTimeout(clearNotification, 5000);
+        }
       }
     });
   } // checkAppointments
 
   function renderAppointment(appointment_id) {
+    $('#directions-map').gmap('clear', 'markers');
     current_appointment_id = appointment_id;
     appointment = appointments[appointments_key[appointment_id]];
-    log(appointment);
+    log("Current appointment is now: " + current_appointment_id + "\n" + JSON.stringify(appointment));
     // update Details page with appointment/customer data.
     $('#detail h1').html(appointment.customer.name);
     $('#detail #customer-name').html(appointment.customer.name);
@@ -340,6 +230,7 @@
   function renderAppointments() {
     if (!appointments) appointments = getStorage('appointments');
     if (!appointments || (appointments.length <= 0)) {
+      if (!is_tracking && $.track.watch.id) $.track.stop();
       $('ul#appointments-container').html($('#empty-tmpl').html());
     } else {
       // if appointments exist, load them in.
@@ -383,16 +274,17 @@
         // start tracking if we need to for any app.
         if (appointments[x].status == 'en route') {
           is_tracking = true;
-          clearTracking();
-          tracking['appointment_id'] = appointments[x].id;
-          track();
+          $.track.appointment_id = appointments[x].id;
+          $.track.resume();
         }
       }
       $('#date-' + current_date + ' span.ui-li-count').html(current_count);
-      if (!is_tracking) stopTracking();
+      if (!is_tracking && $.track.watch.id) $.track.stop();
     }
     $('ul#appointments-container').listview('refresh');
   } // renderAppointments
+
+////////////////////////// Map & Directions related //////////////////////////
 
   function prepDirections() {
     // set customer's (destination) location (done elsewhere in renderAppointment).
@@ -404,35 +296,45 @@
     if ($('#directions-to').val() == '') $('#directions-to').val($('#directions-to').attr('data-location'));
     $('#directions-list').html('');
     if (from == 'Current Location') {
-      setNotification('Finding your current location...');
-      $('a#directions-recenter').hide();
-      $('#directions-to, #directions-from').attr('disabled', 'disabled');
-      tracker_id = getProviderPosition(function(position) {
-        if (position.coords.accuracy < 100) {
-          // update latest tracking info and save to server.
-          tracking['start'] = position.coords;
-          tracking['current'] = position.coords;
-          tracking['timestamp'] = position.timestamp;
-          updateProviderOnMap(position.coords);
-          timeout_id = setTimeout(track, 10000);  // dont forgot to restart tracking.
-          updateTracking();
-
-          searchDirections(position.coords);
-        }
-      }, function() {
-        clearNotification();
-        if (tracking['current']) {
-          searchDirections(tracking['current']);
-          track(); // restart tracking
-        } else {
-          prepDirections();
-          //alert('There was an problem getting your current position. Feel free to try again.');
-        }
-      }, {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0
-      });
+      // if we are already tracking the provider's location, let's just use the last known update...
+      log("Compare: " + ($.track.current.timestamp + $.track.ttl) + " -- " + $.now());
+      if ($.track.watch.id && $.track.current.timestamp) {
+        log("Use last watch location coords: " + JSON.stringify($.track.current));
+        searchDirections($.track.current);
+      } else if ($.track.current && $.track.current.timestamp && (($.track.current.timestamp + $.track.ttl) > $.now())) {
+        log("Use cached current location: " + JSON.stringify($.track.current));
+        searchDirections($.track.current);
+      } else {
+        // otherwise, let's get the user's current location:
+        setNotification('Finding your current location...');
+        $.mobile.loading('show', { textVisible : false, textonly: false });
+        navigator.geolocation.getCurrentPosition(function(position) {
+          if (position.coords.accuracy < $.track.threshold) {
+            log("prepDirections:getCurrentPosition:success // new position: " + JSON.stringify(position));
+            $.mobile.loading('hide');
+            $.track.current = position.coords;
+            $.track.current.timestamp = $.now(); //position.timestamp;
+            $.track.updateServer();
+            searchDirections(position.coords);
+          } else {
+            // if we are below the threshold, let's try again.
+            log("prepDirections:getCurrentPosition:success // below threshold: " + position.coords.accuracy);
+            prepDirections(); // try again.
+          }
+        }, function(error) {
+          log('prepDirections:getCurrentPosition:failure // code: ' + error.code + ' -- ' + 'message: ' + error.message);
+          // if it's a timeout, we're good. anything else, we don't know how to handle yet.
+          if (error.code == 3) {
+            prepDirections(); // try again.
+          } else {
+            alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+          }
+        }, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        });
+      }
     } else {
       getDirections(from);
     }
@@ -451,22 +353,38 @@
     log("Directions: " + from + " -- " + $('#directions-to').val());
     $("#directions-map").gmap('displayDirections', { 'origin': from, 'destination': $('#directions-to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions-list')}, function(response, status) {
       ( status === 'OK' ) ? $('#results').show() : $('#results').hide();
+      $('#directions-map').gmap('refresh');
     });
   } // getDirections
 
   function updateProviderOnMap(coords) {
     if (is_viewing_map) {
-      if (""+current_appointment_id == ""+tracking['appointment_id']) {
-        var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
-        if (p = $("#directions-map").gmap('get', 'markers').provider) {
-          p.setPosition(latlng);
-        } else {
-          $("#directions-map").gmap('addMarker', { 'id': 'provider', 'position': latlng, 'bounds': true, 'icon' : 'http://i.stack.imgur.com/orZ4x.png' });
-        }
-      } else {
+      log("Is Viewing Map: " + current_appointment_id + " == " + $.track.appointment_id);
+      if ((""+current_appointment_id) == (""+$.track.appointment_id)) {
         $('#directions-map').gmap('clear', 'markers');
+        $('#directions-map').gmap('clear', 'overlays');
+        var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+        $('#directions-map').gmap('addMarker', new google.maps.Marker({
+          'id' : 'provider',
+          position : latlng,
+          bounds : false,
+          icon : {
+            url : 'http://i.stack.imgur.com/orZ4x.png',
+            size : new google.maps.Size(22, 22),
+            origin : new google.maps.Point(0, 0),
+            anchor : new google.maps.Point(11,11)
+          }
+        }));
+        $("#directions-map").gmap('addShape', 'Circle', {
+          'id' : 'radius',
+          center : latlng,
+          radius : coords.accuracy,
+          fillColor : '#0000cc',
+          fillOpacity : 0.25,
+          strokeColor : '#0000cc',
+          strokeOpacity : 0.5
+        });
       }
-      $('#directions-map').gmap('refresh');
     }
   } // updateProviderOnMap
 
@@ -523,12 +441,10 @@
         type: 'post',
         async: true,
         beforeSend: function() {
-          // This callback function will trigger before data is sent
-          $.mobile.showPageLoadingMsg(true); // This will show ajax spinner
+          $.mobile.loading('show', { textVisible : false, textonly: false });
         },
         complete: function() {
-          // This callback function will trigger on data sent/received complete
-          $.mobile.hidePageLoadingMsg(); // This will hide ajax spinner
+          $.mobile.loading('hide');
         },
         success: function (result) {
           credentials = result;
@@ -550,7 +466,7 @@
   $(document).on('click', 'a#logout', function(e) {
     credentials = {};
     removeStorage('credentials');
-    stopTracking();
+    $.track.stop();
     $.mobile.changePage("#login");
     return false;
   });
@@ -573,7 +489,7 @@
 
   $(document).on('click', '#progress-btn-container a', function() {
     var status = $(this).attr('data-status');
-    if (status == 'arrived') stopTracking();
+    if (status == 'arrived') $.track.stop();
     $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
       data: { 'auth_token' : credentials.auth_token, 'appointment' : { 'status' : status } },
       type: 'put',
@@ -590,8 +506,8 @@
         // upon success,
         log(result);
         appointments[appointments_key[current_appointment_id]] = result;
-        if (result.status == 'en route') startTracking(current_appointment_id);
-        if ((result.status == 'arrived') || (result.status == 'finished')) stopTracking();
+        if (result.status == 'en route') $.track.start(current_appointment_id);
+        if ((result.status == 'arrived') || (result.status == 'finished')) $.track.stop();
         setStorage('appointments', appointments);
         renderAppointment(current_appointment_id);
         // update appointments? do results return updated appointments? or just returning #home refresh?
@@ -604,15 +520,20 @@
     });
   });
 
+  $(document).on('pagebeforeshow', '#detail', function() {
+    if (!current_appointment_id) { $.mobile.changePage("#home"); return; }
+  });
+
   $(document).on('pageinit', '#directions', function() {
     // on init of directions page, setup map.
     // 'center': '57.7973333,12.0502107', 'zoom': 10,
-    $("#directions-map").gmap({ 'disableDefaultUI':true, 'callback': function() {
-      //map = this;
-    }});
+    var options = { scrollwheel : false, streetViewControl : false, mapTypeControl : false};
+    $("#directions-map").gmap(options);
+    //new google.maps.Map(document.getElementById("mapContainer"), options);
   });
 
   $(document).on('pagebeforeshow', '#directions', function() {
+    if (!current_appointment_id) { $.mobile.changePage("#home"); return; }
     // On each time we open the map, we want the provider's current location.
     // The to field should already be set to the address
     is_viewing_map = true;
@@ -630,37 +551,35 @@
     if (e.which == 13) prepDirections();
   });
 
-  //$(document).on('pageinit', '#dialog-cancel-confirm', function() {
-    $(document).on('click', '#cancel-appointment', function() {
-      stopTracking();
-      $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
-        data: { 'auth_token' : credentials.auth_token, 'appointment' : { 'status' : 'canceled' } },
-        type: 'put',
-        async: true,
-        beforeSend: function() {
-          //setNotification('Canceling appointment...');
-          $.mobile.loading('show', { textVisible : false, textonly: false });
-        },
-        complete: function() {
-          //clearNotification();
-          $.mobile.loading('hide');
-        },
-        success: function(result) {
-          // upon success,
-          appointments[appointments_key[current_appointment_id]] = result;
-          setStorage('appointments', appointments);
-          renderAppointments();
-          // go back to #home
-          $.mobile.changePage("#home");
-        },
-        error: function(request) {
-          // notify user about error checking for updates?
-          //console.log(request);
-          handleErrors(request, 'There was an error canceling this appointment. Please try again or use the web console.');
-        }
-      });
+  $(document).on('click', '#cancel-appointment', function() {
+    $.track.stop();
+    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
+      data: { 'auth_token' : credentials.auth_token, 'appointment' : { 'status' : 'canceled' } },
+      type: 'put',
+      async: true,
+      beforeSend: function() {
+        //setNotification('Canceling appointment...');
+        $.mobile.loading('show', { textVisible : false, textonly: false });
+      },
+      complete: function() {
+        //clearNotification();
+        $.mobile.loading('hide');
+      },
+      success: function(result) {
+        // upon success,
+        appointments[appointments_key[current_appointment_id]] = result;
+        setStorage('appointments', appointments);
+        renderAppointments();
+        // go back to #home
+        $.mobile.changePage("#home");
+      },
+      error: function(request) {
+        // notify user about error checking for updates?
+        //console.log(request);
+        handleErrors(request, 'There was an error canceling this appointment. Please try again or use the web console.');
+      }
     });
-  //});
+  });
 
   $(document).on('pagebeforeshow', '#appointment-add', function() {
     current_appointment_id = false;
@@ -703,44 +622,37 @@
     }
   });
 
-  //$(document).on('pageinit', '#appointment-edit', function() {
-    $(document).on('click', '#appointment-edit .appointment-submit', function(e) {
-      // do validation on the data
-      e.preventDefault();
-      if (($('#edit_appointment_starts_at').val().length > 0) && ($('#edit_appointment_location').val().length > 0)) {
-        var data = $('#appointment-edit form').serialize();
-        data['auth_token'] = credentials.auth_token;
-        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
-          data: data,
-          type: 'put',
-          async: true,
-          beforeSend: function() {
-            //setNotification('Saving appointment...');
-            $.mobile.loading('show', { textVisible : false, textonly: false });
-          },
-          complete: function() {
-            //clearNotification();
-            $.mobile.loading('hide');
-          },
-          success: function(result) {
-            // upon success,
-            last_fetched_at = false;
-            appointments[appointments_key[current_appointment_id]] = result;
-            setStorage('appointments', appointments);
-            // go back to #home, which should update and show new appointment
-            $.mobile.changePage("#home");
-          },
-          error: function(request) {
-            handleErrors(request);
-          }
-        });
-      } else {
-        alert('Please fill in all necessary fields.');
-      }
-    });
-
-  //});
-
-  //$(document).on("pagehide", '#gps_map', function() {
-  //  demo.add('directions', function() { $('#map_canvas_1').gmap('clearWatch'); }).load('directions');
-  //});
+  $(document).on('click', '#appointment-edit .appointment-submit', function(e) {
+    // do validation on the data
+    e.preventDefault();
+    if (($('#edit_appointment_starts_at').val().length > 0) && ($('#edit_appointment_location').val().length > 0)) {
+      var data = $('#appointment-edit form').serialize();
+      data['auth_token'] = credentials.auth_token;
+      $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
+        data: data,
+        type: 'put',
+        async: true,
+        beforeSend: function() {
+          //setNotification('Saving appointment...');
+          $.mobile.loading('show', { textVisible : false, textonly: false });
+        },
+        complete: function() {
+          //clearNotification();
+          $.mobile.loading('hide');
+        },
+        success: function(result) {
+          // upon success,
+          last_fetched_at = false;
+          appointments[appointments_key[current_appointment_id]] = result;
+          setStorage('appointments', appointments);
+          // go back to #home, which should update and show new appointment
+          $.mobile.changePage("#home");
+        },
+        error: function(request) {
+          handleErrors(request);
+        }
+      });
+    } else {
+      alert('Please fill in all necessary fields.');
+    }
+  });

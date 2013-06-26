@@ -16,73 +16,151 @@
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script src="http://view.jquerymobile.com/1.3.1/dist/demos/_assets/js/index.js"></script>
   <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
-  <script type="text/javascript" src="/js/demo.js"></script>
   <script type="text/javascript" src="/js/jquery.ui.map.min.js"></script>
   <script type="text/javascript" src="/js/jquery.ui.map.extensions.js"></script>
   <script type="text/javascript" src="/js/jquery.ui.map.services.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.ui.map.overlays.min.js"></script>
+  <script type="text/javascript" src="/js/environment.js"></script>
+  <script type="text/javascript" src="/js/track.js"></script>
   <script type="text/javascript">
 
-    var DEVELOPMENT = true;
-    var PROTOCOL = 'http://'; // DEVELOPMENT
-    var DOMAIN = 'localhost:3000'; // DEVELOPMENT
-    //var DOMAIN = 'www.onthewayhq.com'; // PRODUCTION
-    //var PROTOCAL = 'https://'; // PRODUCTION (YET TO BE IMPLEMENTED)
-    var API_PATH = '/api/v0';
-    var current_appointment_id = '<%= @appointment.id %>';
-    var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
+          var ENVIRONMENT = OnTheWay.getEnv(),
+              DEVELOPMENT = (ENVIRONMENT != 'production'),
+                 PROTOCOL = OnTheWay.config[ENVIRONMENT]['protocol'],
+                   DOMAIN = OnTheWay.config[ENVIRONMENT]['domain'],
+                 API_PATH = '/api/v0',
+           appointment_id = '<%= @appointment.id %>',
+     appointment_location = '<%= @appointment.location.gsub("\r\n", " ") %>',
+          last_fetched_at = false,
+               timeout_id = false;
+    var directionsService = new google.maps.DirectionsService();
+
+    function formatTime(timestamp) {
+      var date = new Date(parseInt(timestamp));
+      var h = date.getHours();
+      var m = date.getMinutes();
+      var p = 'am';
+      if (h >= 12) p = 'pm';
+      if (h > 12) h = h-12;
+      if (m < 10) m = "0"+m;
+      return h + ":" + m + p;
+    } // formatTime
 
     ////////////////////////////////////////////////////////////
 
-    $(document).on('pageinit', '#directions', function() {
-      demo.add('directions', function() {
-        $("#map_canvas_1").gmap({'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI':true, 'callback': function() {
-          var self = this;
+    $(document).on('pageinit', '#home', function() {
+      // when homepage is created, do an initial ajax call to see what our status is with the provider.
+      checkAppointmentStatus();
+    });
 
-          self.getCurrentPosition( function(position, status) {
-            if ( status === 'OK' ) {
-              var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-              self.get('map').panTo(latlng);
-              self.search({ 'location': latlng }, function(results, status) {
-                if ( status === 'OK' ) {
-                  self.displayDirections({ 'origin': results[0].formatted_address, 'destination': '<%= @appointment.location.gsub("\r\n", " ") %>', 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
-                    //console.log(status);
-                  });
-                }
-              });
-            } else {
-              alert('Unable to get current position.');
+    function checkAppointmentStatus() {
+      $.ajax({
+        dataType: "json",
+        url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json',
+        data: {},
+        success: function(data) {
+          timeout_id = false;
+          //console.log(data);
+          // if we get back that our appointment is tracking, then set stuff up.
+          if (data && (data.appointment_id == appointment_id)) {
+            last_fetched_at = data.current.timestamp;
+            start_location = (data.start && data.start.timestamp) ? data.start : data.current;
+            $('#directions-btn-container').show();
+            $('#appointment-status').hide();
+            $('#appointment-en-route').show();
+            var latlng = new google.maps.LatLng(start_location.latitude, start_location.longitude);
+            $("#directions-map").gmap('displayDirections', { 'origin': latlng, 'destination': appointment_location, 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, {}, function(response, status) {
+              response.timestamp = start_location.timestamp;
+              setDirectionsSummary(response);
+              timeout_id = true;
+              trackProvider();
+            });
+          } else {
+            if (data && data.queue_text) $('#appointment-queue').html(data.queue_text);
+            timeout_id = setTimeout(checkAppointmentStatus, 30000);
+          }
+        },
+        error: function(request) {
+          timeout_id = setTimeout(checkAppointmentStatus, 30000);
+        }
+      });
+    } // checkAppointmentStatus
+
+    function setDirectionsSummary(response) {
+      $('#directions-summary').html('' + response['routes'][0]['legs'][0]['distance']['text'] + ' away (about ' + response['routes'][0]['legs'][0]['duration']['text'] + ')<br/>Last update at: ' + formatTime(response.timestamp));
+    } // setDirectionsSummary
+
+    $(document).on('pageshow', '#directions', function() {
+      if (!last_fetched_at) $.mobile.changePage("#home");
+      // fetch tracking info while we are on the directions page...
+      $("#directions-map").gmap();
+      $('#directions-map').gmap('option', 'zoom', 15);
+      setTimeout(function() { $('#directions-map').gmap('refresh'); }, 200);
+    });
+
+    $(document).on('pagebeforehide', '#directions', function() {
+    });
+
+    function trackProvider() {
+      $('#directions-map').gmap('refresh');
+      $.ajax({
+        dataType: "json",
+        url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '/tracking.json',
+        data: {},
+        success: function(data) {
+          // provider has arrived!
+          if (data && !data.current) {
+            $('#appointment-en-route').hide();
+            $('#appointment-arrived').show();
+            $('#directions-btn-container').hide();
+            return;
+          }
+          //console.log(data);
+          coords = data.current;
+          //console.log('Try zooming: ' + $('#directions-map').gmap('option', 'zoom'));
+          //$('#directions-map').gmap('option', 'zoom', 15);
+
+          $('#directions-map').gmap('clear', 'markers');
+          $('#directions-map').gmap('clear', 'overlays');
+          var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+          $('#directions-map').gmap('addMarker', new google.maps.Marker({
+            'id' : 'provider',
+            position : latlng,
+            bounds : false,
+            icon : {
+              url : 'http://i.stack.imgur.com/orZ4x.png',
+              size : new google.maps.Size(22, 22),
+              origin : new google.maps.Point(0, 0),
+              anchor : new google.maps.Point(11,11)
+            }
+          }));
+          $("#directions-map").gmap('addShape', 'Circle', {
+            'id' : 'radius',
+            center : latlng,
+            radius : parseInt(coords.accuracy),
+            fillColor : '#0000cc',
+            fillOpacity : 0.25,
+            strokeColor : '#0000cc',
+            strokeOpacity : 0.5
+          });
+
+          directionsService.route({ origin: latlng, destination: appointment_location, travelMode: google.maps.DirectionsTravelMode.DRIVING }, function(response, status) {
+            response.timestamp = coords.timestamp;
+            if (status == google.maps.DirectionsStatus.OK) {
+              $('#appointment-eta').html(formatTime($.now() + (response['routes'][0]['legs'][0]['duration']['value']*1000)));
+              setDirectionsSummary(response);
             }
           });
-        }});
-      }).load('directions');
-    });
 
-    /*
-    $(document).on('pageinit', '#dialog-cancel-confirm', function() {
-      $(document).on('click', '#cancel-appointment', function() {
-        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
-          // How do we handle auth token for customers?
-          data: { 'auth_token' : false, 'appointment' : { 'status' : 'canceled' } },
-          type: 'put',
-          async: true,
-          beforeSend: function() {
-          },
-          complete: function() {
-            $.mobile.loading('hide');
-          },
-          success: function(result) {
-            // go back to #home
-            $.mobile.changePage("#home");
-          },
-          error: function(request) {
-            // notify user about error checking for updates?
-            //console.log(request);
-            alert('There was an error canceling your appointment. Try calling.');
-          }
-        });
+          $('#directions-map').gmap('refresh');
+          if (timeout_id) timeout_id = setTimeout(trackProvider, 5000);
+        },
+        error: function(request) {
+          //timeout_id = setTimeout(trackProvider, 30000);
+          window.location.href = window.location.href;
+        }
       });
-    });
-    */
+    } // track
 
   </script>
 </head>
@@ -92,25 +170,41 @@
 
   <div data-role="content" style="text-align: center;">
 
-    <p><strong><%= @appointment.provider.name %></strong> from <strong><%= @appointment.company.name %></strong> has a delivery scheduled for you:</p>
+    <p><strong><%= @appointment.provider.name %></strong> from <strong><%= @appointment.company.name %></strong> has an appointment scheduled with you:</p>
 
     <p style="font-size: 20px;"><strong><%= (@appointment.starts_at.today?) ? 'Today' : "#{@appointment.starts_at.strftime('%Y-%m-%d')}" %></strong></p>
 
     <% if @appointment.status != 'canceled' %>
-    <p>Based on our delivery schedule, <% if @appointment.queue_position < 1 %>you are <strong>next</strong>!<% else %>there are <strong><%= @appointment.queue_position %></strong> people in front of you.<% end %></p>
+      <% if @appointment.status != 'arrived' %>
+    <div id="appointment-status">
+      <p>Based on their schedule, <span id="appointment-queue"><% if @appointment.queue_position <= 1 %>you are <strong>next</strong>!<% else %>there are <strong><%= @appointment.queue_position+1 %></strong> people in front of you.<% end %></span></p>
 
-    <p>And we expect to arrive at:</p>
+      <p>We expect <%= @appointment.provider.name %> to arrive at:</p>
 
-    <p style="font-size: 40px; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
-    <% else %>
-    <p>Your appointment has been marked:</p>
+      <p style="font-size: 40px; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
+    </div>
+    <div id="appointment-en-route" style="display: none;">
+      <p><%= @appointment.provider.name %> is on their way!</p>
 
-    <p style="font-size: 40px; margin: 40px 0px; color: #ff9999;">CANCELED</p>
-    <% end %>
+      <p>We expect them to arrive at:</p>
 
-    <% if ['next', 'en route', 'arrived'].include?(@appointment.status) || (@appointment.queue_position < 1) %>
-    <div class="ui-grid-solo">
+      <p id="appointment-eta" style="font-size: 40px; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
+    </div>
+      <% end %>
+    <div id="appointment-arrived"<%= raw(' style="display: none;"') if @appointment.status != 'arrived' %>>
+      <p style="font-size: 30px; margin: 40px 0px;"><%= @appointment.provider.name %> has arrived!</p>
+    </div>
+
+      <% if @appointment.status != 'arrived' %>
+    <div id="directions-btn-container" class="ui-grid-solo" style="display: none;">
       <div class="ui-block-a"><a href="#directions" data-role="button" data-icon="info" data-transition="slide">View on Map</a></div>
+    </div>
+      <% end %>
+    <% else %>
+    <div id="appointment-canceled">
+      <p>Your appointment has been marked:</p>
+
+      <p style="font-size: 40px; margin: 40px 0px; color: #ff9999;">CANCELED</p>
     </div>
     <% end %>
 
@@ -135,13 +229,16 @@
 
 <div data-role="page" id="directions" class="jqm-demos">
 
-  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
-    <a href="#home" data-icon="back" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back ui-icon-shadow"></span></span></a>
+  <div data-role="header" class="jqm-header ui-header ui-bar-b ui-icon-nodisc" role="banner">
+    <a href="#home" data-icon="back" data-iconshadow="false" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all" title="Home" data-theme="b"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-back"></span></span></a>
     <h1>Your Appointment</h1>
   </div>
 
   <div data-role="content">
-    <div id="map_canvas_1" style="height:300px;"></div>
+    <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
+      <div id="directions-map" style="height:300px;"></div>
+      <p id="directions-summary" style="text-align: center; margin-bottom: 0px;"></p>
+    </div>
   </div>
 
 </div>

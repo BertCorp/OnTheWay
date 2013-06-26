@@ -1,46 +1,81 @@
-
-<h3>Current Location:</h3>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= content_for?(:title) ? yield(:title) : "OnMyWay" %></title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <%= yield(:head) %>
+</head>
+<body>
 
 <div id="mapContainer" style="width: 100%; height: 500px; margin: auto;"></div>
 
-<!--<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
 
   var marker = null;
+  var circle = null;
   var map = null;
-  if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(function(position){
-      console.log(position.coords);
-      // lets store in redis.
-      $.post('/providers/track', { position: position }, function(data) {
-        console.log("Stored: " + data);
-      });
+  var watch_id = false;
 
-      var latitude = position.coords.latitude;
-      var longitude = position.coords.longitude;
-      var coords = new google.maps.LatLng(latitude, longitude);
-      var mapOptions = {
-        zoom: 15,
-        center: coords,
-        mapTypeControl: true,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      if (marker) {
-        marker.setPosition(coords);
-      } else {
-        map = new google.maps.Map(document.getElementById("mapContainer"), mapOptions);
-        marker = new google.maps.Marker({
-          position: coords,
-          map: map,
-          title: "Your current location!"
+  setTimeout(function() {
+    if (navigator.geolocation) {
+      watch_id = navigator.geolocation.watchPosition(function(position){
+        console.log(position.coords);
+        // lets store in redis.
+        $.post('/providers/track', { position: position }, function(data) {
+          console.log("Stored: " + JSON.stringify(position));
         });
-      }
-    }, function(err) {
-      alert("Uhoh! We had an error.");
-    }, { enableHighAccuracy : true, timeout : 60000, maximumAge : 0 });
-  } else {
-    alert("Geolocation API is not supported in your browser.");
-  }
+
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var coords = new google.maps.LatLng(latitude, longitude);
+        var mapOptions = {
+          zoom: 15,
+          center: coords,
+          mapTypeControl: false,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        if (marker) {
+          marker.setPosition(coords);
+          circle.setCenter(coords);
+          circle.setRadius(position.coords.accuracy);
+        } else {
+          map = new google.maps.Map(document.getElementById("mapContainer"), mapOptions);
+          marker = new google.maps.Marker({
+            icon : { url : 'http://i.stack.imgur.com/orZ4x.png', size: new google.maps.Size(22, 22), origin: new google.maps.Point(0, 0), anchor: new google.maps.Point(11,11) },
+            position: coords,
+            map: map,
+            title: "Your current location!"
+          });
+          circle = new google.maps.Circle({
+            center: coords,
+            radius: position.coords.accuracy,
+            map: map,
+            fillColor: '#0000cc',
+            fillOpacity: 0.25,
+            strokeColor: '#0000cc',
+            strokeOpacity: 0.5
+          });
+          map.fitBounds(circle.getBounds());
+        }
+      }, function(err) {
+        alert("Uhoh! We had an error.");
+      }, { enableHighAccuracy : true, timeout : 60000, maximumAge : 0 });
+    } else {
+      alert("Geolocation API is not supported in your browser.");
+    }
+  }, 10000);
 
 </script>
+
+</body>
+</html>
