@@ -19,12 +19,12 @@
 				<div id="home" class="span8">
 					<div class="row">
 						<div class="span8 centered">
-							<div class="logo"><%= image_tag("logo-white.png") %></div>
+							<div class="logo"><%= link_to image_tag("logo-white.png"), root_path %></div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="span8">
-							<div><a href="/"><< Back Home</a></div>
+							<div><a href="/">Go To Homepage</a></div>
 						</div>
 					</div>
 					<div class="well">
@@ -38,6 +38,8 @@
 									<li><strong>Social Exposure</strong> - Get mentioned on Facebook and Twitter as soon as your appointment is done.</li>
 								</ul>
 								<p>Interested in trying out <strong>OnTheWay?</strong> tell us about your business and we'll contact you about becoming a beta tester.</p>
+								
+								<p>More questions? Email us at <a href="mailto:info@onthewayhq.com">info@onthewayhq.com</a></p>
 							</div><!--span4-->
 							
 							
@@ -68,13 +70,13 @@
 							<h4>1.) The morning of your appointment all of your customers' receive a text with a link to their appointment page.</h4>
 						</div>
 						<div class="span3 pull-right">
-							<div><%= image_tag("place_holder.png")%></div><br />
+							<div><a href="#modal1" data-toggle="modal"><%= image_tag("all_appointments_small.png")%></a></div><br />
 						</div>
 					</div>
 					
 					<div class="row">
 						<div class="span3">
-							<div><%= image_tag("place_holder.png")%></div><br />
+							<div><a href="#modal2" data-toggle="modal"><%= image_tag("iphone_1_mini.png")%></a></div><br />
 						</div>
 						<div class="span5 pull-right">
 							<h4>2.) Your customers get updates on your estimated arrival time as your progress throughout your day.</h4>
@@ -86,13 +88,13 @@
 							<h4>3.) Tell your customer when they're on their way. Running late? Ahead of schedule? No problem, easily send them a text or give them a call.</h4>
 						</div>
 						<div class="span3 pull-right">
-							<div><%= image_tag("place_holder.png")%></div><br />
+							<div><a href="#modal3" data-toggle="modal"><%= image_tag("appointment_show_small.png")%></a></div><br />
 						</div>
 					</div>
 					
 					<div class="row">
 						<div class="span3">
-							<div><%= image_tag("place_holder.png")%></div><br />
+							<div><a href="#modal4" data-toggle="modal"><%= image_tag("feedback_small.png")%></a></div><br />
 						</div>
 						<div class="span5 pull-right">
 							<h4>4.) When you've completed your work your customer is prompted to leave feedback.</h4>
@@ -105,15 +107,10 @@
 							<h4>5.)  Your customer is then prompted to share with their friends.</h4>
 						</div>
 						<div class="span3 pull-right">
-							<div><%= image_tag("place_holder.png")%></div><br />
+							<div><a href="#modal5" data-toggle="modal"><%= image_tag("social_small.png")%></a></div><br />
 						</div>
 					</div>
-					
-					<div class="row">
-						<div class="span8 centered">
-							<a href="/" class="btn-large btn-success">View Full Demo</a>
-						</div>
-					</div>
+				
 				</div>
             </div>
           </div>
@@ -122,6 +119,47 @@
         </div>
       </div> <!--! end of .container -->
     </div> <!--! end of #main -->
+
+	<!-- Modal1 -->
+	<div id="modal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-body">
+		 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <%= image_tag("all_appointments_large.png")%>
+	  </div>
+	</div>
+	
+	<!-- Modal2 -->
+	<div id="modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-body">
+		 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <%= image_tag("iphone_1.png")%>
+	  </div>
+	</div>
+	
+	<!-- Modal3 -->
+	<div id="modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-body">
+		 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <%= image_tag("appointment_show_large.png")%>
+	  </div>
+	</div>
+	
+	<!-- Modal4 -->
+	<div id="modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-body">
+		 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <%= image_tag("feedback_large.png")%>
+	  </div>
+	</div>
+	
+	<!-- Modal5 -->
+	<div id="modal5" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-body">
+		 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <%= image_tag("social_large.png")%>
+	  </div>
+	</div>
+
   </body>
 </html>
 				

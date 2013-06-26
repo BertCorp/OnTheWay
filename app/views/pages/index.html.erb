@@ -19,7 +19,7 @@
 				<div id="home" class="span8">
 					<div class="row-fluid">
 						<div class="span12 centered">
-							<div class="logo"><%= image_tag("logo-white.png") %></div>
+							<div class="logo"><%= link_to image_tag("logo-white.png"), root_path %></div>
 						</div>
 					</div>
 					<div class="well">
@@ -33,6 +33,9 @@
 								<p>With OnTheWay you get updated time of arrivals as your service provider works through his appointments and notified when they're enroute to your appointment.</p>
 
 								<p><strong>Have an appointment coming up? </strong>Tell us about it and we'll contact your provider about using <strong>OnTheWay.</strong></p>
+								
+								<div>Service Provider? <%= link_to "Get More Info", "/pro_marketing" %></div>
+								
 							</div><!--span4-->
 							
 							
@@ -65,7 +68,7 @@
 								<h4>1.) The morning of your appointment you get a text with a link to your appointment.</h4>
 							</div>
 							<div class="span3 pull-right">
-								<div><a href="#modal1" data-toggle="modal"><%= image_tag("iphone_1_mini.png")%></a></div><br />
+								<div><a href="#modal1" data-toggle="modal"><%= image_tag("text_small.png")%></a></div><br />
 							</div>
 						</div>
 						
@@ -81,17 +84,17 @@
 
 						<div class="row">
 							<div class="span5">
-								<h4>3.) Get an update when they're on the way!</h4>
+								<h4>3.) Go about your day as normal and receive an update when your provider is on the way!</h4>
 							</div>
 							<div class="span3 pull-right">
-								<div><a href="#modal3" data-toggle="modal"><%= image_tag("iphone_1_mini.png")%></a></div><br />
+								<div><a href="#modal3" data-toggle="modal"><%= image_tag("enroute_small.png")%></a></div><br />
 							</div>
 						</div>
-					
+					<hr>
 					<div class="row-fluid">
 						<div class="span12 centered">
 							<div>Are you a service provider?</div>
-							<div><%= link_to "Learn More", "/pro_marketing" %></div>
+							<div><%= button_to "Get More Info", "/pro_marketing", method: :get, :class => "btn btn-success" %></div>
 						</div>
 					</div>
 				</div>
@@ -107,7 +110,7 @@
 		<div id="modal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div class="modal-body">
 			 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		    <%= image_tag("iphone_1.png")%>
+		    <%= image_tag("text_large.png")%>
 		  </div>
 		</div>
 		
@@ -123,7 +126,7 @@
 		<div id="modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div class="modal-body">
 			 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		    <%= image_tag("iphone_1.png")%>
+		    <%= image_tag("enroute_large.png")%>
 		  </div>
 		</div>
 

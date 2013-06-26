@@ -5,7 +5,15 @@ class PagesController < ApplicationController
     render :layout => false
   end
   
+  def landing_confirmation
+    render :layout => false
+  end
+  
   def pro_marketing
+    render :layout => false
+  end
+  
+  def pro_marketing_confirmation
     render :layout => false
   end
 
