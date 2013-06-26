@@ -33,19 +33,36 @@ ActiveRecord::Schema.define(:version => 20130622001220) do
   add_index "admins", ["reset_password_token"], :name => "index_admins_on_reset_password_token", :unique => true
 
   create_table "appointments", :force => true do |t|
+<<<<<<< Updated upstream
     t.integer  "company_id",   :default => 0,           :null => false
     t.integer  "provider_id",  :default => 0,           :null => false
     t.integer  "customer_id",  :default => 0,           :null => false
     t.datetime "starts_at"
     t.text     "location"
     t.string   "status",       :default => "requested", :null => false
+=======
+    t.integer  "company_id"
+    t.integer  "provider_id"
+    t.integer  "customer_id"
+    t.string   "shortcode"
+    t.datetime "starts_at"
+    t.text     "location"
+    t.text     "provider_location"
+    t.string   "status"
+>>>>>>> Stashed changes
     t.integer  "rating"
     t.text     "feedback"
     t.datetime "confirmed_at"
     t.datetime "arrived_at"
     t.datetime "finished_at"
+<<<<<<< Updated upstream
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
+=======
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.datetime "next_at"
+>>>>>>> Stashed changes
     t.datetime "en_route_at"
     t.text     "notes"
   end
@@ -79,13 +96,13 @@ ActiveRecord::Schema.define(:version => 20130622001220) do
   end
 
   create_table "providers", :force => true do |t|
-    t.integer  "company_id",                           :default => 0,  :null => false
+    t.integer  "company_id"
     t.string   "name"
     t.string   "phone"
     t.datetime "created_at",                                           :null => false
     t.datetime "updated_at",                                           :null => false
     t.string   "email",                                :default => "", :null => false
-    t.string   "encrypted_password"
+    t.string   "encrypted_password",                   :default => ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -94,7 +111,6 @@ ActiveRecord::Schema.define(:version => 20130622001220) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "authentication_token"
     t.string   "invitation_token",       :limit => 60
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
@@ -103,7 +119,6 @@ ActiveRecord::Schema.define(:version => 20130622001220) do
     t.string   "invited_by_type"
   end
 
-  add_index "providers", ["authentication_token"], :name => "index_providers_on_authentication_token", :unique => true
   add_index "providers", ["email"], :name => "index_providers_on_email", :unique => true
   add_index "providers", ["invitation_token"], :name => "index_providers_on_invitation_token"
   add_index "providers", ["invited_by_id"], :name => "index_providers_on_invited_by_id"

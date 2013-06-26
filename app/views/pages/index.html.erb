@@ -1,2 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "OnMyWay" %></title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <%= stylesheet_link_tag "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+    <%= yield(:head) %>
+  </head>
+  <body class="landing">
+    <div id="main" role="main">
+      <div class="container">
+        <div class="content">
+           <div class="row">
+				<div id="home" class="span8">
+					<div class="row-fluid">
+						<div class="span12 centered">
+							<div class="logo"><%= image_tag("logo-white.png") %></div>
+						</div>
+					</div>
+					<div class="well">
+						<div class="row-fluid">
+							<div class="span6">
+								<h3>Sick of waiting?</h3>
+									
+								<p>Every time you book an appointment with a service provider do you dread the 4 hours you have to wait around for them to arrive on the day of your appointment?</p>
+								<p>On then on the day of your appointment they don't show up until the last 30 minutes.</p>
 
-Welcome.
+								<p>With OnTheWay you get updated time of arrivals as your service provider works through his appointments and notified when they're enroute to your appointment.</p>
+
+								<p><strong>Have an appointment coming up? </strong>Tell us about it and we'll contact your provider about using <strong>OnTheWay.</strong></p>
+							</div><!--span4-->
+							
+							
+							<div class="span6">
+								<form action="http://ontheway.createsend.com/t/i/s/vydi/" method="post" id="subForm">
+									<div>
+										<h4>Tell us about your appointment</h4>
+										<p><i>Give us the details of your next appointment and we'll contact your service provider about using OnTheWay.</i></p>
+										<input type="text" name="cm-name" id="name" placeholder="Your Name" />								
+										<input type="text" name="cm-vydi-vydi" id="vydi-vydi" placeholder="Your Email"/>
+										<input type="text" name="cm-f-dhs" id="CompanyName" placeholder="Company Name" />
+										<input type="text" name="cm-f-dhg" id="CompanyPhone" placeholder="Company Phone" />
+										<input type="date" name="cm-f-dhjy" id="AppointmentDate" placeholder="Your Appointment Date" class="input-medium" /><br />
+
+										<input type="submit" value="Get OnTheWay" class="btn btn-success" />
+									</div>
+								</form> 
+							</div><!--span4-->
+							
+						</div><!--row-->
+					</div><!--well-->
+						<div class="row">
+							<div class="span6 centered">
+								<h1>How Does It Work?</h1>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="span5">
+								<h4>1.) The morning of your appointment you get a text with a link to your appointment.</h4>
+							</div>
+							<div class="span3 pull-right">
+								<div><a href="#modal1" data-toggle="modal"><%= image_tag("iphone_1_mini.png")%></a></div><br />
+							</div>
+						</div>
+						
+						
+						<div class="row">
+							<div class="span3">
+								<div><a href="#modal2" data-toggle="modal"><%= image_tag("iphone_1_mini.png")%></a></div><br />
+							</div>
+							<div class="span5 pull-right">
+								<h4>2.) Check your providers' progress throughout the day and their estimated time of arrival.</h4>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="span5">
+								<h4>3.) Get an update when they're on the way!</h4>
+							</div>
+							<div class="span3 pull-right">
+								<div><a href="#modal3" data-toggle="modal"><%= image_tag("iphone_1_mini.png")%></a></div><br />
+							</div>
+						</div>
+					
+					<div class="row-fluid">
+						<div class="span12 centered">
+							<div>Are you a service provider?</div>
+							<div><%= link_to "Learn More", "/pro_marketing" %></div>
+						</div>
+					</div>
+				</div>
+            </div>
+          </div>
+          <footer>
+          </footer>
+        </div>
+      </div> <!--! end of .container -->
+    </div> <!--! end of #main -->
+
+		<!-- Modal1 -->
+		<div id="modal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-body">
+			 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <%= image_tag("iphone_1.png")%>
+		  </div>
+		</div>
+		
+		<!-- Modal2 -->
+		<div id="modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-body">
+			 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <%= image_tag("iphone_1.png")%>
+		  </div>
+		</div>
+		
+		<!-- Modal3 -->
+		<div id="modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-body">
+			 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <%= image_tag("iphone_1.png")%>
+		  </div>
+		</div>
+
+  </body>
+</html>
+				
