@@ -50,6 +50,10 @@ OnTheWay::Application.routes.draw do
   get "provider" => redirect("/mockups/provider-v1.0.html")
   get "customer" => redirect("/mockups/customer-v1.0.html")
   get "feedback" => redirect("/mockups/customer-feedback-v1.0.html")
+  
+  match "pro_marketing", :to => "pages#pro_marketing"
+  match "pro_marketing_confirmation", :to => "pages#pro_marketing_confirmation"
+  match "landing_confirmation", :to => "pages#landing_confirmation"
 
   root :to => "pages#index"
 
