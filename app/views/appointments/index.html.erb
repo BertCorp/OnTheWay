@@ -5,7 +5,6 @@
 
   <table class="table table-bordered table-striped">
     <tr>
-      <th>ID</th>
       <th>Customer</th>
       <th>Provider</th>
       <th>URL</th>
@@ -16,7 +15,6 @@
 
   <% @upcoming_appointments.each do |appointment| %>
     <tr>
-      <td><%= link_to appointment.id, appointment %></td>
       <td><%= link_to appointment.customer.name, appointment.customer %></td>
       <td><%= link_to appointment.provider.name, appointment.provider %></td>
       <td><%= link_to appointment.shorturl, appointment.shorturl %></td>
