@@ -175,7 +175,7 @@
     <p style="font-size: 20px;"><strong><%= (@appointment.starts_at.today?) ? 'Today' : "#{@appointment.starts_at.strftime('%Y-%m-%d')}" %></strong></p>
 
     <% if @appointment.status != 'canceled' %>
-      <% if @appointment.status != 'arrived' %>
+      <% if @appointment.queue_position && (@appointment.status != 'arrived') %>
     <div id="appointment-status">
       <p>Based on their schedule, <span id="appointment-queue"><% if @appointment.queue_position <= 1 %>you are <strong>next</strong>!<% else %>there are <strong><%= @appointment.queue_position+1 %></strong> people in front of you.<% end %></span></p>
 
