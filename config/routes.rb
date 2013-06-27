@@ -3,6 +3,14 @@ OnTheWay::Application.routes.draw do
   devise_for :admins, :skip => [:registrations]
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
+  # Administrative Routes
+  resque_constraint = lambda do |request|
+    request.env['warden'].user && request.env['warden'].user(:admin)
+  end
+  constraints resque_constraint do
+    mount Resque::Server, :at => "/resque"
+  end
+
   devise_for :providers
   as :provider do
     namespace "api" do
@@ -28,12 +36,13 @@ OnTheWay::Application.routes.draw do
 
   devise_for :companies
   as :company do
-    get "login" => "devise/sessions#new", :as => "new_company_session"
-    delete "logout" => "devise/sessions#destroy", :as => "destroy_company_session"
+    get "/login" => "devise/sessions#new", :as => "new_company_session"
+    delete "/logout" => "devise/sessions#destroy", :as => "destroy_company_session"
+    get "/logout" => "devise/sessions#destroy"
   end
 
   get "p" => redirect("/prototypes/provider-v1.0.html")
-  get "p:/id" => redirect("/prototypes/provider-v1.0.html")
+  get "p/:id" => redirect("/prototypes/provider-v1.0.html")
   get "a/:id" => "customers#appointment"
 
   # test methods
@@ -50,7 +59,7 @@ OnTheWay::Application.routes.draw do
   get "provider" => redirect("/mockups/provider-v1.0.html")
   get "customer" => redirect("/mockups/customer-v1.0.html")
   get "feedback" => redirect("/mockups/customer-feedback-v1.0.html")
-  
+
   match "pro_marketing", :to => "pages#pro_marketing"
   match "pro_marketing_confirmation", :to => "pages#pro_marketing_confirmation"
   match "landing_confirmation", :to => "pages#landing_confirmation"
