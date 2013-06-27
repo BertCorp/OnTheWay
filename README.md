@@ -102,3 +102,6 @@ Down the Road
   - ~~auto update queue/eta~~ 2013-06-25
 - ~~basic appointment ETA~~ 2013-06-25
   - ~~https://developers.google.com/maps/documentation/javascript/reference#DirectionsService~~
+- ~~add google analytics~~ 2013-06-26
+- ~~deploy mark's splash/marketing page~~ 2013-06-26
+- ~~install intercom to track user engagement~~ 2013-06-26

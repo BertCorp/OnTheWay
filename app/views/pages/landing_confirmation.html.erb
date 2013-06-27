@@ -16,24 +16,24 @@
       <div class="container">
         <div class="content">
            <div class="row">
-				<div id="home" class="span8">
-					<div class="row-fluid">
-						<div class="span12 centered">
-							<div class="logo"><%= image_tag("logo-white.png") %></div>
-						</div>
-					</div>
-					<div class="well">
-						<div class="row-fluid">
-							<div class="span12">
-								<div class="centered">
-									<h1>Great!</h1>
-									<p>We've got your appointment info and will contact your service provider about using OnTheWay for your appointment!</p>
-									<p><%= link_to "Take Me To The Homepage", root_path %>
-								</div><!--centered-->
-							</div><!--span12-->
-						</div><!--row-->
-					</div><!--well-->
-				</div>
+        <div id="home" class="span8">
+          <div class="row-fluid">
+            <div class="span12 centered">
+              <div class="logo"><%= image_tag("logo-white.png") %></div>
+            </div>
+          </div>
+          <div class="well">
+            <div class="row-fluid">
+              <div class="span12">
+                <div class="centered">
+                  <h1>Great!</h1>
+                  <p>We've got your appointment info and will contact your service provider about using OnTheWay for your appointment!</p>
+                  <p><%= link_to "Take Me To The Homepage", root_path %>
+                </div><!--centered-->
+              </div><!--span12-->
+            </div><!--row-->
+          </div><!--well-->
+        </div>
             </div>
           </div>
           <footer>
@@ -41,7 +41,6 @@
         </div>
       </div> <!--! end of .container -->
     </div> <!--! end of #main -->
-
+    <%= render :partial => 'layouts/analytics' %>
   </body>
 </html>
-				
