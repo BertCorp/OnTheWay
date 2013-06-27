@@ -20,6 +20,7 @@ Todos
   - ~~account setup and funded~~ 2013-06-22
 - send daily appointment reminders
 - send text when provider is on the way to appointment
+- company/provider customer and appointment import tools
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
 
 
@@ -57,7 +58,7 @@ Down the Road
 - ~~versioned provider js and now rely on server version before local fallback~~ 2013-06-23
 - ~~install new relic~~ 2013-06-25
 - ~~up dynos~~ 2013-06-25
-- mobile prototype for providers
+- ~~basic functional mobile prototype for providers~~
   - ~~update and build out api endpoint structure~~ 2013-06-16
   - ~~figure out api response structure~~ 2013-06-16
   - ~~functional provider login/authentication~~ 2013-06-16
@@ -91,7 +92,7 @@ Down the Road
     - ~~restructure~~ 2013-06-23
     - ~~be more efficient~~ 2013-06-23
     - ~~store current location when fetched.~~ 2013-06-24
-- mobile prototype for customers
+- ~~mobile prototype for customers~~
   - ~~dynamic~~ 2013-06-19
   - ~~cancel appointment~~ 2013-06-19
   - ~~customer feedback~~ 2013-06-19
@@ -100,4 +101,4 @@ Down the Road
   - ~~add eta/last of on map/directions page.~~ 2013-06-25
   - ~~auto update queue/eta~~ 2013-06-25
 - ~~basic appointment ETA~~ 2013-06-25
-  - https://developers.google.com/maps/documentation/javascript/reference#DirectionsService
+  - ~~https://developers.google.com/maps/documentation/javascript/reference#DirectionsService~~
