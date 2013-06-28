@@ -61,7 +61,7 @@
   <div class="control-group">
     <label class="control-label" for="appointment_status">Status</label>
     <div class="controls">
-      <%= f.select :status, @appointment.statuses, { :include_blank => true, :selected => ((@appointment.status) ? @appointment.status : 'confirmed') } %>
+      <%= f.select :status, @appointment.statuses, :include_blank => true %>
     </div>
   </div>
 

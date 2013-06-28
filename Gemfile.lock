@@ -156,6 +156,12 @@ GEM
     redis-store (1.1.3)
       redis (>= 2.2.0)
     remotipart (1.0.5)
+    roo (1.11.2)
+      nokogiri
+      rubyzip
+      spreadsheet (> 0.6.4)
+    ruby-ole (1.2.11.7)
+    rubyzip (0.9.9)
     safe_yaml (0.9.3)
     sass (3.2.9)
     sass-rails (3.2.6)
@@ -165,6 +171,8 @@ GEM
     simple_form (2.1.0)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+    spreadsheet (0.8.5)
+      ruby-ole (>= 1.0)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -213,6 +221,7 @@ DEPENDENCIES
   rails_admin
   redis (= 2.2.2)
   redis-rails
+  roo
   sass-rails (~> 3.2.3)
   simple_form
   sqlite3

@@ -1,0 +1,16 @@
+
+<h1>Import Appointments</h1>
+
+<%= form_tag({action: :upload}, multipart: true, :class => 'form-horizontal' ) do %>
+
+  <p>Please use the following form to upload your appointments.</p>
+
+  <%= file_field_tag 'file' %>
+
+  <p>Note: Right now, we only accept .XLSX (new Microsoft Excel) files, but will be adding more support in the future. If you have a specific format you want us to support, please let us know.</p>
+
+  <div class="form-actions">
+    <%= button_tag :submit, :class => 'btn-primary' %>
+    <%= link_to 'Cancel', :back, :class => "btn btn-danger" %>
+  </div>
+<% end %>

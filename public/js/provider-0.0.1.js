@@ -245,7 +245,6 @@
           // update last date divider's appointment count
           if (current_date) $('#date-' + current_date + ' span.ui-li-count').html(current_count);
           // now let's set our new current date and create the new date divider
-          // $.datepicker.formatDate('yy/mm/dd', appointments[x].starts_at);
           current_date = appointments[x].starts_at.substr(0,10);
           current_count = 0;
           var date_item = date.replace(/{{date}}/g, current_date);
