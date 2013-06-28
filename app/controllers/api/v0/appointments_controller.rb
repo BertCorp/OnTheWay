@@ -52,6 +52,8 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
   # PUT /appointments/1.json
   def update
     @appointment = current_provider.appointments.find(params[:id])
+    orig_status = @appointment.status
+    orig_time = @appointment.starts_at
 
     params[:appointment][:starts_at] = "#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}" if params[:appointment][:starts_at]
 
@@ -68,6 +70,13 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     end
 
     if @appointment.update_attributes(params[:appointment])
+      if (orig_time != params[:appointment][:starts_at]) && (params[:appointment][:starts_at] < orig_time)
+        @appointment.send_reminder
+      if (orig_status != 'en route') && (params[:appointment][:status] == 'en_route')
+        @appointment.send_en_route_notification
+      if (orig_status != 'finished') && (params[:appointment][:status] == 'finished')
+        @appointment.send_feedback_request
+
       render json: @appointment
     else
       render json: { message: "There was an error updating the appointment.", errors: @appointment.errors }, status: :unprocessable_entity

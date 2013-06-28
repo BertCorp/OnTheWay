@@ -39,6 +39,55 @@ class Appointment < ActiveRecord::Base
   attr_accessible :status, :notes, :rating, :feedback
   attr_accessible :confirmed_at, :en_route_at, :arrived_at, :finished_at
 
+  # what about appointment times that change and bypass window?
+  after_create :send_reminder
+
+  def send_reminder
+    # dont send any texts if it's in the past
+    return false if starts_at < Time.now
+    # dont send any texts if it's before 4pm the day before the appointment
+    return false if Time.now < (starts_at-1.day).change(:hour => 16)
+    # ignore 555 numbers
+    return false if to[0..2] == '555'
+
+    message = "Keep an eye on #{provider.name}'s progress throughout the day: #{shorturl}"
+    #puts "#{appointment.to} -- #{message}"
+    @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+    @client.account.sms.messages.create(
+      :to => "+1#{to}",
+      :from => TWILIO_FROM,
+      :body => message
+    )
+  end
+
+  def send_en_route_notification
+    # ignore 555 numbers
+    return false if to[0..2] == '555'
+
+    message = "Looks like #{provider.name} is on their way! Watch their progress: #{shorturl}"
+    #puts "#{appointment.to} -- #{message}"
+    @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+    @client.account.sms.messages.create(
+      :to => "+1#{to}",
+      :from => TWILIO_FROM,
+      :body => message
+    )
+  end
+
+  def send_feedback_request
+    # ignore 555 numbers
+    return false if to[0..2] == '555'
+
+    message = "Looks like your appointment is all finished! #{provider.name} would love to hear your feedback: #{shorturl}"
+    #puts "#{appointment.to} -- #{message}"
+    @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+    @client.account.sms.messages.create(
+      :to => "+1#{to}",
+      :from => TWILIO_FROM,
+      :body => message
+    )
+  end
+
   def queue_position
     queue = provider.queue
     queue.each_with_index do |a, i|
