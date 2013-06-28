@@ -57,7 +57,7 @@ class Appointment < ActiveRecord::Base
   end
 
   def shorturl
-    "http://otwhq.com/a/#{shortcode}" # switch to http://otwhq.co/ when it's working again
+    "http://otwhq.co/a/#{shortcode}" # switch to http://otwhq.co/ when it's working again
   end
 
   def status_date
@@ -79,6 +79,12 @@ class Appointment < ActiveRecord::Base
 
   def statuses
     ['requested', 'confirmed', 'en route', 'arrived', 'finished', 'canceled']
+  end
+
+  def to
+    p = customer.phone.gsub(/\D/, '')
+    p = p.drop(1) if ((p.size == 11) && (p[0] == 1))
+    p
   end
 
   def as_json(args={})
