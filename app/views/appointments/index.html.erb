@@ -45,7 +45,6 @@
 
   <table class="table table-bordered table-striped">
     <tr>
-      <th>ID</th>
       <th>Customer</th>
       <th>Provider</th>
       <th>URL</th>
@@ -57,16 +56,12 @@
 
   <% @past_appointments.each do |appointment| %>
     <tr>
-      <td><%= link_to appointment.id, appointment %></td>
       <td><%= link_to appointment.customer.name, appointment.customer %></td>
       <td><%= link_to appointment.provider.name, appointment.provider %></td>
       <td><%= link_to appointment.shorturl, appointment.shorturl %></td>
       <td><%= appointment.starts_at.strftime("%F") %> <%= appointment.starts_at.strftime("%l:%M%P") if appointment.starts_at.strftime("%l:%M%P") != "12:00am" %></td>
-      <td><a href="#" title="<%= appointment.status_date %>"><%= (['confirmed', 'next', 'en route'].include? appointment.status) ? "MISSED" : appointment.status %></a></td>
+      <td><%= link_to (['confirmed', 'next', 'en route'].include? appointment.status) ? "MISSED" : appointment.status, appointment, title: appointment.status_date %></td>
       <td><%= appointment.rating %> - <%= appointment.feedback %></td>
-      <!--<td><%= appointment.confirmed_at %></td>
-      <td><%= appointment.arrived_at %></td>
-      <td><%= appointment.finished_at %></td>-->
       <td>
         <%= link_to raw('<i class="icon-edit icon-white"></i>'), edit_appointment_path(appointment), :class => 'btn btn-primary btn-mini', :title => "Edit" %>
         <%= link_to raw('<i class="icon-trash icon-white"></i>'), appointment, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger btn-mini', :title => "Delete" %>

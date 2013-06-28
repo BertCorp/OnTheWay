@@ -70,12 +70,15 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     end
 
     if @appointment.update_attributes(params[:appointment])
-      if (orig_time != params[:appointment][:starts_at]) && (params[:appointment][:starts_at] < orig_time)
+      if params[:appointment][:starts_at] && (orig_time.to_s[0..15] != params[:appointment][:starts_at]) && (params[:appointment][:starts_at] < orig_time.to_s[0..15])
         @appointment.send_reminder
-      if (orig_status != 'en route') && (params[:appointment][:status] == 'en_route')
+      end
+      if (orig_status != 'en route') && (params[:appointment][:status] == 'en route')
         @appointment.send_en_route_notification
+      end
       if (orig_status != 'finished') && (params[:appointment][:status] == 'finished')
         @appointment.send_feedback_request
+      end
 
       render json: @appointment
     else

@@ -1,90 +1,94 @@
 <p><%= link_to '<<  View All Appointments', appointments_path %></p>
 
+<div style="float: right;">
+  <%= link_to raw('<i class="icon-edit icon-white"></i>'), edit_appointment_path(@appointment), :class => 'btn btn-primary btn-mini', :title => "Edit" %>
+  <%= link_to raw('<i class="icon-trash icon-white"></i>'), @appointment, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger btn-mini', :title => "Delete" %>
+</div>
+
 <h1>Appointment Info</h1>
 
-	<p><%= link_to 'Edit Appointment', edit_appointment_path(@appointment) %></p>
-	<p>
-	  <b>Provider:</b>
-	  <%= link_to @appointment.provider.name, @appointment.provider %>
-	</p>
+  <p>
+    <b>Provider:</b>
+    <%= link_to @appointment.provider.name, @appointment.provider %>
+  </p>
 
-	<p>
-	  <b>Customer Name:</b>
-	  <%= link_to @appointment.customer.name, @appointment.customer %>
-	</p>
+  <p>
+    <b>Customer Name:</b>
+    <%= link_to @appointment.customer.name, @appointment.customer %>
+  </p>
 
-	<p>
-	  <b>Short url:</b>
-	  <a href="<%= @appointment.shorturl %>"><%= @appointment.shorturl %></a>
-	</p>
+  <p>
+    <b>Short url:</b>
+    <a href="<%= @appointment.shorturl %>"><%= @appointment.shorturl %></a>
+  </p>
 
-	<p>
-	  <b>Scheduled On:</b>
-	  <%= @appointment.starts_at %>
-	</p>
+  <p>
+    <b>Scheduled On:</b>
+    <%= @appointment.starts_at %>
+  </p>
 
-	<p>
-	  <b>Customer Address:</b>
-	  <%= @appointment.location %>
-	</p>
+  <p>
+    <b>Customer Address:</b>
+    <%= @appointment.location %>
+  </p>
 
-	<p>
-	  <b>Notes:</b>
-	  <%= @appointment.notes %>
-	</p>
+  <p>
+    <b>Notes:</b>
+    <%= @appointment.notes %>
+  </p>
 
-	<p>
-	  <b>Current Status:</b>
-	  <%= @appointment.status %>
-	</p>
+  <p>
+    <b>Current Status:</b>
+    <%= @appointment.status %>
+  </p>
 
 <h3>Appointment History</h3>
-  	
-		<p>
-		   <b>Appointment Created</b>
-			  <%= @appointment.created_at %>
-		</p>
-	<% if @appointment.confirmed_at.present? %>
-		<p>
-		  <b>Time Confirmed:</b>
-		  	 <%= @appointment.confirmed_at %>
-		</p>
-	<% end %>
 
-	<% if @appointment.en_route_at.present? %>
-		<p>
-		  <b>Time Marked En Route:</b>
-		  	 <%= @appointment.en_route_at %>
-		</p>
-	<% end %>
+    <p>
+       <b>Appointment Created</b>
+        <%= @appointment.created_at %>
+    </p>
+  <% if @appointment.confirmed_at.present? %>
+    <p>
+      <b>Time Confirmed:</b>
+         <%= @appointment.confirmed_at %>
+    </p>
+  <% end %>
 
-	<% if @appointment.arrived_at.present? %>
-		<p>
-		  <b>Time Arrived:</b>	
-		  	<%= @appointment.arrived_at %>
-		</p>
-	<% end %>
+  <% if @appointment.en_route_at.present? %>
+    <p>
+      <b>Time Marked En Route:</b>
+         <%= @appointment.en_route_at %>
+    </p>
+  <% end %>
 
-	<% if @appointment.finished_at.present? %>
-		<p>
-		  <b>Time Finished:</b>
-		  	 <%= @appointment.finished_at %>
-		</p>
-	<% end %>
+  <% if @appointment.arrived_at.present? %>
+    <p>
+      <b>Time Arrived:</b>
+        <%= @appointment.arrived_at %>
+    </p>
+  <% end %>
+
+  <% if @appointment.finished_at.present? %>
+    <p>
+      <b>Time Finished:</b>
+         <%= @appointment.finished_at %>
+    </p>
+  <% end %>
 
 <h3>Appointment Feedback</h3>
-	<% if @appointment.rating.present? || @appointment.feedback.present? %>
-		<p>
-		  <b>Rating:</b>
-		  <%= @appointment.rating %>
-		</p>
+  <% if @appointment.rating.present? || @appointment.feedback.present? %>
+    <p>
+      <b>Rating:</b>
+      <%= @appointment.rating %>
+    </p>
 
-		<p>
-		  <b>Feedback:</b>
-		  <%= @appointment.feedback %>
-		</p>
-	<% else %>
-		<p>No feedback left yet</p>
-	<% end %>
+    <p>
+      <b>Feedback:</b>
+      <%= @appointment.feedback %>
+    </p>
+  <% else %>
+    <p>No feedback left yet</p>
+  <% end %>
 
 

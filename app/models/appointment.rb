@@ -64,7 +64,7 @@ class Appointment < ActiveRecord::Base
     # ignore 555 numbers
     return false if to[0..2] == '555'
 
-    message = "Looks like #{provider.name} is on their way! Watch their progress: #{shorturl}"
+    message = "Looks like #{provider.name} is on the way! Watch their progress: #{shorturl}"
     #puts "#{appointment.to} -- #{message}"
     @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
     @client.account.sms.messages.create(
