@@ -7,6 +7,15 @@ class AppointmentsController < ApplicationController
     @past_appointments = current_company.appointments.where(["(appointments.starts_at < ?) OR ((appointments.status = 'canceled') OR (appointments.status = 'finished'))", DateTime.now.beginning_of_day]).order("appointments.starts_at DESC")
   end
 
+  # GET /appointments/import
+  def import
+  end
+
+  # POST /appointments/import
+  def import_create
+
+  end
+
   # GET /appointments/1
   def show
     @appointment = Appointment.find(params[:id])
@@ -15,6 +24,8 @@ class AppointmentsController < ApplicationController
   # GET /appointments/new
   def new
     @appointment = current_company.appointments.new
+    @appointment.provider_id = current_company.providers.first.id if (current_company.providers.count == 1)
+    @appointment.status = 'confirmed'
   end
 
   # GET /appointments/1/edit

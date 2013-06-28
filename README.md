@@ -16,12 +16,6 @@ Mockups
 
 Todos
 =====
-- ~~twilio integration~~ 2013-06-27
-  - ~~account setup and funded~~ 2013-06-22
-- ~~send daily appointment reminders~~ 2013-06-27
-- if appointment is made after 4pm the day before, send a txt upon creation.
-- send text when provider is on the way to appointment
-- send text when appointment is finished
 - company/provider customer and appointment import tools
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
 
@@ -107,3 +101,9 @@ Down the Road
 - ~~add google analytics~~ 2013-06-26
 - ~~deploy mark's splash/marketing page~~ 2013-06-26
 - ~~install intercom to track user engagement~~ 2013-06-26
+- ~~twilio integration~~ 2013-06-27
+  - ~~account setup and funded~~ 2013-06-22
+- ~~send daily appointment reminders~~ 2013-06-27
+- ~~if appointment is made after 4pm the day before, send a txt upon creation.~~ 2013-06-27
+- ~~send text when provider is on the way to appointment~~ 2013-06-27
+- ~~send text when appointment is finished~~ 2013-06-27

@@ -54,6 +54,9 @@ OnTheWay::Application.routes.draw do
   resources :providers
   resources :customers
   resources :appointments
+  get "appointments/import" => "appointments#import", as: "import_appointments"
+  post "appointments/import" => "appointments#import_create"
+
 
   get "mobile" => redirect("/provider")
   get "provider" => redirect("/mockups/provider-v1.0.html")

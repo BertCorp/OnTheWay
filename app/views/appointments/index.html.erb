@@ -1,5 +1,6 @@
+  <%= link_to 'Import Appointments', import_appointments_path, :class => 'btn btn-info pull-right', :style => 'margin-left: 15px; margin-top: 15px;' %>
   <% if current_company.providers.count > 0 %>
-  <%= link_to 'Add Appointment', new_appointment_path, :class => 'btn btn-primary pull-right' %>
+  <%= link_to 'Add Appointment', new_appointment_path, :class => 'btn btn-primary pull-right', :style => 'margin-top: 15px;' %>
   <% end %>
   <h1>Upcoming Appointments</h1>
 
