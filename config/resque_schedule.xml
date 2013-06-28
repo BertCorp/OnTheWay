@@ -1,6 +1,6 @@
 queue_reminders_daily
-  cron: "0 * * * * America/Chicago"
+  cron: "0 16 * * * America/Chicago"
   class: QueueReminders
   queue: reminders
   args:
-  description: "This job queues all daily appointment reminders. Checks every hour based company/provider's settings."
+  description: "Send a SMS reminder for all appointments the day before at 4pm (Chicago time)."
