@@ -4,12 +4,12 @@ OnTheWay::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   # Administrative Routes
-  resque_constraint = lambda do |request|
-    request.env['warden'].user && request.env['warden'].user(:admin)
-  end
-  constraints resque_constraint do
-    mount Resque::Server, :at => "/resque"
-  end
+  #resque_constraint = lambda do |request|
+  #  request.env['warden'].user && request.env['warden'].user(:admin)
+  #end
+  #constraints resque_constraint do
+  #  mount Resque::Server, :at => "/resque"
+  #end
 
   devise_for :providers
   as :provider do
