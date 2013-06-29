@@ -14,6 +14,21 @@ Mockups
 - Customer Feedback: http://www.onthewayhq.com/feedback/
 
 
+Deployment
+==========
+- Precompile assets:
+`$ RAILS_ENV=production bundle exec rake assets:precompile`
+- Commit to github:
+`
+git commit -am "Commit Message"
+git push origin master
+`
+- Deploy to staging:
+`git push staging origin`
+- Deploy to production:
+`git push heroku origin`
+
+
 Todos
 =====
 - native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
@@ -107,3 +122,6 @@ Down the Road
 - ~~send text when provider is on the way to appointment~~ 2013-06-27
 - ~~send text when appointment is finished~~ 2013-06-27
 - ~~company/provider customer and appointment import tools for Michael~~ 2013-06-28
+- ~~fix crashing issue with precompiled assets~~ 2013-06-28
+- ~~add exception monitoring~~ 2013-06-28
+- setup basic staging
