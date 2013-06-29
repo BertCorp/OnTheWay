@@ -50,42 +50,54 @@ class Appointment < ActiveRecord::Base
     # ignore 555 numbers
     return false if to[0..2] == '555'
 
-    message = "Keep an eye on #{provider.name}'s progress throughout the day: #{shorturl}"
-    #puts "#{appointment.to} -- #{message}"
-    @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
-    @client.account.sms.messages.create(
-      :to => "+1#{to}",
-      :from => TWILIO_FROM,
-      :body => message
-    )
+    begin
+      message = "Keep an eye on #{provider.name}'s progress throughout the day: #{shorturl}"
+      #puts "#{appointment.to} -- #{message}"
+      @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+      @client.account.sms.messages.create(
+        :to => "+1#{to}",
+        :from => TWILIO_FROM,
+        :body => message
+      )
+    rescue
+      # fuck it
+    end
   end
 
   def send_en_route_notification
     # ignore 555 numbers
     return false if to[0..2] == '555'
 
-    message = "Looks like #{provider.name} is on the way! Watch their progress: #{shorturl}"
-    #puts "#{appointment.to} -- #{message}"
-    @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
-    @client.account.sms.messages.create(
-      :to => "+1#{to}",
-      :from => TWILIO_FROM,
-      :body => message
-    )
+    begin
+      message = "Looks like #{provider.name} is on the way! Watch their progress: #{shorturl}"
+      #puts "#{appointment.to} -- #{message}"
+      @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+      @client.account.sms.messages.create(
+        :to => "+1#{to}",
+        :from => TWILIO_FROM,
+        :body => message
+      )
+    rescue
+      # fuck it
+    end
   end
 
   def send_feedback_request
     # ignore 555 numbers
     return false if to[0..2] == '555'
 
-    message = "Looks like your appointment is all finished! #{provider.name} would love to hear your feedback: #{shorturl}"
-    #puts "#{appointment.to} -- #{message}"
-    @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
-    @client.account.sms.messages.create(
-      :to => "+1#{to}",
-      :from => TWILIO_FROM,
-      :body => message
-    )
+    begin
+      message = "Looks like your appointment is all finished! #{provider.name} would love to hear your feedback: #{shorturl}"
+      #puts "#{appointment.to} -- #{message}"
+      @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+      @client.account.sms.messages.create(
+        :to => "+1#{to}",
+        :from => TWILIO_FROM,
+        :body => message
+      )
+    rescue
+      # fuck it!
+    end
   end
 
   def queue_position

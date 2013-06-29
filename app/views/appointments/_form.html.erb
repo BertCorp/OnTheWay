@@ -22,7 +22,7 @@
         <%= f.fields_for :customer do |customer| %>
           <%= customer.text_field :name, placeholder: 'Name', style: "margin-bottom: 5px;" %><br/>
           <%= customer.email_field :email, placeholder: 'ex: example@onthewayhq.com', style: "margin-bottom: 5px;" %><br/>
-          <%= customer.telephone_field :phone, placeholder: '123-456-7890', pattern: "[0-9]{3}[\-][0-9]{3}[\-][0-9]{4}", class: 'input-medium', maxlength: '12' %>
+          <%= customer.telephone_field :phone, placeholder: "(xxx) xxx-xxxx", class: 'input-medium phone', maxlength: '22' %>
         <% end %>
       <% end %>
     </div>

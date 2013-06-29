@@ -16,17 +16,10 @@ Mockups
 
 Deployment
 ==========
-- Precompile assets:
-`$ RAILS_ENV=production bundle exec rake assets:precompile`
-- Commit to github:
-`
-git commit -am "Commit Message"
-git push origin master
-`
-- Deploy to staging:
-`git push staging origin`
-- Deploy to production:
-`git push heroku origin`
+- Precompile assets: `$ RAILS_ENV=production bundle exec rake assets:precompile`
+- Commit to github: `git commit -am "Commit Message"; git push origin master`
+- Deploy to staging: `git push staging master`
+- Deploy to production: `git push heroku master`
 
 
 Todos
@@ -124,4 +117,6 @@ Down the Road
 - ~~company/provider customer and appointment import tools for Michael~~ 2013-06-28
 - ~~fix crashing issue with precompiled assets~~ 2013-06-28
 - ~~add exception monitoring~~ 2013-06-28
-- setup basic staging
+- ~~setup basic staging~~ 2013-06-28
+- ~~Fix twilio exception when calling a bad number~~ 2013-06-28
+- ~~Better phone number input mask~~

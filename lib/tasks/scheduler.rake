@@ -16,14 +16,18 @@ namespace :reminders do
     appointments.each do |appointment|
       # ignore 555 numbers
       if appointment.to[0..2] != '555'
-        message = "Reminder: You have an appointment with #{appointment.provider.name} tomorrow: #{appointment.shorturl}"
-        #puts "#{appointment.to} -- #{message}"
-        @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
-        @client.account.sms.messages.create(
-          :to => "+1#{appointment.to}",
-          :from => TWILIO_FROM,
-          :body => message
-        )
+        begin
+          message = "Reminder: You have an appointment with #{appointment.provider.name} tomorrow: #{appointment.shorturl}"
+          #puts "#{appointment.to} -- #{message}"
+          @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+          @client.account.sms.messages.create(
+            :to => "+1#{appointment.to}",
+            :from => TWILIO_FROM,
+            :body => message
+          )
+        rescue
+          # fuck it...
+        end
       end
     end
   end # days_before

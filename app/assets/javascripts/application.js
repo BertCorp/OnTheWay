@@ -13,5 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-// require jquery-chosen.min
-//= require_tree .
+//= require jquery-chosen.min
+//= require jquery-maskedinput.min
+//= require forms
+// require_tree .
