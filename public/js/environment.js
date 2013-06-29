@@ -5,6 +5,9 @@ var OnTheWay = {
       case "127.0.0.1" :
         return "local";
         break;
+      case "staging.onthewayhq.com" :
+        return "staging";
+        break;
       case "www.onthewayhq.com" :
       case "onthewayhq.com" :
       case "www.otwhq.com" :
@@ -14,13 +17,17 @@ var OnTheWay = {
         return "production";
         break;
     }
-    return 'unknown';
+    return 'production';
   }
 };
 OnTheWay.config = {
   local : {
     protocol  : 'http://',
     domain    : 'localhost:3000'
+  },
+  staging : {
+    protocol  : 'http://',
+    domain    : 'staging.onthewayhq.com'
   },
   production : {
     protocol  : 'http://',
