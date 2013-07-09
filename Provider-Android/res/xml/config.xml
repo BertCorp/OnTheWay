@@ -18,16 +18,16 @@
  under the License.
 -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
-        id        = "io.cordova.helloCordova"
-        version   = "2.0.0">
-    <name>Hello Cordova</name>
+        id        = "com.onthewayhq.provider"
+        version   = "1.0.0">
+    <name>OnTheWay Provider</name>
 
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        A mobile application tool for OnTheWay providers.
     </description>
 
-    <author href="http://cordova.io" email="dev@cordova.apache.org">
-        Apache Cordova Team
+    <author href="http://www.onthewayhq.com" email="admin@onthewayhq.com">
+        OnTheWay Team
     </author>
 
     <access origin="*"/>
@@ -59,7 +59,7 @@
     <feature name="Compass">
       <param name="android-package" value="org.apache.cordova.CompassListener"/>
     </feature>
-    <feature name="Media">
+    <!--<feature name="Media">
       <param name="android-package" value="org.apache.cordova.AudioHandler"/>
     </feature>
     <feature name="Camera">
@@ -70,7 +70,7 @@
     </feature>
     <feature name="File">
       <param name="android-package" value="org.apache.cordova.FileUtils"/>
-    </feature>
+    </feature>-->
     <feature name="NetworkStatus">
       <param name="android-package" value="org.apache.cordova.NetworkManager"/>
     </feature>
@@ -80,7 +80,7 @@
     <feature name="Storage">
       <param name="android-package" value="org.apache.cordova.Storage"/>
     </feature>
-    <feature name="FileTransfer">
+    <!--<feature name="FileTransfer">
       <param name="android-package" value="org.apache.cordova.FileTransfer"/>
     </feature>
     <feature name="Capture">
@@ -88,7 +88,7 @@
     </feature>
     <feature name="Battery">
       <param name="android-package" value="org.apache.cordova.BatteryListener"/>
-    </feature>
+    </feature>-->
     <feature name="SplashScreen">
       <param name="android-package" value="org.apache.cordova.SplashScreen"/>
     </feature>
@@ -98,9 +98,9 @@
     <feature name="Globalization">
       <param name="android-package" value="org.apache.cordova.Globalization"/>
     </feature>
-    <feature name="InAppBrowser">
+    <!--<feature name="InAppBrowser">
       <param name="android-package" value="org.apache.cordova.InAppBrowser"/>
-    </feature>
+    </feature>-->
     <!-- Deprecated plugins element. Remove in 3.0 -->
     <plugins>
     </plugins>

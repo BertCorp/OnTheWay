@@ -73,10 +73,10 @@
     </feature>
     <feature name="Contacts">
       <param name="ios-package" value="CDVContacts"/>
-    </feature>-->
+    </feature>
     <feature name="File">
       <param name="ios-package"  value="CDVFile"/>
-    </feature>
+    </feature>-->
     <feature name="NetworkStatus">
       <param name="ios-package" value="CDVConnection"/>
     </feature>
