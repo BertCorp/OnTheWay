@@ -5,7 +5,12 @@ class Provider < ActiveRecord::Base
 
   validates_presence_of :company
   validates_presence_of :name
-  validates_presence_of :email
+  #validates_presence_of :email
+  validates :email,
+    :presence => { :message => "Please provide a valid email. It is used for login and notification purposes." },
+    :uniqueness => { :case_sensitive => false },
+    :format => { :with => /\A[^@]+@[^@]+\z/ },
+    :if => :email_required?
   validates_presence_of :phone
 
 
@@ -22,6 +27,13 @@ class Provider < ActiveRecord::Base
 
   def queue
     appointments.where(['(appointments.starts_at BETWEEN ? AND ?) AND (status != ?) AND (status != ?)', DateTime.now.beginning_of_day, DateTime.now.end_of_day, 'finished', 'canceled']).order('appointments.starts_at ASC')
+  end
+
+  private
+
+  def email_required?
+    Rails.logger.info "email? #{email}"
+    email != 'demo'
   end
 
 end

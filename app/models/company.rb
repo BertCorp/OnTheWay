@@ -4,11 +4,15 @@ class Company < ActiveRecord::Base
   has_many :customers, :through => :appointments
 
   validates_presence_of :name
-  validates_presence_of :email
+  validates :email,
+    :presence => { :message => "Please provide a valid email. It is used for login and notification purposes." },
+    :uniqueness => { :case_sensitive => false },
+    :format => { :with => /\A[^@]+@[^@]+\z/ },
+    :if => :email_required?
   validates_presence_of :phone
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable#, :validatable
          # :token_authenticatable, :confirmable,
          # :lockable, :timeoutable and :omniauthable
 
@@ -16,5 +20,11 @@ class Company < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
   attr_accessible :name, :phone
 
+  private
+
+  def email_required?
+    Rails.logger.info "email? #{email}"
+    email != 'demo'
+  end
 
 end
