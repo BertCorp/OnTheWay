@@ -59,16 +59,13 @@
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/icon/android \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/icon/android/icon-36-ldpi.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/icon/android/icon-48-mdpi.png \
+/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/icon/android/icon-72-2x.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/icon/android/icon-72-hdpi.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/icon/android/icon-96-xhdpi.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/screen/android \
-/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/screen/android/screen-hdpi-landscape.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/screen/android/screen-hdpi-portrait.png \
-/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/screen/android/screen-ldpi-landscape.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/screen/android/screen-ldpi-portrait.png \
-/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/screen/android/screen-mdpi-landscape.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/screen/android/screen-mdpi-portrait.png \
-/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/screen/android/screen-xhdpi-landscape.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/screen/android/screen-xhdpi-portrait.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/spec/helper.js \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/spec/index.js \
