@@ -38,7 +38,7 @@ IntercomRails.config do |config|
   #   :favorite_color => :favorite_color
   # }
   config.user.custom_data = {
-    :providers => Proc.new { |current_company| current_company.providers.count }
+    :providers => Proc.new { |current_company| current_company.providers.count },
     :appointments => Proc.new { |current_company| current_company.appointments.count }
   }
 
