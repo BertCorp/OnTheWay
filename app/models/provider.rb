@@ -32,7 +32,6 @@ class Provider < ActiveRecord::Base
   private
 
   def email_required?
-    Rails.logger.info "email? #{email}"
     email != 'demo'
   end
 

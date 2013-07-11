@@ -3,13 +3,36 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
 
   # GET /appointments.json
   def index
-    @appointments = current_provider.appointments.where(['appointments.starts_at >= ?', DateTime.now.beginning_of_day]).order('appointments.starts_at ASC')
+    if current_provider.email != 'demo'
+      #Rails.logger.info "Not DEMO!"
+      @appointments = current_provider.appointments.where(['appointments.starts_at >= ?', DateTime.now.beginning_of_day]).order('appointments.starts_at ASC')
+    else
+      #Rails.logger.info "IS DEMO!"
+      # make a special except for demo account...
+      apps = current_provider.appointments.order('appointments.starts_at ASC')
+      apps.map! do |app|
+        y = app.starts_at.to_s[0..3]
+        m = app.starts_at.to_s[5..6]
+        d = app.starts_at.to_s[8..9]
+        t = app.starts_at.to_s[11..18]
+        app.starts_at = "#{Time.now.year}-#{Time.now.month}-#{Time.now.day+(d.to_i-1)} #{t}"
+        app
+      end
+      @appointments = apps
+    end
     render json: @appointments
   end
 
   # GET /appointments/1.json
   def show
     @appointment = current_provider.appointments.find(params[:id])
+    if current_provider.email == 'demo'
+      y = @appointment.starts_at.to_s[0..3]
+      m = @appointment.starts_at.to_s[5..6]
+      d = @appointment.starts_at.to_s[8..9]
+      t = @appointment.starts_at.to_s[11..18]
+      @appointment.starts_at = "#{Time.now.year}-#{Time.now.month}-#{Time.now.day+(d.to_i-1)} #{t}"
+    end
     render json: @appointment
   end
 

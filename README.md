@@ -24,8 +24,7 @@ Deployment
 
 Todos
 =====
-- native apps via phonegap -- http://docs.phonegap.com/en/2.8.0/cordova_device_device.md.html#Device
-
+- fix OTW destination/location issues
 
 Down the Road
 =============
@@ -120,3 +119,6 @@ Down the Road
 - ~~setup basic staging~~ 2013-06-28
 - ~~Fix twilio exception when calling a bad number~~ 2013-06-28
 - ~~Better phone number input mask~~ 2013-06-28
+- ~~native apps via phonegap~~ 2013-07-03
+- ~~update demo login~~ 2013-07-10
+- ~~dynamic content in prototype~~ 2013-07-10

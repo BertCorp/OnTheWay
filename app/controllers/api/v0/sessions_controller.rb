@@ -1,5 +1,5 @@
 class Api::V0::SessionsController < Devise::SessionsController
-  prepend_before_filter :require_no_authentication, :only => [:create, :check]
+  #prepend_before_filter :require_no_authentication, :only => [:create, :check]
 
   def check
     updates = {}
