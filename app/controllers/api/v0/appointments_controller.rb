@@ -162,11 +162,10 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     return false unless ENV['INTERCOM_APP_ID']
     begin
       user = Intercom::User.find_by_user_id("provider::#{current_provider.id}")
-      user.custom_data = {
-        "type" => "provider",
-        "total_appointments" => current_provider.appointments.count,
-        "finished_appointments" => current_provider.appointments.where(:status => 'finished').count,
-        :company => {
+      user.custom_data["type"] = "provider"
+      user.custom_data["total_appointments"] = current_provider.appointments.count
+      user.custom_data["finished_appointments"] = current_provider.appointments.where(:status => 'finished').count
+      user.company = {
           :id => "company::#{current_provider.company.id}",
           :name => current_provider.company.name,
           :created_at => current_provider.company.created_at.to_i,
@@ -178,11 +177,10 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
       user.save
     rescue Intercom::ResourceNotFound
       user = Intercom::User.new({ :user_id => "provider::#{current_provider.id}", :email => current_provider.email, :created_at => current_provider.created_at.to_i, :name => current_provider.name })
-      user.custom_data = {
-        "type" => "provider",
-        "total_appointments" => current_provider.appointments.count,
-        "finished_appointments" => current_provider.appointments.where(:status => 'finished').count,
-        :company => {
+      user.custom_data['type'] = "provider"
+      user.custom_data["total_appointments"] = current_provider.appointments.count
+      user.custom_data["finished_appointments"] = current_provider.appointments.where(:status => 'finished').count
+      user.company = {
           :id => "company::#{current_provider.company.id}",
           :name => current_provider.company.name,
           :created_at => current_provider.company.created_at.to_i,
