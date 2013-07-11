@@ -26,6 +26,27 @@ class Api::V0::SessionsController < Devise::SessionsController
 
     if resource.valid_password?(params[:provider][:password])
       sign_in("user", resource)
+
+      user = Intercom::User.new()
+      user[:user_id] = "provider::#{resource.id}"
+      user[:email] = resource.email
+      user[:created_at] = resource.created_at.to_i
+      user[:name] = resource.name
+      user.custom_data = {
+        "type" => "provider",
+        "total_appointments" => resource.appointments.count,
+        "finished_appointments" => resource.appointments.where(:status => 'finished').count,
+        :company => {
+          :id => "company::#{resource.company.id}",
+          :name => resource.company.name,
+          :created_at => resource.company.created_at.to_i,
+          "providers" => resource.company.providers.count,
+          "total_appointments" => resource.company.appointments.count,
+          "finished_appointments" => resource.company.appointments.where(:status => 'finished').count
+        }
+      }
+      user.save
+
       render json: { success: true, auth_token: resource.authentication_token, email: resource.email, authenticated_at: Time.now }
       return
     end

@@ -1,5 +1,6 @@
 class Api::V0::AppointmentsController < Api::V0::BaseApiController
   before_filter :authenticate_provider!, :except => [:feedback, :tracking_show]
+  after_filter :update_intercom, :except => [:feedback, :tracking_show]
 
   # GET /appointments.json
   def index
@@ -154,6 +155,30 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     else
       render json: { message: "I'm sorry, Dave. I'm afraid I can't do that." }, status: :unauthorized
     end
+  end
+
+  def update_intercom
+    #Rails.logger.info "update intercom has been called! #{current_provider.id}"
+    return false unless ENV['INTERCOM_APP_ID']
+    user = Intercom::User.find_by_user_id("provider::#{current_provider.id}")
+    user[:user_id] = "provider::#{current_provider.id}"
+    user[:email] = current_provider.email
+    user[:created_at] = current_provider.created_at.to_i
+    user[:name] = current_provider.name
+    user.custom_data = {
+      "type" => "provider",
+      "total_appointments" => current_provider.appointments.count,
+      "finished_appointments" => current_provider.appointments.where(:status => 'finished').count,
+      :company => {
+        :id => "company::#{current_provider.company.id}",
+        :name => current_provider.company.name,
+        :created_at => current_provider.company.created_at.to_i,
+        "providers" => current_provider.company.providers.count,
+        "total_appointments" => current_provider.company.appointments.count,
+        "finished_appointments" => current_provider.company.appointments.where(:status => 'finished').count
+      }
+    }
+    user.save
   end
 
 end
