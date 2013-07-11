@@ -28,6 +28,12 @@ namespace :reminders do
         rescue
           # should probably log these exceptions.
           #puts "Failed to send to: #{appointment.to}"
+          @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+          @client.account.sms.messages.create(
+            :to => "+15857050130",
+            :from => TWILIO_FROM,
+            :body => "Error! Txt didnt send to: #{appointment.to}"
+          )
         end
       end
     end
