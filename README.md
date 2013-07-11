@@ -24,18 +24,18 @@ Deployment
 
 Todos
 =====
+- allow customers to edit appointment location
 - fix bad destination/location input google parse issues
 
 
 Down the Road
 =============
 - Providers
-  - appointment types
+  - appointment types/tags
   - metadata fields (ability for companies/providers to add custom fields to appointments)
   - better offline handling
   - listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
   - if provider hasn't marked job as finished, send him a friendly reminder to.
-  - edit appointment customer info
 - activity log
 - full CRM functionality
 - function buttons on directions page.

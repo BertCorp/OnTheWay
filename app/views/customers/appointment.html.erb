@@ -90,11 +90,45 @@
       $('#directions-summary').html('' + response['routes'][0]['legs'][0]['distance']['text'] + ' away (about ' + response['routes'][0]['legs'][0]['duration']['text'] + ')<br/>Last update at: ' + formatTime(response.timestamp));
     } // setDirectionsSummary
 
+    /*$(document).on('click', '#appointment-edit .appointment-submit', function(e) {
+      // do validation on the data
+      e.preventDefault();
+      if (($('#edit_appointment_location').val().length > 0)) {
+        var data = $('#appointment-edit form').serialize();
+        data["updated-by-customer"] = true;
+        $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + appointment_id + '.json',
+          data: data,
+          type: 'put',
+          async: true,
+          beforeSend: function() {
+            //setNotification('Saving appointment...');
+            $.mobile.loading('show', { textVisible : false, textonly: false });
+          },
+          complete: function() {
+            //clearNotification();
+            //$.mobile.loading('hide');
+          },
+          success: function(result) {
+            // upon success,
+            // go back to #home
+            $.mobile.changePage("#home");
+            // and refresh the page...
+            window.location.href = window.location.href;
+          },
+          error: function(request) {
+            alert('We had a problem updating your location. Try calling or texting with updates.');
+          }
+        });
+      } else {
+        alert('Please fill in all necessary fields.');
+      }
+    });*/
+
     $(document).on('pageshow', '#directions', function() {
       if (!last_fetched_at) $.mobile.changePage("#home");
       // fetch tracking info while we are on the directions page...
       $("#directions-map").gmap();
-      $('#directions-map').gmap('option', 'zoom', 15);
+      $('#directions-map').gmap('option', 'zoom', 12);
       setTimeout(function() { $('#directions-map').gmap('refresh'); }, 200);
     });
 
@@ -196,6 +230,13 @@
     </div>
 
       <% if @appointment.status != 'arrived' %>
+    <div>
+      <h4 style="text-align: center; margin-bottom: 0px;">Location:</h4>
+      <p style="margin-top: 0px;">
+        <%= @appointment.location %><br/>
+        <!--<a href="#appointment-edit" data-transition="slide">(change)</a>-->
+      </p>
+    </div>
     <div id="directions-btn-container" class="ui-grid-solo" style="display: none;">
       <div class="ui-block-a"><a href="#directions" data-role="button" data-icon="info" data-transition="slide">View on Map</a></div>
     </div>
@@ -226,6 +267,28 @@
   </div><!-- /content -->
 
 </div>
+
+<!--<div data-role="page" id="appointment-edit">
+
+  <div data-role="header" class="jqm-header ui-header ui-bar-b ui-icon-nodisc" role="banner">
+    <a href="#home" data-icon="back" data-iconshadow="false" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home" title="Home" data-theme="b">Back</a>
+    <h1>Edit</h1>
+  </div>
+  <div data-role="content">
+    <form class="ui-bar-c ui-corner-all ui-shadow" style="padding: 0px 1em;">
+
+      <div data-role="fieldcontain">
+        <label for="edit_appointment_location">Location:</label>
+        <textarea cols="40" rows="8" name="appointment[location]" id="edit_appointment_location" required="required"><%= @appointment.location %></textarea>
+      </div>
+
+    </form>
+
+    <a href="#" class="appointment-submit" data-role="button" data-theme="b">Save</a>
+
+  </div>
+
+</div>--><!-- /page -->
 
 <div data-role="page" id="directions" class="jqm-demos">
 

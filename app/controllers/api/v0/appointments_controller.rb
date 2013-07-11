@@ -69,7 +69,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     orig_status = @appointment.status
     orig_time = @appointment.starts_at
 
-    if (current_provider.email == 'demo')
+    if (current_provider.email == 'demo') && params[:appointment][:starts_at].present?
       params[:appointment][:starts_at][:date] = (params[:appointment][:starts_at][:date] == Date.today.to_s) ? '0001-01-01' : '0001-01-02'
     end
 
