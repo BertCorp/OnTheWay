@@ -121,7 +121,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
   def tracking_show
     @appointment = Appointment.find(params[:id])
     queue_text = false
-    queue_text = (@appointment.queue_position <= 1) ? "you are <strong>next</strong>!" : "there are <strong>#{@appointment.queue_position}</strong> people in front of you." if @appointment.queue_position
+    queue_text = (@appointment.queue_position < 1) ? "you are <strong>next</strong>!" : " #{(@appointment.queue_position > 1) ? 'are' : 'is'} <strong>#{pluralize(@appointment.queue_position, "person")}</strong> in front of you." if @appointment.queue_position
 
     if @tracking = $redis.get("provider-#{@appointment.provider.id}")
       resp = ActiveSupport::JSON.decode(@tracking)
