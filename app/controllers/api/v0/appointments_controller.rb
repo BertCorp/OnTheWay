@@ -9,7 +9,8 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     else
       #Rails.logger.info "IS DEMO!"
       # make a special except for demo account...
-      apps = current_provider.appointments.order('appointments.starts_at ASC')
+      #apps = current_provider.appointments.order('appointments.starts_at ASC')
+      apps = current_provider.appointments.where(["(appointments.starts_at < ?)", '2000-01-01 00:00:00']).order("appointments.starts_at ASC")
       apps.map! do |app|
         fix_demo_appointment(app)
       end
