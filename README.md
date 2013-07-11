@@ -24,7 +24,7 @@ Deployment
 
 Todos
 =====
-- fix OTW destination/location issues
+- fix bad destination/location input google parse issues
 
 Down the Road
 =============
@@ -36,7 +36,6 @@ Down the Road
   - if provider hasn't marked job as finished, send him a friendly reminder to.
   - edit appointment customer info
 - activity log
-- simplified/mvp version
 - full CRM functionality
 - function buttons on directions page.
 - timezone fix -- http://stackoverflow.com/questions/4362663/timezone-with-rails-3

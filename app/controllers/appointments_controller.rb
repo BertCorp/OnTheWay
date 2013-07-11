@@ -11,7 +11,7 @@ class AppointmentsController < ApplicationController
         fix_demo_appointment(app)
       end
     end
-    @past_appointments = current_company.appointments.where(["((appointments.starts_at > ?) AND (appointments.starts_at < ?)) OR ((appointments.status = 'canceled') OR (appointments.status = 'finished'))", '2000-', DateTime.now.beginning_of_day]).order("appointments.starts_at DESC")
+    @past_appointments = current_company.appointments.where(["((appointments.starts_at > ?) AND (appointments.starts_at < ?)) OR ((appointments.status = 'canceled') OR (appointments.status = 'finished'))", '2000-01-01 00:00:00', DateTime.now.beginning_of_day]).order("appointments.starts_at DESC")
   end
 
   # GET /appointments/import
