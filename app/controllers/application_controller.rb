@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   #protect_from_forgery
+  skip_after_filter :intercom_rails_auto_include
 
   def after_sign_in_path_for(resource)
     return '/admin' if resource.class.name == 'Admin'

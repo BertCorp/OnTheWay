@@ -63,6 +63,8 @@ GEM
     hashie (1.2.0)
     hike (1.2.3)
     i18n (0.6.1)
+    intercom-rails (0.2.23)
+      activesupport (> 3.0)
     journey (1.0.4)
     jquery-rails (3.0.1)
       railties (>= 3.0, < 5.0)
@@ -219,6 +221,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   devise
   devise_invitable
+  intercom-rails
   jquery-rails
   json
   newrelic_rpm
