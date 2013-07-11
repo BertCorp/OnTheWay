@@ -26,7 +26,11 @@ class Provider < ActiveRecord::Base
   attr_accessible :company_id, :name, :phone, :authentication_token
 
   def queue
-    appointments.where(['(appointments.starts_at BETWEEN ? AND ?) AND (status != ?) AND (status != ?)', DateTime.now.beginning_of_day, DateTime.now.end_of_day, 'finished', 'canceled']).order('appointments.starts_at ASC')
+    if email != 'demo'
+      appointments.where(['(appointments.starts_at BETWEEN ? AND ?) AND (status != ?) AND (status != ?)', DateTime.now.beginning_of_day, DateTime.now.end_of_day, 'finished', 'canceled']).order('appointments.starts_at ASC')
+    else
+      appointments.where(['(appointments.starts_at BETWEEN ? AND ?) AND (status != ?) AND (status != ?)', '0001-01-01 00:00:00', '0001-01-01 23:59:59', 'finished', 'canceled']).order('appointments.starts_at ASC')
+    end
   end
 
   private
