@@ -5,6 +5,8 @@ class CustomersController < ApplicationController
   def appointment
     @appointment = Appointment.find_by_shortcode(params[:id])
 
+    @appointment = fix_demo_appointment(@appointment) if @appointment.provider.email == 'demo'
+
     if @appointment.status == 'finished'
       render 'customers/appointment-feedback', layout: false
     elsif (@appointment.status == 'canceled') || (@appointment.starts_at < DateTime.now.beginning_of_day)

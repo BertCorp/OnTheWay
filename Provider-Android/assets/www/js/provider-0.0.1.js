@@ -429,6 +429,7 @@
   });
 
   $(document).on('click', '#submit', function(e) { // catch the form's submit event
+    appointments = false;
     removeStorage('appointments');
     e.preventDefault();
     if (($('#email').val().length > 0) && ($('#password').val().length > 0)) {
@@ -463,9 +464,22 @@
   });
 
   $(document).on('click', 'a#logout', function(e) {
+    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/logout.json',
+      data: { 'auth_token' : credentials.auth_token },
+      type: 'get',
+      async: true,
+      success: function (result) {},
+      error: function (request) {}
+    });
+
     credentials = {};
     removeStorage('credentials');
+    appointments = false;
+    removeStorage('appointments');
+    last_fetched_at = false;
     $.track.stop();
+    removeStorage('tracking');
+
     $.mobile.changePage("#login");
     return false;
   });

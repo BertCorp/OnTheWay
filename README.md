@@ -2,9 +2,9 @@ OnTheWay
 ========
 
 - Customer Web Panel: http://www.onthewayhq.com
-  - demo@onthewayhq.com
+  - demo // demo
 - Provider Mobile Web App: http://otwhq.com/p
-  - demo2@onthewayhq.com
+  - demo // demo
 
 
 Mockups

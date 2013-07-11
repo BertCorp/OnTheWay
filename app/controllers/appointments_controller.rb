@@ -2,9 +2,16 @@ class AppointmentsController < ApplicationController
   before_filter :authenticate_company!
   # GET /appointments
   def index
-    Rails.logger.info Date.today.to_time
-    @upcoming_appointments = current_company.appointments.where(["(appointments.starts_at >= ?) AND ((appointments.status != 'canceled') AND (appointments.status != 'finished'))", DateTime.now.beginning_of_day]).order("appointments.starts_at ASC")
-    @past_appointments = current_company.appointments.where(["(appointments.starts_at < ?) OR ((appointments.status = 'canceled') OR (appointments.status = 'finished'))", DateTime.now.beginning_of_day]).order("appointments.starts_at DESC")
+    if current_company.email != 'demo'
+      @upcoming_appointments = current_company.appointments.where(["(appointments.starts_at >= ?) AND ((appointments.status != 'canceled') AND (appointments.status != 'finished'))", DateTime.now.beginning_of_day]).order("appointments.starts_at ASC")
+    else
+      # make a special except for demo account...
+      @upcoming_appointments = current_company.appointments.order("appointments.starts_at ASC")
+      @upcoming_appointments.map! do |app|
+        fix_demo_appointment(app)
+      end
+    end
+    @past_appointments = current_company.appointments.where(["((appointments.starts_at > ?) AND (appointments.starts_at < ?)) OR ((appointments.status = 'canceled') OR (appointments.status = 'finished'))", '2000-', DateTime.now.beginning_of_day]).order("appointments.starts_at DESC")
   end
 
   # GET /appointments/import

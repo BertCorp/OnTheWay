@@ -11,12 +11,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
       # make a special except for demo account...
       apps = current_provider.appointments.order('appointments.starts_at ASC')
       apps.map! do |app|
-        y = app.starts_at.to_s[0..3]
-        m = app.starts_at.to_s[5..6]
-        d = app.starts_at.to_s[8..9]
-        t = app.starts_at.to_s[11..18]
-        app.starts_at = "#{Time.now.year}-#{Time.now.month}-#{Time.now.day+(d.to_i-1)} #{t}"
-        app
+        fix_demo_appointment(app)
       end
       @appointments = apps
     end
@@ -26,13 +21,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
   # GET /appointments/1.json
   def show
     @appointment = current_provider.appointments.find(params[:id])
-    if current_provider.email == 'demo'
-      y = @appointment.starts_at.to_s[0..3]
-      m = @appointment.starts_at.to_s[5..6]
-      d = @appointment.starts_at.to_s[8..9]
-      t = @appointment.starts_at.to_s[11..18]
-      @appointment.starts_at = "#{Time.now.year}-#{Time.now.month}-#{Time.now.day+(d.to_i-1)} #{t}"
-    end
+    @appointment = fix_demo_appointment(@appointment) if current_provider.email == 'demo'
     render json: @appointment
   end
 
