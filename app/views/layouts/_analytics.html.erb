@@ -10,3 +10,37 @@
 
 </script>
 <% end %>
+<% if ENV['INTERCOM_APP_ID'] %>
+<script id="IntercomSettingsScriptTag">
+  window.intercomSettings = {
+    app_id: "<%= ENV['INTERCOM_APP_ID'] %>",
+    <% if current_company %>
+    user_id: "company::<%= current_company.id %>",
+    email: "<%= current_company.email %>",
+    created_at: <%= current_company.created_at.to_i %>,
+    "name": "<%= current_company.name %>",
+    "type": "company",
+    "providers": <%= current_company.providers.count %>,
+    "total_appointments": <%= current_company.appointments.count %>
+    "finished_appointments": <%= current_company.appointments.where(:status => 'finished').count %>
+    <% elsif current_provider %>
+    user_id: "provider::<%= current_provider.id %>",
+    email: "<%= current_provider.email %>",
+    created_at: <%= current_provider.created_at.to_i %>,
+    "name": "<%= current_provider.name %>",
+    "type": "provider",
+    "total_appointments": <%= current_provider.appointments.count %>,
+    "finished_appointments": <%= current_provider.appointments.where(:status => 'finished').count %>,
+    company: {
+      id: "company::<%= current_provider.company.id %>",
+      name: "<%= current_provider.company.name %>",
+      created_at: <%= current_provider.company.created_at.to_i %>,
+      "providers": <%= current_provider.company.providers.count %>,
+      "total_appointments": <%= current_provider.company.appointments.count %>,
+      "finished_appointments": <%= current_provider.company.appointments.where(:status => 'finished').count %>
+    }
+    <% end %>
+  };
+</script>
+<script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://static.intercomcdn.com/intercom.v1.js';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}};})()</script>
+<% end %>
