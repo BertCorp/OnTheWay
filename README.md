@@ -25,7 +25,7 @@ Deployment
 Todos
 =====
 - fix bad destination/location input google parse issues
-- fix queue position "next" issue
+
 
 Down the Road
 =============
@@ -125,3 +125,4 @@ Down the Road
 - ~~fix intercom tracking~~ 2013-07-11
 - ~~provider tracking in api/apps~~ 2013-07-11
 - ~~better feedback on appointment page instructing when texts will go out.~~ 2013-07-11
+- ~~fix queue position "next" issue~~ 2013-07-11

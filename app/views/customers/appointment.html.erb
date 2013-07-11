@@ -177,7 +177,7 @@
     <% if @appointment.status != 'canceled' %>
       <% if @appointment.queue_position && (@appointment.status != 'arrived') %>
     <div id="appointment-status">
-      <p>Based on their schedule, <span id="appointment-queue"><% if @appointment.queue_position <= 1 %>you are <strong>next</strong>!<% else %>there are <strong><%= @appointment.queue_position+1 %></strong> people in front of you.<% end %></span></p>
+      <p>Based on their schedule, <span id="appointment-queue"><% if @appointment.queue_position < 1 %>you are <strong>next</strong>!<% else %>there <%= (@appointment.queue_position > 1) ? 'are' : 'is' %> <strong><%= pluralize(@appointment.queue_position, "person") %></strong> in front of you.<% end %></span></p>
 
       <p>We expect <%= @appointment.provider.name %> to arrive at:</p>
 
