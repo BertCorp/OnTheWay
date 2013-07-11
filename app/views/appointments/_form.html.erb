@@ -13,6 +13,11 @@
 
   <%= f.hidden_field :company_id, :value => current_company.id %>
 
+  <div class="alert alert-block">
+    <h4>Please Note!</h4>
+    SMS Text Message reminders are sent to customers at 4pm CST the day before an appointment. If an appointment is created (or scheduled time is updated) without that cushion, a message is sent immediately upon creation of appointment.
+  </div>
+
   <div class="control-group">
     <label class="control-label" for="appointment_customer">Customer</label>
     <div class="controls">
@@ -33,7 +38,7 @@
     <div class="controls">
       <input id="appointment_starts_at" name="appointment[starts_at][date]" class="input-medium" type="date" value="<%= (@appointment.starts_at||Date.today).strftime("%F") %>" />
       <input class="input-small" type="time" name="appointment[starts_at][time]" value="<%= @appointment.starts_at.strftime("%H:%M:%S") if @appointment.starts_at && @appointment.starts_at.strftime("%H:%M:%S") != "00:00:00" %>" style="width: 102px;" />
-      <!--<span class="help-block">All times are shown as Central Standard Time (GMT -06:00).</span>-->
+      <!--<span class="help-block"></span>-->
     </div>
   </div>
 

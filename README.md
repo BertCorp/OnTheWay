@@ -24,10 +24,7 @@ Deployment
 
 Todos
 =====
-- ~~fix intercom tracking~~ 2013-07-11
-- ~~provider tracking in api/apps~~ 2013-07-11
 - fix bad destination/location input google parse issues
-- better feedback on appointment page instructing when texts will go out.
 - fix queue position "next" issue
 
 Down the Road
@@ -125,3 +122,6 @@ Down the Road
 - ~~native apps via phonegap~~ 2013-07-03
 - ~~update demo login~~ 2013-07-10
 - ~~dynamic content in prototype~~ 2013-07-10
+- ~~fix intercom tracking~~ 2013-07-11
+- ~~provider tracking in api/apps~~ 2013-07-11
+- ~~better feedback on appointment page instructing when texts will go out.~~ 2013-07-11
