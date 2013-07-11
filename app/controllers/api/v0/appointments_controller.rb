@@ -166,13 +166,12 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
       user.custom_data["total_appointments"] = current_provider.appointments.count
       user.custom_data["finished_appointments"] = current_provider.appointments.where(:status => 'finished').count
       user.company = {
-          :id => "company::#{current_provider.company.id}",
-          :name => current_provider.company.name,
-          :created_at => current_provider.company.created_at.to_i,
-          "providers" => current_provider.company.providers.count,
-          "total_appointments" => current_provider.company.appointments.count,
-          "finished_appointments" => current_provider.company.appointments.where(:status => 'finished').count
-        }
+        :id => "company::#{current_provider.company.id}",
+        :name => current_provider.company.name,
+        :created_at => current_provider.company.created_at.to_i,
+        "providers" => current_provider.company.providers.count,
+        "total_appointments" => current_provider.company.appointments.count,
+        "finished_appointments" => current_provider.company.appointments.where(:status => 'finished').count
       }
       user.save
     rescue Intercom::ResourceNotFound
@@ -181,13 +180,12 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
       user.custom_data["total_appointments"] = current_provider.appointments.count
       user.custom_data["finished_appointments"] = current_provider.appointments.where(:status => 'finished').count
       user.company = {
-          :id => "company::#{current_provider.company.id}",
-          :name => current_provider.company.name,
-          :created_at => current_provider.company.created_at.to_i,
-          "providers" => current_provider.company.providers.count,
-          "total_appointments" => current_provider.company.appointments.count,
-          "finished_appointments" => current_provider.company.appointments.where(:status => 'finished').count
-        }
+        :id => "company::#{current_provider.company.id}",
+        :name => current_provider.company.name,
+        :created_at => current_provider.company.created_at.to_i,
+        "providers" => current_provider.company.providers.count,
+        "total_appointments" => current_provider.company.appointments.count,
+        "finished_appointments" => current_provider.company.appointments.where(:status => 'finished').count
       }
       user.save
     end
