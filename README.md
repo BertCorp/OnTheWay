@@ -25,6 +25,8 @@ Deployment
 Todos
 =====
 - fix bad destination/location input google parse issues
+- better feedback on appointment page instructing when texts will go out.
+- fix queue position "next" issue
 
 Down the Road
 =============

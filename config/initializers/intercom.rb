@@ -19,6 +19,8 @@ IntercomRails.config do |config|
   # The method/variable that contains the logged in user in your controllers.
   # If it is `current_user` or `@user`, then you can ignore this
   #
+  # TODO: How is the current company accessed in your controllers?
+  #config.company.current = Proc.new { current_company }
   config.user.current = Proc.new { current_company }
 
   # == User model class
@@ -35,6 +37,10 @@ IntercomRails.config do |config|
   #   :plan => Proc.new { |current_user| current_user.plan.name },
   #   :favorite_color => :favorite_color
   # }
+  config.user.custom_data = {
+    :providers => Proc.new { |current_company| current_company.providers.count }
+    :appointments => Proc.new { |current_company| current_company.appointments.count }
+  }
 
   # == User -> Company association
   # A Proc that given a user returns an array of companies
