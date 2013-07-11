@@ -1,5 +1,6 @@
 class ProvidersController < ApplicationController
   #before_filter :authenticate_company!
+  skip_before_filter :require_no_authentication, :only => [ :create, :update ]
 
   # TEMP methods
   def get_position

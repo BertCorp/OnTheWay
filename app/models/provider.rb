@@ -7,7 +7,7 @@ class Provider < ActiveRecord::Base
   validates_presence_of :name
   #validates_presence_of :email
   validates :email,
-    :presence => { :message => "Please provide a valid email. It is used for login and notification purposes." },
+    :presence => { :message => "must be valid, as it is used for login and notification purposes." },
     :uniqueness => { :case_sensitive => false },
     :format => { :with => /\A[^@]+@[^@]+\z/ },
     :if => :email_required?

@@ -10,6 +10,8 @@ OnTheWay::Application.routes.draw do
   #constraints resque_constraint do
   #  mount Resque::Server, :at => "/resque"
   #end
+  resources :providers
+  resources :customers
 
   devise_for :providers
   as :provider do
@@ -50,9 +52,6 @@ OnTheWay::Application.routes.draw do
   get "test/provider" => "pages#provider"
   get "providers/track" => "providers#get_position"
   post "providers/track" => "providers#set_position"
-
-  resources :providers
-  resources :customers
 
   get "appointments/import" => "appointments#import", as: "import_appointments"
   post "appointments/upload" => "appointments#upload"

@@ -47,7 +47,13 @@
   <div class="control-group">
     <label class="control-label" for="appointment_provider">Provider</label>
     <div class="controls">
+      <% if current_company.providers.count > 1 %>
       <%= f.select :provider_id, current_company.providers.collect {|a| [a.name, a.id]}, :include_blank => true -%>
+      <% else %>
+      <%= link_to current_company.providers.first.name, current_company.providers.first %>
+      <%= f.hidden_field :provider_id, :value => current_company.providers.first.id %>
+      <% end %>
+      <%= link_to "(Add More Providers)", new_provider_path %>
     </div>
   </div>
 
