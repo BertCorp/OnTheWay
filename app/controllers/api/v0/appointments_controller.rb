@@ -177,18 +177,18 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
       }
       user.save
     rescue Intercom::ResourceNotFound
-      user = Intercom::User.new({ :user_id => "provider::#{resource.id}", :email => resource.email, :created_at => resource.created_at.to_i, :name => resource.name })
+      user = Intercom::User.new({ :user_id => "provider::#{current_provider.id}", :email => current_provider.email, :created_at => current_provider.created_at.to_i, :name => current_provider.name })
       user.custom_data = {
         "type" => "provider",
-        "total_appointments" => resource.appointments.count,
-        "finished_appointments" => resource.appointments.where(:status => 'finished').count,
+        "total_appointments" => current_provider.appointments.count,
+        "finished_appointments" => current_provider.appointments.where(:status => 'finished').count,
         :company => {
-          :id => "company::#{resource.company.id}",
-          :name => resource.company.name,
-          :created_at => resource.company.created_at.to_i,
-          "providers" => resource.company.providers.count,
-          "total_appointments" => resource.company.appointments.count,
-          "finished_appointments" => resource.company.appointments.where(:status => 'finished').count
+          :id => "company::#{current_provider.company.id}",
+          :name => current_provider.company.name,
+          :created_at => current_provider.company.created_at.to_i,
+          "providers" => current_provider.company.providers.count,
+          "total_appointments" => current_provider.company.appointments.count,
+          "finished_appointments" => current_provider.company.appointments.where(:status => 'finished').count
         }
       }
       user.save
