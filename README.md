@@ -25,7 +25,7 @@ Deployment
 Todos
 =====
 - ~~fix intercom tracking~~ 2013-07-11
-- provider tracking in apps
+- ~~provider tracking in api/apps~~ 2013-07-11
 - fix bad destination/location input google parse issues
 - better feedback on appointment page instructing when texts will go out.
 - fix queue position "next" issue

@@ -189,7 +189,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
       }
       user.save
     end
-    Intercom::Impression.create(:user_id => "provider::#{current_provider.id}", :location => request.request_uri, :user_ip => request.remote_ip, :user_agent => request.env['HTTP_USER_AGENT']) if user
+    Intercom::Impression.create(:user_id => "provider::#{current_provider.id}", :location => request.fullpath, :user_ip => request.remote_ip, :user_agent => request.env['HTTP_USER_AGENT']) if user
 
   end
 
