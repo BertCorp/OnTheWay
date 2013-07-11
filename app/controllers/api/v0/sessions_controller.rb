@@ -27,11 +27,7 @@ class Api::V0::SessionsController < Devise::SessionsController
     if resource.valid_password?(params[:provider][:password])
       sign_in("user", resource)
 
-      user = Intercom::User.new()
-      user[:user_id] = "provider::#{resource.id}"
-      user[:email] = resource.email
-      user[:created_at] = resource.created_at.to_i
-      user[:name] = resource.name
+      user = Intercom::User.new({ :user_id => "provider::#{resource.id}", :email => resource.email, :created_at => resource.created_at.to_i, :name => resource.name })
       user.custom_data = {
         "type" => "provider",
         "total_appointments" => resource.appointments.count,
