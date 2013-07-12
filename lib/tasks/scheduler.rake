@@ -17,7 +17,7 @@ namespace :reminders do
       # ignore 555 numbers
       if appointment.to[0..2] != '555'
         begin
-          message = "Reminder: You have an appointment with #{appointment.provider.name} tomorrow: #{appointment.shorturl}"
+          message = "Reminder: You have an appointment with #{appointment.provider.name} of #{appointment.company.name} tomorrow: #{appointment.shorturl}"
           #puts "#{appointment.to} -- #{message}"
           @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
           @client.account.sms.messages.create(

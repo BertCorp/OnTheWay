@@ -54,7 +54,17 @@ RailsAdmin.config do |config|
 
   ###  Appointment  ###
 
-  # config.model 'Appointment' do
+  config.model 'Appointment' do
+
+    list do
+      field :shorturl do
+        formatted_value do # used in form views
+          bindings[:view].link_to(value, value)
+        end
+      end
+      include_all_fields # all other default fields will be added after, conveniently
+      exclude_fields :created_at # but you still can remove fields
+    end
 
   #   # You can copy this to a 'rails_admin do ... end' block inside your appointment.rb model definition
 
@@ -104,7 +114,7 @@ RailsAdmin.config do |config|
   #     # also see the create, update, modal and nested sections, which override edit in specific cases (resp. when creating, updating, modifying from another model in a popup modal or modifying from another model nested form)
   #     # you can override a cross-section field configuration in any section with the same syntax `configure :field_name do ... end`
   #     # using `field` instead of `configure` will exclude all other fields and force the ordering
-  # end
+  end
 
 
   ###  Company  ###

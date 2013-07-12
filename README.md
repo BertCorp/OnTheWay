@@ -26,9 +26,9 @@ Todos
 =====
 - fix bad destination/location input google parse issues
 - more reliable scheduling/jobs
-- sms reply
-- timezones
+- allow for various timezones
   -- http://stackoverflow.com/questions/4362663/timezone-with-rails-3
+- extract txt message error handling
 
 
 Down the Road
@@ -42,6 +42,7 @@ Down the Road
 - activity log
 - full CRM functionality
 - function buttons on directions page.
+- build out sms reply system
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07
@@ -128,3 +129,5 @@ Down the Road
 - ~~provider tracking in api/apps~~ 2013-07-11
 - ~~better feedback on appointment page instructing when texts will go out.~~ 2013-07-11
 - ~~fix queue position "next" issue~~ 2013-07-11
+- ~~sms reply~~ 2013-07-11
+- ~~add appointment shorturls to admin panel records~~ 2013-07-12

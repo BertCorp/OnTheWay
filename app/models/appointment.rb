@@ -51,7 +51,7 @@ class Appointment < ActiveRecord::Base
     return false if to[0..2] == '555'
 
     begin
-      message = "Keep an eye on #{provider.name}'s progress throughout the day: #{shorturl}"
+      message = "Keep an eye on #{provider.name} of #{provider.company.name}'s progress throughout the day: #{shorturl}"
       #puts "#{appointment.to} -- #{message}"
       @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
       @client.account.sms.messages.create(
@@ -60,7 +60,13 @@ class Appointment < ActiveRecord::Base
         :body => message
       )
     rescue
-      # fuck it
+      # should probably log these exceptions.
+      @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+      @client.account.sms.messages.create(
+        :to => "+15857050130",
+        :from => TWILIO_FROM,
+        :body => "Error! Txt didnt send to: #{appointment.to} from appointment::send_reminder"
+      )
     end
   end
 
@@ -69,8 +75,7 @@ class Appointment < ActiveRecord::Base
     return false if to[0..2] == '555'
 
     begin
-      message = "Looks like #{provider.name} is on the way! Watch their progress: #{shorturl}"
-      #puts "#{appointment.to} -- #{message}"
+      message = "Looks like #{provider.name} from #{provider.company.name} is on the way! Watch their progress: #{shorturl}"
       @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
       @client.account.sms.messages.create(
         :to => "+1#{to}",
@@ -78,7 +83,13 @@ class Appointment < ActiveRecord::Base
         :body => message
       )
     rescue
-      # fuck it
+      # should probably log these exceptions.
+      @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+      @client.account.sms.messages.create(
+        :to => "+15857050130",
+        :from => TWILIO_FROM,
+        :body => "Error! Txt didnt send to: #{appointment.to} from appointment::send_en_route"
+      )
     end
   end
 
@@ -87,7 +98,7 @@ class Appointment < ActiveRecord::Base
     return false if to[0..2] == '555'
 
     begin
-      message = "Looks like your appointment is all finished! #{provider.name} would love to hear your feedback: #{shorturl}"
+      message = "Looks like your appointment is all finished! #{provider.company.name} would love to hear your feedback: #{shorturl}"
       #puts "#{appointment.to} -- #{message}"
       @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
       @client.account.sms.messages.create(
@@ -96,7 +107,13 @@ class Appointment < ActiveRecord::Base
         :body => message
       )
     rescue
-      # fuck it!
+      # should probably log these exceptions.
+      @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+      @client.account.sms.messages.create(
+        :to => "+15857050130",
+        :from => TWILIO_FROM,
+        :body => "Error! Txt didnt send to: #{appointment.to} from appointment::send_feedback"
+      )
     end
   end
 
@@ -118,7 +135,7 @@ class Appointment < ActiveRecord::Base
   end
 
   def shorturl
-    "http://otwhq.co/a/#{shortcode}" # switch to http://otwhq.co/ when it's working again
+    "http://otwhq.co/a/#{shortcode}"
   end
 
   def status_date
