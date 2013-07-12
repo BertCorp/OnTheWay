@@ -24,8 +24,11 @@ Deployment
 
 Todos
 =====
-- allow customers to edit appointment location
 - fix bad destination/location input google parse issues
+- more reliable scheduling/jobs
+- sms reply
+- timezones
+  -- http://stackoverflow.com/questions/4362663/timezone-with-rails-3
 
 
 Down the Road
@@ -39,7 +42,6 @@ Down the Road
 - activity log
 - full CRM functionality
 - function buttons on directions page.
-- timezone fix -- http://stackoverflow.com/questions/4362663/timezone-with-rails-3
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07
