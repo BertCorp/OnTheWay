@@ -18,7 +18,7 @@ class PagesController < ApplicationController
   end
 
   def sms_reply
-    render :layout => false
+    render :layout => false, :content_type => "text/xml"
   end
 
   def provider
