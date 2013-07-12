@@ -224,6 +224,12 @@
 
       <p id="appointment-eta" style="font-size: 40px; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
     </div>
+      <% elsif @appointment.status != 'arrived' %>
+    <div id="appointment-status">
+      <p>We expect <%= @appointment.provider.name %> to arrive at:</p>
+
+      <p style="font-size: 40px; margin: 40px 0px;"><%= @appointment.starts_at.strftime("%l:%M%P") %></p>
+    </div>
       <% end %>
     <div id="appointment-arrived"<%= raw(' style="display: none;"') if @appointment.status != 'arrived' %>>
       <p style="font-size: 30px; margin: 40px 0px;"><%= @appointment.provider.name %> has arrived!</p>
