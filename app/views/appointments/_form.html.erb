@@ -49,6 +49,17 @@
     </div>
   </div>
 
+  <div id="location-modal" class="modal fade hide" tabindex="-1" role="dialog">
+    <div class="modal-body">
+      <h3 style="margin-top:0px;">Did you mean...</h3>
+      <p>You said: "<span></span>", but we had some problems figuring out where exactly you meant.</p>
+      <p>Was it one of these?</p>
+      <ul>
+      </ul>
+      <a href="#" onclick="$('#location-modal').modal('hide'); $('#appointment_location').focus(); return false;" class="btn pull-right">No, Try Again</a>
+    </div>
+  </div>
+
   <div class="control-group">
     <label class="control-label" for="appointment_provider">Provider</label>
     <div class="controls">
@@ -115,8 +126,42 @@
   </div>
 <% end %>
 
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script>
-
+  var geocoder = false;
   $("select").chosen();
+
+  $(document).on('change', '#appointment_location', function() {
+    if (!geocoder) geocoder = new google.maps.Geocoder();
+    $('#location-confirm').remove();
+    $('#location-modal ul').html('');
+    $('#appointment_location').parent().parent().removeClass('success').removeClass('error');
+    address = $('#appointment_location').val();
+    geocoder.geocode( { 'address' : address }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        //console.log(results);
+        if (results.length == 1) {
+          $('#appointment_location').parent().parent().addClass('success');
+          $('#appointment_location').after('<p id="location-confirm">We found: <a href="#" onclick="return setLocation(\'' + results[0].formatted_address + '\');">' + results[0].formatted_address + '</a></p>');
+        } else {
+          $('#appointment_location').parent().parent().addClass('error');
+          $('#location-modal span').html(address);
+          for (x in results) {
+            $('#location-modal ul').append('<li><a href="#" onclick="return setLocation(\'' + results[x].formatted_address + '\');">' + results[x].formatted_address  + '</a></li>');
+          }
+          $('#location-modal').modal('show');
+        }
+      }
+    });
+  });
+
+  function setLocation(address) {
+    $('#appointment_location').val(address);
+    $('#location-confirm').remove();
+    $('#location-modal ul').html('');
+    $('#location-modal').modal('hide');
+    $('#appointment_location').parent().parent().removeClass('error');
+    return false;
+  } // setLocation
 
 </script>

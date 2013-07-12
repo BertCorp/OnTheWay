@@ -29,6 +29,8 @@ Todos
 - allow for various timezones
   -- http://stackoverflow.com/questions/4362663/timezone-with-rails-3
 - extract txt message error handling
+- phonegap analytics -- https://github.com/ggendre/GALocalStorage
+  - should be done. just test and double check that its working in all builds
 
 
 Down the Road
@@ -43,6 +45,8 @@ Down the Road
 - full CRM functionality
 - function buttons on directions page.
 - build out sms reply system
+- push/sms notifications to drivers
+
 
 =========
 - ~~(web) update input fields to html5 field types~~ 2013-06-07

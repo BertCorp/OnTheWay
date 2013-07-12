@@ -19,8 +19,8 @@
 -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         id        = "com.onthewayhq.provider"
-        version   = "1.0.0">
-    <name>OnTheWay Provider</name>
+        version   = "1.0.1">
+    <name>OnTheWay</name>
 
     <description>
         A mobile application tool for OnTheWay providers.
