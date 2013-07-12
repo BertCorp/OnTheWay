@@ -137,6 +137,11 @@
     $('#location-modal ul').html('');
     $('#appointment_location').parent().parent().removeClass('success').removeClass('error');
     address = $('#appointment_location').val();
+
+    if (address == '') {
+      return false;
+    }
+
     geocoder.geocode( { 'address' : address }, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         if (results.length == 1) {
