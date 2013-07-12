@@ -139,7 +139,6 @@
     address = $('#appointment_location').val();
     geocoder.geocode( { 'address' : address }, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-        //console.log(results);
         if (results.length == 1) {
           $('#appointment_location').parent().parent().addClass('success');
           $('#appointment_location').after('<p id="location-confirm">We found: <a href="#" onclick="return setLocation(\'' + results[0].formatted_address + '\');">' + results[0].formatted_address + '</a></p>');
@@ -151,6 +150,9 @@
           }
           $('#location-modal').modal('show');
         }
+      } else {
+        $('#appointment_location').parent().parent().addClass('error');
+        alert('Yikes. We have no idea where this is. You might want to adjust the location so we can provide you with estimates and directions.');
       }
     });
   });

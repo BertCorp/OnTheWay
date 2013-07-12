@@ -1,4 +1,4 @@
-<% if ENV['INTERCOM_APP_ID'] %>
+<% if ENV['INTERCOM_APP_ID'] && current_company %>
 <%
   options = { :app_id => ENV['INTERCOM_APP_ID'] }
   options[:user_id] = "company::#{current_company.id}"
