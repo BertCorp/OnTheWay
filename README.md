@@ -135,3 +135,4 @@ Down the Road
 - ~~fix queue position "next" issue~~ 2013-07-11
 - ~~sms reply~~ 2013-07-11
 - ~~add appointment shorturls to admin panel records~~ 2013-07-12
+- ~~better location validation and handling for web panel~~ 2013-07-12
