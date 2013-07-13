@@ -43,7 +43,6 @@ body, .jqm-demos  {
   -moz-box-shadow: 0 0 5px rgba(0,0,0,.15);
   box-shadow: 0 0 5px rgba(0,0,0,.15);
 }
-  #home .jqm-header a { margin-top: 17px; }
 
 .jqm-header.ui-header-fixed:not(.ui-fixed-hidden) {
   border-top-width: 4px;
