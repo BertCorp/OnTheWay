@@ -5,7 +5,7 @@
   <meta name="viewport" content="initial-scale=1.0">
   <!--<meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">-->
-  <title>OnTheWay - Provider</title>
+  <title>OnTheWay</title>
   <link rel="stylesheet" href="../css/jquery.mobile.min.css">
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="shortcut icon" href="../favicon.ico">
@@ -15,8 +15,7 @@
     window.Modernizr || document.write('<script src="../js/modernizr-2.0.6.js">\x3C/script>')
   </script>
   <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-  <!--<script src="http://view.jquerymobile.com/1.3.1/dist/demos/_assets/js/index.js"></script>-->
+  <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
   <script type="text/javascript" src="../js/jquery.ui.map.min.js"></script>
   <script type="text/javascript" src="../js/jquery.ui.map.extensions.js"></script>
@@ -24,11 +23,7 @@
   <script type="text/javascript" src="../js/jquery.ui.map.overlays.min.js"></script>
   <script type="text/javascript" src="../js/environment.js"></script>
   <script type="text/javascript" src="../js/track.js"></script>
-  <!--<script type="text/javascript" src="http://www.onthewayhq.com/js/provider-0.0.1.js"></script>-->
-  <script type='text/javascript'>
-    if (typeof ENVIRONMENT === 'undefined')
-      document.write('<script src="../js/provider-0.0.1.js">\x3C/script>');
-  </script>
+  <script type="text/javascript" src="../js/provider-0.0.1.js"></script>
 </head>
 <body>
 
@@ -112,16 +107,16 @@
       </div>
 
       <div data-role="fieldcontain">
+        <label for="appointment_location">Where:</label>
+        <textarea cols="40" rows="8" name="appointment[location]" id="appointment_location" placeholder="ex: 1012 N. Ashland Ave. Apt 3A Chicago IL, 60622" required="required"></textarea>
+      </div>
+
+      <div data-role="fieldcontain">
         <fieldset data-role="controlgroup">
           <legend>When:</legend>
           <input id="appointment_starts_at" name="appointment[starts_at][date]" type="date" value="" />
           <input class="input-small" type="time" name="appointment[starts_at][time]" value="" />
         </fieldset>
-      </div>
-
-      <div data-role="fieldcontain">
-        <label for="appointment_location">Where:</label>
-        <textarea cols="40" rows="8" name="appointment[location]" id="appointment_location" placeholder="1012 N. Ashland Ave. Apt 3A Chicago IL, 60622" required="required"></textarea>
       </div>
 
       <div data-role="fieldcontain">
@@ -221,16 +216,16 @@
     <form class="ui-bar-c ui-corner-all ui-shadow" style="padding: 0px 1em;">
 
       <div data-role="fieldcontain">
+        <label for="edit_appointment_location">Where:</label>
+        <textarea cols="40" rows="8" name="appointment[location]" id="edit_appointment_location" placeholder="" required="required"></textarea>
+      </div>
+
+      <div data-role="fieldcontain">
         <fieldset data-role="controlgroup">
           <legend>When:</legend>
           <input id="edit_appointment_starts_at" name="appointment[starts_at][date]" type="date" value="" />
           <input id="edit_appointment_starts_at_time" type="time" name="appointment[starts_at][time]" value="" />
         </fieldset>
-      </div>
-
-      <div data-role="fieldcontain">
-        <label for="edit_appointment_location">Where:</label>
-        <textarea cols="40" rows="8" name="appointment[location]" id="edit_appointment_location" placeholder="1012 N. Ashland Ave. Apt 3A Chicago IL, 60622" required="required"></textarea>
       </div>
 
       <div data-role="fieldcontain">

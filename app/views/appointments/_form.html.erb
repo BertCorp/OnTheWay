@@ -33,15 +33,6 @@
     </div>
   </div>
 
-  <div class="control-group string optional appointment_starts_at">
-    <label class="string optional control-label" for="appointment_starts_at">When</label>
-    <div class="controls">
-      <input id="appointment_starts_at" name="appointment[starts_at][date]" class="input-medium" type="date" value="<%= (@appointment.starts_at||Date.today).strftime("%F") %>" />
-      <input class="input-small" type="time" name="appointment[starts_at][time]" value="<%= @appointment.starts_at.strftime("%H:%M:%S") if @appointment.starts_at && @appointment.starts_at.strftime("%H:%M:%S") != "00:00:00" %>" style="width: 102px;" />
-      <!--<span class="help-block"></span>-->
-    </div>
-  </div>
-
   <div class="control-group">
     <label class="control-label" for="appointment_location">Where</label>
     <div class="controls">
@@ -57,6 +48,15 @@
       <ul>
       </ul>
       <a href="#" onclick="$('#location-modal').modal('hide'); $('#appointment_location').focus(); return false;" class="btn pull-right">No, Try Again</a>
+    </div>
+  </div>
+
+  <div class="control-group string optional appointment_starts_at">
+    <label class="string optional control-label" for="appointment_starts_at">When</label>
+    <div class="controls">
+      <input id="appointment_starts_at" name="appointment[starts_at][date]" class="input-medium" type="date" value="<%= (@appointment.starts_at||Date.today).strftime("%F") %>" />
+      <input class="input-small" type="time" name="appointment[starts_at][time]" value="<%= @appointment.starts_at.strftime("%H:%M:%S") if @appointment.starts_at && @appointment.starts_at.strftime("%H:%M:%S") != "00:00:00" %>" style="width: 102px;" />
+      <!--<span class="help-block"></span>-->
     </div>
   </div>
 

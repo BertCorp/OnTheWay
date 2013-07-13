@@ -9,7 +9,8 @@
            appointments = false,
        appointments_key = {},
  current_appointment_id = false,
-        last_fetched_at = false;
+        last_fetched_at = false,
+               geocoder = false;
 
 ///////////////////////////// Utility Functions ///////////////////////////////
 
@@ -600,7 +601,45 @@
     var today = new Date();
     var m = today.getMonth() + 1;
     $('#appointment_starts_at').val(today.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + today.getDate());
+    $('#appointment_location').parent().removeClass('success').removeClass('error');
+    $('#location-confirm').remove();
   });
+
+  $(document).on('change', '#appointment_location', function() {
+    if (!geocoder) geocoder = new google.maps.Geocoder();
+    $('#location-confirm').remove();
+    $('#appointment_location').parent().removeClass('success').removeClass('error');
+    address = $('#appointment_location').val();
+
+    if (address == '') {
+      return false;
+    }
+
+    geocoder.geocode( { 'address' : address }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        if (results.length == 1) {
+          $('#appointment_location').parent().addClass('success');
+          $('#appointment_location').after('<p id="location-confirm" style="text-align: center; font-size: 16px;">Did you mean: <a href="#" onclick="return setLocation(\'' + results[0].formatted_address + '\');">' + results[0].formatted_address + '</a></p>');
+        } else {
+          $('#appointment_location').parent().addClass('error');
+          $('#appointment_location').after('<div id="location-confirm"><p style="text-align: center; font-size: 16px;">Did you mean one of these?</p><ul></ul></div>');
+          for (x in results) {
+            $('#location-confirm ul').append('<li><a href="#" onclick="return setLocation(\'' + results[x].formatted_address + '\');">' + results[x].formatted_address  + '</a></li>');
+          }
+        }
+      } else {
+        $('#appointment_location').parent().addClass('error');
+        alert('Yikes. We have no idea where this is. You might want to adjust the location so we can provide you with estimates and directions.');
+      }
+    });
+  });
+
+  function setLocation(address) {
+    $('#appointment_location').val(address);
+    $('#location-confirm').remove();
+    $('#appointment_location').parent().removeClass('error');
+    return false;
+  } // setLocation
 
   $(document).on('click', '#appointment-add .appointment-submit', function(e) {
     // do validation on the data
