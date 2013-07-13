@@ -9,7 +9,8 @@
            appointments = false,
        appointments_key = {},
  current_appointment_id = false,
-        last_fetched_at = false;
+        last_fetched_at = false,
+               geocoder = false;
 
 ///////////////////////////// Utility Functions ///////////////////////////////
 

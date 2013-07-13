@@ -24,13 +24,10 @@ Deployment
 
 Todos
 =====
-- fix bad destination/location input google parse issues
 - more reliable scheduling/jobs
 - allow for various timezones
   -- http://stackoverflow.com/questions/4362663/timezone-with-rails-3
 - extract txt message error handling
-- phonegap analytics -- https://github.com/ggendre/GALocalStorage
-  - should be done. just test and double check that its working in all builds
 
 
 Down the Road
@@ -136,3 +133,5 @@ Down the Road
 - ~~sms reply~~ 2013-07-11
 - ~~add appointment shorturls to admin panel records~~ 2013-07-12
 - ~~better location validation and handling for web panel~~ 2013-07-12
+- ~~fix bad destination/location input google parse issues~~ 2013-07-12
+- ~~phonegap analytics -- https://github.com/ggendre/GALocalStorage~~ 2013-07-12
