@@ -40,7 +40,6 @@ Down the Road
   - if provider hasn't marked job as finished, send him a friendly reminder to.
 - activity log
 - full CRM functionality
-- function buttons on directions page.
 - build out sms reply system
 - push/sms notifications to drivers
 
@@ -133,5 +132,6 @@ Down the Road
 - ~~sms reply~~ 2013-07-11
 - ~~add appointment shorturls to admin panel records~~ 2013-07-12
 - ~~better location validation and handling for web panel~~ 2013-07-12
-- ~~fix bad destination/location input google parse issues~~ 2013-07-12
+- ~~fix bad destination/location input google parse issues for mobile apps~~ 2013-07-12
 - ~~phonegap analytics -- https://github.com/ggendre/GALocalStorage~~ 2013-07-12
+- ~~new name iOS app to just OnTheWay (drop Provider)~~ 2013-07-12
