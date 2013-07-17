@@ -86,9 +86,10 @@
 
 <div data-role="page" id="appointment-add" class="jqm-demos">
 
-  <div data-role="header" class="ui-icon-nodisc jqm-header ui-header ui-bar-b" role="banner">
+  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
+    <a href="#home" data-direction="reverse" data-transition="slideup" class="jqm-home" data-theme="d">Cancel</a>
     <h1>Appointment</h1>
-    <a href="#home" data-icon="delete" data-iconshadow="false" data-iconpos="notext" data-direction="reverse" data-transition="slideup" class="ui-btn-right jqm-home" title="Close" data-theme="b">Close</a>
+    <a href="#" class="appointment-submit" data-role="button" class="ui-btn-right jqm-home" data-theme="b">Save</a>
   </div>
   <div data-role="content">
     <form class="ui-bar-c ui-corner-all ui-shadow" style="padding: 0px 1em;">
@@ -137,25 +138,23 @@
 
     </form>
 
-    <a href="#" class="appointment-submit" data-role="button" data-theme="b">Save</a>
-
   </div>
 
 </div><!-- /page -->
 
 <div data-role="page" id="detail" class="jqm-demos">
 
-  <div data-role="header" class="ui-icon-nodisc jqm-header ui-header ui-bar-b" role="banner">
-    <a href="#home" data-iconshadow="false" data-icon="back" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home" title="Home" data-theme="b">Back</a>
+  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
+    <a href="#home" data-role="button" data-icon="arrow-l" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home" title="Home" data-theme="d">Back</a>
     <h1></h1>
-    <a href="#directions" data-iconshadow="false" data-icon="info" data-iconpos="notext" data-transition="slide" class="ui-btn-right jqm-home" title="Map" data-theme="b">Map</a>
+    <a href="#appointment-edit" data-role="button" data-transition="fade" class="ui-btn-right jqm-home" title="Edit" data-theme="b">Edit</a>
   </div><!-- /header -->
 
   <div data-role="content">
 
     <div id="progress-btn-container" class="ui-grid-solo">
       <div class="ui-block-a">
-        <a href="#" data-role="button" data-theme="b"><span><span>Temp</span></span></a>
+        <a href="#" data-role="button" data-theme="b"><span><span></span></span></a>
       </div>
     </div>
 
@@ -180,7 +179,6 @@
 
     <div>
       <p>
-        <a href="#appointment-edit" class="ui-icon-nodisc" data-role="button" data-iconshadow="false" data-icon="edit" data-iconpos="notext" data-transition="slideup" data-theme="b" style="float: right;">Change</a>
         <strong>Appointment:</strong><br/>
         <span id="appointment-when"></span><br/>
       </p>
@@ -208,9 +206,10 @@
 
 <div data-role="page" id="appointment-edit" class="jqm-demos">
 
-  <div data-role="header" class="jqm-header ui-header ui-bar-b ui-icon-nodisc" role="banner">
+  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
+    <a href="#detail" data-icon="arrow-l" data-direction="reverse" data-transition="fade" class="ui-btn-left jqm-home" data-theme="d">Cancel</a>
     <h1>Edit</h1>
-    <a href="#detail" data-icon="delete" data-iconshadow="false" data-iconpos="notext" data-direction="reverse" data-transition="slideup" class="ui-btn-right jqm-home" title="Close" data-theme="b">Close</a>
+    <a href="#" class="appointment-submit" data-role="button" class="ui-btn-right jqm-home ui-icon-nodisc" title="Save" data-theme="b">Save</a>
   </div>
   <div data-role="content">
     <form class="ui-bar-c ui-corner-all ui-shadow" style="padding: 0px 1em;">
@@ -246,7 +245,7 @@
 
     </form>
 
-    <a href="#" class="appointment-submit" data-role="button" data-theme="b">Save</a>
+    <a href="#dialog-delete-confirm" data-role="button" data-transition="slideup" title="Delete" data-theme="a">Delete</a>
 
   </div>
 
@@ -254,10 +253,10 @@
 
 <div data-role="page" id="directions" class="jqm-demos">
 
-  <div data-role="header" class="ui-icon-nodisc jqm-header ui-header ui-bar-b" role="banner">
-    <a href="#detail" data-icon="back" data-iconshadow="false" data-iconpos="notext" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home" title="Home" data-theme="b">Back</a>
+  <div data-role="header" class="jqm-header ui-header ui-bar-b" role="banner">
+    <a href="#detail" data-icon="arrow-l" data-direction="reverse" data-transition="slide" class="ui-btn-left jqm-home" title="Back" data-theme="d">Back</a>
     <h1>Map &amp; Directions</h1>
-    <a href="#" id="directions-recenter" data-icon="refresh" data-iconshadow="false" data-iconpos="notext" class="ui-btn-right jqm-home" title="Home" data-theme="b">ReCenter</a>
+    <a href="#" id="directions-recenter" data-icon="refresh" data-iconshadow="false" data-iconpos="notext" class="ui-btn-right jqm-home ui-icon-nodisc" title="Home" data-theme="b">ReCenter</a>
   </div>
   <div data-role="content">
     <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
