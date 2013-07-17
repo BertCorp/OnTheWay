@@ -245,7 +245,7 @@
 
     </form>
 
-    <a href="#dialog-delete-confirm" data-role="button" data-transition="slideup" title="Delete" data-theme="a">Delete</a>
+    <a href="#dialog-delete-confirm" data-role="button" data-rel="dialog" data-transition="pop" title="Delete" data-theme="a">Delete</a>
 
   </div>
 
@@ -312,6 +312,20 @@
     <p>Are you sure you want to cancel this appointment?</p>
     <a href="#" id="cancel-appointment" data-role="button" data-theme="b">Yes</a>
     <a href="#detail" data-role="button" data-rel="back" data-theme="c">Nevermind</a>
+  </div>
+
+</div><!-- /page -->
+
+<div data-role="page" id="dialog-delete-confirm">
+
+  <div data-role="header" data-theme="d">
+    <h1>Delete Appointment?</h1>
+  </div>
+
+  <div data-role="content" data-theme="d">
+    <p>Are you sure you want to delete this appointment?</p>
+    <a href="#" id="delete-appointment" data-role="button" data-theme="b">Yes</a>
+    <a href="#appointment-edit" data-role="button" data-rel="back" data-theme="c">Nevermind</a>
   </div>
 
 </div><!-- /page -->

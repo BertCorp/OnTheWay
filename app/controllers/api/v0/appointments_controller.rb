@@ -11,7 +11,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
       #Rails.logger.info "IS DEMO!"
       # make a special except for demo account...
       #apps = current_provider.appointments.order('appointments.starts_at ASC')
-      apps = current_provider.appointments.where(["(appointments.starts_at < ?)", '2000-01-01 00:00:00']).order("appointments.starts_at ASC")
+      apps = current_provider.appointments.where(["(appointments.starts_at < ?) OR (appointments.starts_at >= ?)", '2000-01-01 00:00:00', DateTime.now.beginning_of_day]).order("appointments.starts_at ASC")
       apps.map! do |app|
         fix_demo_appointment(app)
       end
@@ -102,6 +102,14 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     else
       render json: { message: "There was an error updating the appointment.", errors: @appointment.errors }, status: :unprocessable_entity
     end
+  end
+
+  # DELETE /appointments/1
+  def destroy
+    @appointment = current_provider.appointments.find(params[:id])
+    @appointment.destroy
+
+    head :no_content
   end
 
   # PUT /appointments/1/feedback.json

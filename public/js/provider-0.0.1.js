@@ -242,6 +242,7 @@
       var current_count = 0;
       var is_tracking = false;
       for (x in appointments) {
+        if (appointments[x] == null) continue;
         if (!current_date || (current_date != appointments[x].starts_at.substr(0,10))) {
           // update last date divider's appointment count
           if (current_date) $('#date-' + current_date + ' span.ui-li-count').html(current_count);
@@ -591,6 +592,38 @@
         // notify user about error checking for updates?
         //console.log(request);
         handleErrors(request, 'There was an error canceling this appointment. Please try again or use the web console.');
+      }
+    });
+  });
+
+  $(document).on('click', '#delete-appointment', function() {
+    $.track.stop();
+    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
+      data: { 'auth_token' : credentials.auth_token },
+      type: 'delete',
+      async: true,
+      beforeSend: function() {
+        //setNotification('Canceling appointment...');
+        $.mobile.loading('show', { textVisible : false, textonly: false });
+      },
+      complete: function() {
+        //clearNotification();
+        $.mobile.loading('hide');
+      },
+      success: function() {
+        // upon success,
+        appointments[appointments_key[current_appointment_id]] = null;
+        appointments.slice(appointments_key[current_appointment_id], 1);
+        delete appointments_key[current_appointment_id];
+        setStorage('appointments', appointments);
+        renderAppointments();
+        // go back to #home
+        $.mobile.changePage("#home");
+      },
+      error: function(request) {
+        // notify user about error checking for updates?
+        //console.log(request);
+        handleErrors(request, 'There was an error deleting this appointment. Please try again or use the web console.');
       }
     });
   });
