@@ -44,6 +44,8 @@
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/img/star-off.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/img/star-on.png \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/environment.js \
+/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/ga.js \
+/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/jquery-1.10.2.min.js \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/jquery.mobile-1.3.1.min.js \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/jquery.mobile.analytics.js \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/jquery.raty.min.js \
