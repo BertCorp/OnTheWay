@@ -634,6 +634,12 @@
     var today = new Date();
     var m = today.getMonth() + 1;
     $('#appointment_starts_at').val(today.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + today.getDate());
+
+    // round to nearest 15 minutes of current time
+    var coeff = 1000 * 60 * 15;
+    var rounded = new Date(Math.round(today.getTime() / coeff) * coeff)
+    $('#appointment_starts_at_time').val(rounded.getHours() + ":" + rounded.getMinutes());
+
     $('#appointment_location').parent().removeClass('success').removeClass('error');
     $('#location-confirm').remove();
   });

@@ -135,3 +135,6 @@ Down the Road
 - ~~fix bad destination/location input google parse issues for mobile apps~~ 2013-07-12
 - ~~phonegap analytics -- https://github.com/ggendre/GALocalStorage~~ 2013-07-12
 - ~~new name iOS app to just OnTheWay (drop Provider)~~ 2013-07-12
+- ~~rework app buttons to better reflect native Apple conventions~~ 2013-07-17
+- ~~add ability to delete an appointment~~ 2013-07-17
+- ~~added a default time to new appointments to help provide suggested input format~~ 2013-07-17
