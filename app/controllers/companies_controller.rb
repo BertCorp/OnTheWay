@@ -40,17 +40,17 @@ class CompaniesController < ApplicationController
   # POST /companies
   # POST /companies.json
   def create
-    @company = Company.new(params[:company])
+    #@company = Company.new(params[:company])
 
-    respond_to do |format|
-      if @company.save
-        format.html { redirect_to @company, notice: 'Company was successfully created.' }
-        format.json { render json: @company, status: :created, location: @company }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
-      end
-    end
+    #respond_to do |format|
+    #  if @company.save
+    #    format.html { redirect_to appointments_url, notice: 'Company was successfully created.' }
+    #    format.json { render json: @company, status: :created, location: @company }
+    #  else
+    #    format.html { render action: "new" }
+    #    format.json { render json: @company.errors, status: :unprocessable_entity }
+    #  end
+    #end
   end
 
   # PUT /companies/1
@@ -60,7 +60,7 @@ class CompaniesController < ApplicationController
 
     respond_to do |format|
       if @company.update_attributes(params[:company])
-        format.html { redirect_to @company, notice: 'Company was successfully updated.' }
+        format.html { redirect_to appointments_url, notice: 'Company was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -72,11 +72,11 @@ class CompaniesController < ApplicationController
   # DELETE /companies/1
   # DELETE /companies/1.json
   def destroy
-    @company = Company.find(params[:id])
-    @company.destroy
+    #@company = Company.find(params[:id])
+    #@company.destroy
 
     respond_to do |format|
-      format.html { redirect_to companies_url }
+      format.html { redirect_to root_url }
       format.json { head :no_content }
     end
   end
