@@ -64,7 +64,8 @@ OnTheWay::Application.routes.draw do
   get "feedback" => redirect("/mockups/customer-feedback-v1.0.html")
 
   match "sms_reply", :to => "pages#sms_reply", :defaults => { :format => 'xml' }
-  match "pro_marketing", :to => "pages#pro_marketing"
+  match "pro_marketing", :to => "pages#pro_marketing" # remove in a week or so, have some links out with this url
+  match "pro", :to => "pages#pro_marketing"
   match "pro_marketing_confirmation", :to => "pages#pro_marketing_confirmation"
   match "landing_confirmation", :to => "pages#landing_confirmation"
 
