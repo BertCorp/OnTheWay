@@ -430,7 +430,9 @@
     }
   });
 
-  $(document).on('click', '#submit', function(e) { // catch the form's submit event
+  $(document).on('click', '#submit', loginSubmit);
+  $(document).on('submit', 'form#login-form', loginSubmit);
+  function loginSubmit(e) { // catch the form's submit event
     appointments = false;
     removeStorage('appointments');
     e.preventDefault();
@@ -463,7 +465,7 @@
       alert('Please fill in all fields.');
     }
     return false; // cancel original event to prevent form submitting
-  });
+  } // loginSubmit
 
   $(document).on('click', 'a#logout', function(e) {
     $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/logout.json',
@@ -680,7 +682,9 @@
     return false;
   } // setLocation
 
-  $(document).on('click', '#appointment-add .appointment-submit', function(e) {
+  $(document).on('click', '#appointment-add .appointment-submit', appointmentAddSubmit);
+  $(document).on('submit', '#appointment-add form', appointmentAddSubmit);
+  function appointmentAddSubmit(e) {
     // do validation on the data
     e.preventDefault();
     if (($('#appointment_customer_name').val().length > 0) && ($('#appointment_customer_phone').val().length > 0) && ($('#appointment_starts_at').val().length > 0) && ($('#appointment_location').val().length > 0)) {
@@ -711,9 +715,12 @@
     } else {
       alert('Please fill in all necessary fields.');
     }
-  });
+    return false;
+  } // appointmentAddSubmit
 
-  $(document).on('click', '#appointment-edit .appointment-submit', function(e) {
+  $(document).on('click', '#appointment-edit .appointment-submit', appointmentEditSubmit);
+  $(document).on('submit', '#appointment-edit form', appointmentEditSubmit);
+  function appointmentEditSubmit(e) {
     // do validation on the data
     e.preventDefault();
     if (($('#edit_appointment_starts_at').val().length > 0) && ($('#edit_appointment_location').val().length > 0)) {
@@ -746,4 +753,5 @@
     } else {
       alert('Please fill in all necessary fields.');
     }
-  });
+    return false;
+  } // appointmentEditSubmit

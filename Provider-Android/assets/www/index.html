@@ -112,7 +112,7 @@
         <fieldset data-role="controlgroup">
           <legend>When:</legend>
           <input id="appointment_starts_at" name="appointment[starts_at][date]" type="number" value="" />
-          <input id="appointment_starts_at_time" class="input-small" type="number" name="appointment[starts_at][time]" value="" />
+          <input id="appointment_starts_at_time" class="input-small" type="text" name="appointment[starts_at][time]" value="" />
         </fieldset>
       </div>
 
@@ -130,6 +130,10 @@
           <option value="finished">finished</option>
           <option value="canceled">canceled</option>
         </select>
+      </div>
+
+      <div style="display:none;">
+        <input type="submit"/>
       </div>
 
     </form>
@@ -219,7 +223,7 @@
         <fieldset data-role="controlgroup">
           <legend>When:</legend>
           <input id="edit_appointment_starts_at" name="appointment[starts_at][date]" type="number" value="" />
-          <input id="edit_appointment_starts_at_time" name="appointment[starts_at][time]" type="number" value="" />
+          <input id="edit_appointment_starts_at_time" name="appointment[starts_at][time]" type="text" value="" />
         </fieldset>
       </div>
 
@@ -237,6 +241,10 @@
           <option value="finished">finished</option>
           <option value="canceled">canceled</option>
         </select>
+      </div>
+
+      <div style="display:none;">
+        <input type="submit"/>
       </div>
 
     </form>
