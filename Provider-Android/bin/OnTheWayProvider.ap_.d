@@ -54,7 +54,7 @@
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/jquery.ui.map.overlays.min.js \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/jquery.ui.map.services.min.js \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/modernizr.min.js \
-/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/provider-0.0.1.js \
+/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/provider-1.0.2.js \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/js/track.js \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/icon \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/assets/www/res/screen \
