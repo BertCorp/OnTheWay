@@ -4,12 +4,20 @@ class CustomersController < ApplicationController
   # GET /a/:id
   def appointment
     @appointment = Appointment.find_by_shortcode(params[:id])
-
+    # fix the demo appointment times
     @appointment = fix_demo_appointment(@appointment) if @appointment.provider.email == 'demo'
+    # make sure to set default Timezone
+    if @appointment.provider.timezone.present?
+      Time.zone = @appointment.provider.timezone
+    elsif @appointment.company.timezone.present?
+      Time.zone = @appointment.company.timezone
+    else
+      Time.zone = 'America/Chicago'
+    end
 
     if @appointment.status == 'finished'
       render 'customers/appointment-feedback', layout: false
-    elsif (@appointment.status == 'canceled') || (@appointment.starts_at < DateTime.now.beginning_of_day)
+    elsif (@appointment.status == 'canceled') || (@appointment.starts_at < Time.zone.now.beginning_of_day)
       render 'customers/appointment-invalid', layout: false
     else
       render layout: false

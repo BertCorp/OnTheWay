@@ -17,6 +17,7 @@
   <%= f.input :name, input_html: { required: 'required' } %>
   <%= f.input :email, as: :email, placeholder: "ex: example@onthewayhq.com" %>
   <%= f.input :phone, as: :tel, placeholder: "(xxx) xxx-xxxx", input_html: { class: 'input-medium phone', maxlength: '22' } %>
+  <%= f.input :timezone, :collection => ActiveSupport::TimeZone.us_zones.map(&:name), :hint => "You only need to set this if different from Company's Timezone of: #{current_company.timezone}" %>
 
   <%= f.input :password, as: :password, placeholder: "Password" %>
   <%= f.input :password_confirmation, as: :password, placeholder: "Confirm" %>

@@ -25,8 +25,8 @@ Deployment
 Todos
 =====
 - more reliable scheduling/jobs
-- allow for various timezones
-  -- http://stackoverflow.com/questions/4362663/timezone-with-rails-3
+- allow for various timezones -- http://tzinfo.rubyforge.org/doc/
+  - allow providers to inherit from company timezone
 - extract txt message error handling
 
 
@@ -38,7 +38,7 @@ Down the Road
   - better offline handling
   - listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
   - if provider hasn't marked job as finished, send him a friendly reminder to.
-- activity log
+- activity log -- http://railscasts.com/episodes/406-public-activity
 - full CRM functionality
 - build out sms reply system
 - push/sms notifications to drivers

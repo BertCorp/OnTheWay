@@ -3,15 +3,15 @@ class AppointmentsController < ApplicationController
   # GET /appointments
   def index
     if current_company.email != 'demo'
-      @upcoming_appointments = current_company.appointments.where(["(appointments.starts_at >= ?) AND ((appointments.status != 'canceled') AND (appointments.status != 'finished'))", DateTime.now.beginning_of_day]).order("appointments.starts_at ASC")
+      @upcoming_appointments = current_company.appointments.where(["(appointments.starts_at >= ?) AND ((appointments.status != 'canceled') AND (appointments.status != 'finished'))", Time.zone.now.beginning_of_day]).order("appointments.starts_at ASC")
     else
       # make a special except for demo account...
-      @upcoming_appointments = current_company.appointments.where(["((appointments.starts_at < ?) OR (appointments.starts_at >= ?)) AND ((appointments.status != 'canceled') AND (appointments.status != 'finished'))", '2000-01-01 00:00:00', DateTime.now.beginning_of_day]).order("appointments.starts_at ASC")
+      @upcoming_appointments = current_company.appointments.where(["((appointments.starts_at < ?) OR (appointments.starts_at >= ?)) AND ((appointments.status != 'canceled') AND (appointments.status != 'finished'))", '2000-01-01 00:00:00', Time.zone.now.beginning_of_day]).order("appointments.starts_at ASC")
       @upcoming_appointments.map! do |app|
         fix_demo_appointment(app)
       end
     end
-    @past_appointments = current_company.appointments.where(["((appointments.starts_at > ?) AND (appointments.starts_at < ?)) OR ((appointments.status = 'canceled') OR (appointments.status = 'finished'))", '2000-01-01 00:00:00', DateTime.now.beginning_of_day]).order("appointments.starts_at DESC")
+    @past_appointments = current_company.appointments.where(["((appointments.starts_at > ?) AND (appointments.starts_at < ?)) OR ((appointments.status = 'canceled') OR (appointments.status = 'finished'))", '2000-01-01 00:00:00', Time.zone.now.beginning_of_day]).order("appointments.starts_at DESC")
   end
 
   # GET /appointments/import
@@ -101,7 +101,7 @@ class AppointmentsController < ApplicationController
 
     # save the proper status timestamps
     if (params[:appointment][:status] != 'requested') && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
-      params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
+      params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.zone.now
     end
 
     @appointment = current_company.appointments.new(params[:appointment])
@@ -119,11 +119,14 @@ class AppointmentsController < ApplicationController
     orig_status = @appointment.status
     orig_time = @appointment.starts_at
 
-    params[:appointment][:starts_at] = "#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}"
+    if (current_provider.email == 'demo') && params[:appointment][:starts_at].present?
+      Time.zone = 'America/Chicago'
+      params[:appointment][:starts_at][:date] = (params[:appointment][:starts_at][:date] == Date.today.to_s) ? '0001-01-01' : '0001-01-02'
+    end
 
     # save the proper status timestamps
     if (params[:appointment][:status] != 'requested') && (params[:appointment][:status] != 'canceled') && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
-      params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
+      params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.zone.now
     end
 
     if @appointment.update_attributes(params[:appointment])

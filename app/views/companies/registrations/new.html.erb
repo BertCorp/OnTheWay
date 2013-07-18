@@ -4,7 +4,10 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :email, :required => true, :autofocus => true %>
+    <%= f.input :name, :required => true, :autofocus => true %>
+    <%= f.input :phone, :required => true %>
+    <%= f.input :timezone, :collection => ActiveSupport::TimeZone.us_zones.map(&:name), :selected => 'Central Time (US & Canada)' %>
+    <%= f.input :email, :required => true %>
     <%= f.input :password, :required => true %>
     <%= f.input :password_confirmation, :required => true %>
   </div>

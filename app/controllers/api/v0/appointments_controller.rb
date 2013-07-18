@@ -6,16 +6,16 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
   def index
     if current_provider.email != 'demo'
       #Rails.logger.info "Not DEMO!"
-      @appointments = current_provider.appointments.where(['appointments.starts_at >= ?', DateTime.now.beginning_of_day]).order('appointments.starts_at ASC')
+      @appointments = current_provider.appointments.where(['appointments.starts_at >= ?', Time.zone.now.beginning_of_day]).order('appointments.starts_at ASC')
     else
       #Rails.logger.info "IS DEMO!"
       # make a special except for demo account...
       #apps = current_provider.appointments.order('appointments.starts_at ASC')
-      apps = current_provider.appointments.where(["(appointments.starts_at < ?) OR (appointments.starts_at >= ?)", '2000-01-01 00:00:00', DateTime.now.beginning_of_day]).order("appointments.starts_at ASC")
+      apps = current_provider.appointments.where(["(appointments.starts_at < ?) OR (appointments.starts_at >= ?)", '2000-01-01 00:00:00', Time.zone.now.beginning_of_day]).order("appointments.starts_at ASC")
       apps.map! do |app|
         fix_demo_appointment(app)
       end
-      @appointments = apps
+      @appointments = apps.sort_by { |k| k[:starts_at] }
     end
     render json: @appointments
   end
@@ -51,7 +51,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
 
     # save the proper status timestamps
     if (params[:appointment][:status] != 'requested') && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
-      params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
+      params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.zone.now
     end
 
     @appointment = current_provider.appointments.new(params[:appointment])
@@ -70,16 +70,17 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     orig_time = @appointment.starts_at
 
     if (current_provider.email == 'demo') && params[:appointment][:starts_at].present?
+      Time.zone = 'America/Chicago'
       params[:appointment][:starts_at][:date] = (params[:appointment][:starts_at][:date] == Date.today.to_s) ? '0001-01-01' : '0001-01-02'
     end
 
-    params[:appointment][:starts_at] = "#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}" if params[:appointment][:starts_at]
+    params[:appointment][:starts_at] = Time.zone.parse("#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}") if params[:appointment][:starts_at]
 
     # do what you need to do...
     if (params[:appointment][:status])
       # save the proper status timestamps -- dont need requested, canceled
       if !['requested', 'canceled'].include?(params[:appointment][:status]) && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
-        params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.now
+        params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.zone.now
       end
 
       params[:appointment][:en_route_at] = nil if !['finished', 'arrived', 'en route', 'canceled'].include? params[:appointment][:status]

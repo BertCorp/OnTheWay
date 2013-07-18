@@ -7,7 +7,7 @@ class Api::V0::SessionsController < Devise::SessionsController
     #updates[:protocol] = 'https://'
     if params[:device_uid]
       provider = Provider.find_by_device_uid(params[:device_uid])
-      updates[:provider] = { auth_token: provider.authentication_token, email: provider.email, authenticated_at: Time.now } if provider
+      updates[:provider] = { auth_token: provider.authentication_token, email: provider.email, authenticated_at: Time.zone.now } if provider
     end
 
     render json: updates
@@ -27,7 +27,7 @@ class Api::V0::SessionsController < Devise::SessionsController
     if resource.valid_password?(params[:provider][:password])
       sign_in("user", resource)
 
-      render json: { success: true, auth_token: resource.authentication_token, email: resource.email, authenticated_at: Time.now }
+      render json: { success: true, auth_token: resource.authentication_token, email: resource.email, authenticated_at: Time.zone.now }
       return
     end
     invalid_login_attempt

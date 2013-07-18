@@ -44,9 +44,9 @@ class Appointment < ActiveRecord::Base
 
   def send_reminder
     # dont send any texts if it's in the past
-    return false if starts_at < Time.now
+    return false if starts_at < Time.zone.now
     # dont send any texts if it's before 4pm the day before the appointment
-    return false if Time.now < (starts_at-1.day).change(:hour => 16)
+    return false if Time.zone.now < (starts_at-1.day).change(:hour => 16)
     # ignore 555 numbers
     return false if to[0..2] == '555'
 
