@@ -242,6 +242,7 @@
       var current_count = 0;
       var is_tracking = false;
       for (x in appointments) {
+        if (appointments[x] == null) continue;
         if (!current_date || (current_date != appointments[x].starts_at.substr(0,10))) {
           // update last date divider's appointment count
           if (current_date) $('#date-' + current_date + ' span.ui-li-count').html(current_count);
@@ -595,12 +596,50 @@
     });
   });
 
+  $(document).on('click', '#delete-appointment', function() {
+    $.track.stop();
+    $.ajax({ url: PROTOCOL + DOMAIN + API_PATH + '/appointments/' + current_appointment_id + '.json',
+      data: { 'auth_token' : credentials.auth_token },
+      type: 'delete',
+      async: true,
+      beforeSend: function() {
+        //setNotification('Canceling appointment...');
+        $.mobile.loading('show', { textVisible : false, textonly: false });
+      },
+      complete: function() {
+        //clearNotification();
+        $.mobile.loading('hide');
+      },
+      success: function() {
+        // upon success,
+        appointments[appointments_key[current_appointment_id]] = null;
+        appointments.slice(appointments_key[current_appointment_id], 1);
+        delete appointments_key[current_appointment_id];
+        setStorage('appointments', appointments);
+        renderAppointments();
+        // go back to #home
+        $.mobile.changePage("#home");
+      },
+      error: function(request) {
+        // notify user about error checking for updates?
+        //console.log(request);
+        handleErrors(request, 'There was an error deleting this appointment. Please try again or use the web console.');
+      }
+    });
+  });
+
   $(document).on('pagebeforeshow', '#appointment-add', function() {
     current_appointment_id = false;
     $('#appointment-add form').find('input, select, textarea').val('');
     var today = new Date();
     var m = today.getMonth() + 1;
     $('#appointment_starts_at').val(today.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + today.getDate());
+
+    // round to nearest 15 minutes of current time
+    var coeff = 1000 * 60 * 15;
+    var rounded = new Date(Math.round(today.getTime() / coeff) * coeff)
+    $('#appointment_starts_at_time').val(rounded.getHours() + ":" + rounded.getMinutes());
+
     $('#appointment_location').parent().removeClass('success').removeClass('error');
     $('#location-confirm').remove();
   });
