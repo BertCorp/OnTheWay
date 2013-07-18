@@ -1,6 +1,6 @@
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/bin/classes.dex : \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/bin/classes/com/onthewayhq/provider/BuildConfig.class \
-/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/bin/classes/com/onthewayhq/provider/OnTheWayProvider.class \
+/Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/bin/classes/com/onthewayhq/provider/OnTheWay.class \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/bin/classes/com/onthewayhq/provider/R$attr.class \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/bin/classes/com/onthewayhq/provider/R$drawable.class \
 /Applications/MAMP/htdocs/projects/OnTheWay/Provider-Android/bin/classes/com/onthewayhq/provider/R$layout.class \

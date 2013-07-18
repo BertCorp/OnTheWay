@@ -97,7 +97,7 @@
       <div data-role="fieldcontain">
         <fieldset data-role="controlgroup">
           <legend>Customer:</legend>
-          <input type="text" name="appointment[customer][name]" id="appointment_customer_name" placeholder="Name" required="required" value="">
+          <input type="text" name="appointment[customer][name]" id="appointment_customer_name" placeholder="Name" required="required">
           <input class="input-medium" id="appointment_customer_phone" maxlength="13" name="appointment[customer][phone]" placeholder="Cell Phone" size="13" type="tel" required="required" />
           <input id="appointment_customer_email" name="appointment[customer][email]" placeholder="Email (optional)" size="30" type="email" />
         </fieldset>
@@ -111,8 +111,8 @@
       <div data-role="fieldcontain">
         <fieldset data-role="controlgroup">
           <legend>When:</legend>
-          <input id="appointment_starts_at" name="appointment[starts_at][date]" type="date" value="" />
-          <input id="appointment_starts_at_time" class="input-small" type="time" name="appointment[starts_at][time]" value="" />
+          <input id="appointment_starts_at" name="appointment[starts_at][date]" type="number" value="" />
+          <input id="appointment_starts_at_time" class="input-small" type="number" name="appointment[starts_at][time]" value="" />
         </fieldset>
       </div>
 
@@ -218,8 +218,8 @@
       <div data-role="fieldcontain">
         <fieldset data-role="controlgroup">
           <legend>When:</legend>
-          <input id="edit_appointment_starts_at" name="appointment[starts_at][date]" type="date" value="" />
-          <input id="edit_appointment_starts_at_time" type="time" name="appointment[starts_at][time]" value="" />
+          <input id="edit_appointment_starts_at" name="appointment[starts_at][date]" type="number" value="" />
+          <input id="edit_appointment_starts_at_time" name="appointment[starts_at][time]" type="number" value="" />
         </fieldset>
       </div>
 
