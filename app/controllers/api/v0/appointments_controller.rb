@@ -43,7 +43,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
     end
 
     # build the proper when date field
-    params[:appointment][:starts_at] = "#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}"
+    params[:appointment][:starts_at] = Time.zone.parse("#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}")
 
     if !params[:appointment][:status].present?
       params[:appointment][:status] = 'confirmed'
