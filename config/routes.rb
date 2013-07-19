@@ -36,11 +36,16 @@ OnTheWay::Application.routes.draw do
     end
   end
 
-  devise_for :companies
+  devise_for :companies, :skip => [:registrations]
   as :company do
     get "/login" => "devise/sessions#new", :as => "new_company_session"
     delete "/logout" => "devise/sessions#destroy", :as => "destroy_company_session"
     get "/logout" => "devise/sessions#destroy"
+
+    get "/account" => "devise_invitable/registrations#edit", :as => "edit_company_registration"
+    post "/companies" => "devise_invitable/registrations#create", :as => "company_registration"
+    put "/companies" => "companies/registrations#update"
+    delete "/companies" => "devise_invitable/registrations#destroy"
   end
 
   get "p" => redirect("/prototypes/provider-v1.0.html")

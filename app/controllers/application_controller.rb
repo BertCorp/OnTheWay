@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_timezone
-    timezone = 'America/Los_Angeles'
+    timezone = 'America/Chicago'
     if current_provider && current_provider.timezone.present?
       timezone = current_provider.timezone
     elsif current_provider && current_provider.company && current_provider.company.timezone.present?
@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     elsif current_company && current_company.timezone.present?
       timezone = current_company.timezone
     end
-    #Rails.logger.info "Set Timezone: #{timezone.inspect}"
+    Rails.logger.info "Set Timezone: #{timezone.inspect}"
     Time.zone = timezone
     yield
   end

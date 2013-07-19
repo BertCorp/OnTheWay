@@ -54,18 +54,13 @@ class CompaniesController < ApplicationController
   end
 
   # PUT /companies/1
-  # PUT /companies/1.json
   def update
     @company = Company.find(params[:id])
 
-    respond_to do |format|
-      if @company.update_attributes(params[:company])
-        format.html { redirect_to appointments_url, notice: 'Company was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
-      end
+    if @company.update_attributes(params[:company])
+      redirect_to appointments_url, notice: 'Your account was successfully updated.'
+    else
+      render action: "edit"
     end
   end
 
@@ -75,9 +70,6 @@ class CompaniesController < ApplicationController
     #@company = Company.find(params[:id])
     #@company.destroy
 
-    respond_to do |format|
-      format.html { redirect_to root_url }
-      format.json { head :no_content }
-    end
+    redirect_to root_url
   end
 end

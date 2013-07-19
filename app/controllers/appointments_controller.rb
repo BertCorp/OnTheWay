@@ -120,7 +120,7 @@ class AppointmentsController < ApplicationController
     orig_status = @appointment.status
     orig_time = @appointment.starts_at
 
-    if (current_provider.email == 'demo') && params[:appointment][:starts_at].present?
+    if (current_company.email == 'demo') && params[:appointment][:starts_at].present?
       Time.zone = 'America/Chicago'
       params[:appointment][:starts_at][:date] = (params[:appointment][:starts_at][:date] == Date.today.to_s) ? '0001-01-01' : '0001-01-02'
     end
