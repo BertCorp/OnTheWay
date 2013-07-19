@@ -10,6 +10,7 @@ class AppointmentsController < ApplicationController
       @upcoming_appointments.map! do |app|
         fix_demo_appointment(app)
       end
+      @appointments = @upcoming_appointments.sort_by { |k| k[:starts_at] }
     end
     @past_appointments = current_company.appointments.where(["((appointments.starts_at > ?) AND (appointments.starts_at < ?)) OR ((appointments.status = 'canceled') OR (appointments.status = 'finished'))", '2000-01-01 00:00:00', Time.zone.now.beginning_of_day]).order("appointments.starts_at DESC")
   end
