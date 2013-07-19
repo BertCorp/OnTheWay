@@ -2,9 +2,11 @@
 
 namespace :reminders do
 
-  desc "(Day before at 4pm) Reminder users about their appointment."
+  desc "(Day before at 6pm CST) Remind users about their appointment."
   task :day_before => :environment do
-    #to = '5857050130'
+    # what is the current utc hour?
+    # figure out if its 4pm in any of the current timezones.
+    # get all the appointments for that timezone
     Time.zone = 'Central Time (US & Canada)'
     # get all appointments tomorrow that haven't happened yet:
     sql = ["SELECT * FROM appointments WHERE ((status = 'requested') OR (status = 'confirmed')) AND (starts_at BETWEEN ? AND ?)", (Time.zone.now.beginning_of_day + 1.day).in_time_zone, (Time.zone.now.beginning_of_day + 2.days).in_time_zone]

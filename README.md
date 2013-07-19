@@ -136,7 +136,6 @@ Down the Road
 - ~~rework app buttons to better reflect native Apple conventions~~ 2013-07-17
 - ~~add ability to delete an appointment~~ 2013-07-17
 - ~~added a default time to new appointments to help provide suggested input format~~ 2013-07-17
-- add provider timezones
+- ~~add provider timezones~~ 2013-07-18
   - ~~basic site integration for displaying times properly based on company/provider timezone~~ 2013-07-18
   - ~~ability for companies and providers to choose/change their timezones~~ 2013-07-18
-  - update rake scheduler
