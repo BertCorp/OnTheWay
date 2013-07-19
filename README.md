@@ -26,6 +26,12 @@ Todos
 =====
 - more reliable scheduling/jobs
 - extract txt message error handling
+- add provider notification settings
+- provider push/sms notifications
+  - if provider hasn't marked job as finished, send him a friendly reminder to.
+- translation layer
+  - need to figure out appointment types
+- simpler company/provider signup
 
 
 Down the Road
@@ -35,11 +41,9 @@ Down the Road
   - metadata fields (ability for companies/providers to add custom fields to appointments)
   - better offline handling
   - listview pull to refresh -- https://github.com/watusi/jquery-mobile-iscrollview
-  - if provider hasn't marked job as finished, send him a friendly reminder to.
 - activity log -- http://railscasts.com/episodes/406-public-activity
 - full CRM functionality
 - build out sms reply system
-- push/sms notifications to drivers
 
 
 =========

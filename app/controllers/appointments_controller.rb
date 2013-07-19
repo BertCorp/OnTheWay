@@ -124,6 +124,9 @@ class AppointmentsController < ApplicationController
       params[:appointment][:starts_at][:date] = (params[:appointment][:starts_at][:date] == Date.today.to_s) ? '0001-01-01' : '0001-01-02'
     end
 
+    # build the proper when date field
+    params[:appointment][:starts_at] = "#{params[:appointment][:starts_at][:date]} #{params[:appointment][:starts_at][:time]}"
+
     # save the proper status timestamps
     if (params[:appointment][:status] != 'requested') && (params[:appointment][:status] != 'canceled') && !params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym].present?
       params[:appointment]["#{params[:appointment][:status].gsub(' ', '_')}_at".to_sym] = Time.zone.now
