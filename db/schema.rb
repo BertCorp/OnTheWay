@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(:version => 20130718161646) do
     t.integer  "company_id",                           :default => 0,  :null => false
     t.string   "name"
     t.string   "phone"
+    t.string   "device_uid"
     t.datetime "created_at",                                           :null => false
     t.datetime "updated_at",                                           :null => false
     t.string   "email",                                :default => "", :null => false
