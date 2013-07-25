@@ -1,11 +1,9 @@
 <%= link_to "OnTheWay", root_path, :class => 'brand' %>
 <ul class="nav pull-right">
-  <% if company_signed_in? %>
+	<% if company_signed_in? %>
+  <li><%= link_to('Edit Account', edit_company_registration_path) %></li>
   <li><%= link_to('Logout', destroy_company_session_path, :method => 'delete') %></li>
   <% else %>
   <li><%= link_to('Login', new_company_session_path)  %></li>
-  <% end %>
-  <% if company_signed_in? %>
-  <li><%= link_to('Edit Account', edit_company_registration_path) %></li>
   <% end %>
 </ul>

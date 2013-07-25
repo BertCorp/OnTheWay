@@ -24,11 +24,11 @@ Deployment
 
 Todos
 =====
+- android icon
 - check on 401/unauthorized status for appointment checks
 
 2013-07-19T03:36:34.808114+00:00 app[web.2]: Started GET "/api/v0/appointments.json?auth_token=xrnmftdjCMVodG3uikse" for 67.167.200.199 at 2013-07-18 22:36:34 -0500
 2013-07-19T03:36:34.852188+00:00 heroku[router]: at=info method=GET path=/api/v0/appointments.json?auth_token=xrnmftdjCMVodG3uikse host=www.onthewayhq.com fwd="67.167.200.199" dyno=web.2 connect=3ms service=53ms status=401 bytes=41
-
 
 - more reliable scheduling/jobs
 - extract txt message error handling

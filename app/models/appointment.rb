@@ -65,7 +65,7 @@ class Appointment < ActiveRecord::Base
       @client.account.sms.messages.create(
         :to => "+15857050130",
         :from => TWILIO_FROM,
-        :body => "Error! Txt didnt send to: #{appointment.to} from appointment::send_reminder"
+        :body => "Error! Txt didnt send to: #{to} from appointment::send_reminder"
       )
     end
   end
@@ -88,7 +88,7 @@ class Appointment < ActiveRecord::Base
       @client.account.sms.messages.create(
         :to => "+15857050130",
         :from => TWILIO_FROM,
-        :body => "Error! Txt didnt send to: #{appointment.to} from appointment::send_en_route"
+        :body => "Error! Txt didnt send to: #{to} from appointment::send_en_route"
       )
     end
   end
@@ -112,7 +112,7 @@ class Appointment < ActiveRecord::Base
       @client.account.sms.messages.create(
         :to => "+15857050130",
         :from => TWILIO_FROM,
-        :body => "Error! Txt didnt send to: #{appointment.to} from appointment::send_feedback"
+        :body => "Error! Txt didnt send to: #{to} from appointment::send_feedback"
       )
     end
   end

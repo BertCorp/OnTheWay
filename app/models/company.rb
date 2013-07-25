@@ -1,7 +1,7 @@
 class Company < ActiveRecord::Base
   has_many :appointments
   has_many :providers
-  has_many :customers, :through => :appointments
+  has_and_belongs_to_many :customers
 
   validates_presence_of :name
   validates :email,
@@ -19,6 +19,7 @@ class Company < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
   attr_accessible :name, :phone, :timezone
+  attr_accessible :customer_ids
 
   private
 
