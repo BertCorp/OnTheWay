@@ -1,7 +1,7 @@
 class Company < ActiveRecord::Base
   has_many :appointments
   has_many :providers
-  has_many :customers, :through => :appointments
+  has_and_belongs_to_many :customers
 
   validates_presence_of :name
   validates :email,
