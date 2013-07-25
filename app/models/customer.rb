@@ -6,4 +6,5 @@ class Customer < ActiveRecord::Base
   validates_presence_of :phone
 
   attr_accessible :name, :email, :phone
+  attr_accessible :company_ids
 end
