@@ -5,10 +5,10 @@
 			<li<%= raw(' class="active"') if controller.controller_name == 'customers' %>><a href="/customers"><i class="icon-chevron-right"></i> Customers</a></li>
 			<li<%= raw(' class="active"') if controller.controller_name == 'providers' %>><a href="/providers"><i class="icon-chevron-right"></i> Providers</a></li>
 		</ul>
-		<div>
+		<div class="alert alert-success" style="margin-top: 15px; width: 58%;">
 			<h5>Need Help Finding Your Way Around?</h5> 
-			<p><strong>Give Mark a call:</strong> 617-936-8947</p>
-			<p><strong>Shoot him an email:</strong><%= mail_to "mark@onthewayhq.com" %>.</p>
+			<p><strong>Give Mark a call:</strong><br/>617-936-8947</p>
+			<p><strong>Shoot him an email:</strong><br/><%= mail_to "mark@onthewayhq.com" %>.</p>
 		</div>
 	</div>
 </div>					
