@@ -98,7 +98,7 @@ class Appointment < ActiveRecord::Base
     return false if to[0..2] == '555'
 
     begin
-      message = "Looks like your appointment is all finished! #{provider.company.name} would love to hear your feedback: #{shorturl}"
+      message = "All set with your appointment? #{provider.company.name} would love to hear your feedback: #{shorturl}"
       #puts "#{appointment.to} -- #{message}"
       @client = Twilio::REST::Client.new TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
       @client.account.sms.messages.create(
