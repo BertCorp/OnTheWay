@@ -74,6 +74,7 @@ class AppointmentsController < ApplicationController
   # GET /appointments/new
   def new
     @appointment = current_company.appointments.new
+    @appointment.customer = current_company.customers.find(params[:customer_id]) if params[:customer_id]
     @appointment.provider_id = current_company.providers.first.id if (current_company.providers.count == 1)
     @appointment.status = 'confirmed'
   end

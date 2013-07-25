@@ -9,6 +9,7 @@
     <th>Email</th>
     <th>Phone</th>
     <th></th>
+		<th></th>
   </tr>
 
 <% @customers.each do |customer| %>
@@ -16,6 +17,7 @@
     <td><%= link_to customer.name, customer %></td>
     <td><%= customer.email %></td>
     <td><%= customer.phone %></td>
+		<td><%= link_to raw('<i class="icon-plus icon-white"></i> Add Appointment'), new_appointment_path(:customer_id => customer.id), :class => 'btn btn-success btn-mini' %></td>
     <td>
       <%= link_to raw('<i class="icon-edit icon-white"></i> Edit'), edit_customer_path(customer), :class => 'btn btn-primary btn-mini' %>
       <%= link_to raw('<i class="icon-trash icon-white"></i> Delete'), customer, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger btn-mini' %>
