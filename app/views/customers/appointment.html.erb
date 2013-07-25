@@ -208,7 +208,7 @@
 
   <div data-role="content" style="text-align: center;">
 
-    <p><strong><%= @appointment.provider.name %></strong> from <strong><%= @appointment.company.name %></strong> has an appointment scheduled with you:</p>
+    <p><strong>Your appointment with <%= @appointment.provider.name %></strong> from <strong><%= @appointment.company.name %></strong> is scheduled for:</p>
 
     <p style="font-size: 20px;"><strong><%= (@appointment.starts_at.today?) ? 'Today' : "#{@appointment.starts_at.strftime('%Y-%m-%d')}" %></strong></p>
 
@@ -253,8 +253,7 @@
       <% end %>
     <% else %>
     <div id="appointment-canceled">
-      <p>Your appointment has been marked:</p>
-
+      <p>Your appointment has been</p>
       <p style="font-size: 40px; margin: 40px 0px; color: #ff9999;">CANCELED</p>
     </div>
     <% end %>
