@@ -91,6 +91,7 @@ class AppointmentsController < ApplicationController
       c.save
       params[:appointment].delete(:customer)
       params[:appointment][:customer_id] = c.id
+      current_company.customers << c
     end
 
     # build the proper when date field
