@@ -22,14 +22,17 @@
     <label class="control-label" for="appointment_customer">Customer</label>
     <div class="controls">
       <% if @appointment.customer %>
-      <% f.select :customer_id, current_company.customers.collect {|a| [a.name, a.id]} -%>
       <%= link_to @appointment.customer.name, @appointment.customer %>
+			<% elsif params.include? 'select' %>
+      <%= f.select :customer_id, current_company.customers.collect {|a| [a.name, a.id]} -%>
+			<p>or add a <a href="?">new customer</a></p>
 			<% else %>
         <%= f.fields_for :customer do |customer| %>
           <%= customer.text_field :name, placeholder: 'Name', style: "margin-bottom: 5px;" %><br/>
           <%= customer.email_field :email, placeholder: 'ex: example@onthewayhq.com', style: "margin-bottom: 5px;" %><br/>
           <%= customer.telephone_field :phone, placeholder: "(xxx) xxx-xxxx", class: 'input-medium phone', maxlength: '22' %>
         <% end %>
+				<p>or select from <a href="?select">existing customers</a></p>
       <% end %>
     </div>
   </div>
