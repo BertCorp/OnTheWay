@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     elsif current_company && current_company.timezone.present?
       timezone = current_company.timezone
     end
-    Rails.logger.info "Set Timezone: #{timezone.inspect}"
+    #Rails.logger.info "Set Timezone: #{timezone.inspect}"
     Time.zone = timezone
     yield
   end

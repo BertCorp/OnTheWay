@@ -38,6 +38,7 @@ class Api::V0::AppointmentsController < Api::V0::BaseApiController
       c = Customer.new(params[:appointment][:customer])
       if c.save
         params[:appointment][:customer_id] = c.id
+        current_provider.company.customers << c
       end
       params[:appointment].delete(:customer)
     end

@@ -1,3 +1,6 @@
+
+<%= link_to 'Add Customer', new_customer_path, :class => 'btn btn-primary pull-right', :style => 'margin-top: 15px;' %>
+
 <h1>Customers</h1>
 <p>This is a list of all of your customers in OnTheWay. Any customers listed in here can have an appointment created. If you create a new appointment and the customer is not already in this list, they will appear here.</p>
 
@@ -8,6 +11,7 @@
     <th>Email</th>
     <th>Cell Phone</th>
     <th></th>
+		<th></th>
   </tr>
 
 <% @customers.each do |customer| %>
@@ -15,6 +19,7 @@
     <td><%= link_to customer.name, customer %></td>
     <td><%= customer.email %></td>
     <td><%= customer.phone %></td>
+		<td><%= link_to raw('<i class="icon-plus icon-white"></i> Add Appointment'), new_appointment_path(:customer_id => customer.id), :class => 'btn btn-success btn-mini' %></td>
     <td>
       <%= link_to raw('<i class="icon-edit icon-white"></i> Edit'), edit_customer_path(customer), :class => 'btn btn-primary btn-mini' %>
       <%= link_to raw('<i class="icon-trash icon-white"></i> Delete'), customer, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger btn-mini' %>

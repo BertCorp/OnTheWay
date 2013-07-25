@@ -46,7 +46,9 @@ class CustomersController < ApplicationController
 
   # POST /customers
   def create
-    @customer = current_company.customers.new(params[:customer])
+    #@customer = current_company.customers.new(params[:customer])
+    @customer = Customer.new(params[:customer])
+    @customer.companies << current_company
 
     if @customer.save
       redirect_to @customer, notice: 'Customer was successfully created.'
