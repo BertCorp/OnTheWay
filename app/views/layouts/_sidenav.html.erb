@@ -1,7 +1,14 @@
 <div class="span3 bs-docs-sidebar">
-  <ul class="nav nav-list bs-docs-sidenav affix">
-    <li<%= raw(' class="active"') if controller.controller_name == 'appointments' %>><a href="/appointments"><i class="icon-chevron-right"></i> Appointments</a></li>
-    <li<%= raw(' class="active"') if controller.controller_name == 'customers' %>><a href="/customers"><i class="icon-chevron-right"></i> Customers</a></li>
-    <li<%= raw(' class="active"') if controller.controller_name == 'providers' %>><a href="/providers"><i class="icon-chevron-right"></i> Providers</a></li>
-  </ul>
-</div>
+	<div class="affix">
+		<ul class="nav nav-list bs-docs-sidenav">
+			<li<%= raw(' class="active"') if controller.controller_name == 'appointments' %>><a href="/appointments"><i class="icon-chevron-right"></i> Appointments</a></li>
+			<li<%= raw(' class="active"') if controller.controller_name == 'customers' %>><a href="/customers"><i class="icon-chevron-right"></i> Customers</a></li>
+			<li<%= raw(' class="active"') if controller.controller_name == 'providers' %>><a href="/providers"><i class="icon-chevron-right"></i> Providers</a></li>
+		</ul>
+		<div>
+			<h5>Need Help Finding Your Way Around?</h5> 
+			<p><strong>Give Mark a call:</strong> 617-936-8947</p>
+			<p><strong>Shoot him an email:</strong><%= mail_to "mark@onthewayhq.com" %>.</p>
+		</div>
+	</div>
+</div>					

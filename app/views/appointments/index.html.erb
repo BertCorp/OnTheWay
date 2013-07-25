@@ -5,6 +5,7 @@
   <%= link_to 'Add Appointment', new_appointment_path, :class => 'btn btn-primary pull-right', :style => 'margin-top: 15px;' %>
   <% end %>
   <h1>Upcoming Appointments</h1>
+	<p>This is a list of all of your upcoming appointments. Update appointment times and locations from here.</p>
 
   <table class="table table-bordered table-striped">
     <tr>
@@ -45,6 +46,7 @@
 
   <% if @past_appointments.count > 0 %>
   <h1>Past Appointments</h1>
+	<p>This is a list of all appointments that have happened.</p>
 
   <table class="table table-bordered table-striped">
     <tr>
