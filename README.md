@@ -24,19 +24,18 @@ Deployment
 
 Todos
 =====
-- android icon
+- provider notifications
+  - if provider hasn't marked job as finished, send him a friendly reminder to.
+	- add provider notification settings
 - check on 401/unauthorized status for appointment checks
 
 2013-07-19T03:36:34.808114+00:00 app[web.2]: Started GET "/api/v0/appointments.json?auth_token=xrnmftdjCMVodG3uikse" for 67.167.200.199 at 2013-07-18 22:36:34 -0500
 2013-07-19T03:36:34.852188+00:00 heroku[router]: at=info method=GET path=/api/v0/appointments.json?auth_token=xrnmftdjCMVodG3uikse host=www.onthewayhq.com fwd="67.167.200.199" dyno=web.2 connect=3ms service=53ms status=401 bytes=41
 
+- appointment types and ability to override "appointment" wording
+- stripped/uniformed phone formatting 
 - more reliable scheduling/jobs
 - extract txt message error handling
-- add provider notification settings
-- provider push/sms notifications
-  - if provider hasn't marked job as finished, send him a friendly reminder to.
-- translation layer
-  - need to figure out appointment types
 - simpler company/provider signup
 - error catching -- https://github.com/errbit/errbit
 
@@ -151,3 +150,5 @@ Down the Road
   - ~~basic site integration for displaying times properly based on company/provider timezone~~ 2013-07-18
   - ~~ability for companies and providers to choose/change their timezones~~ 2013-07-18
 - ~~fixed redirect upon updating company account info~~ 2013-07-19
+- ~~better handling of appointment for existing customers~~ 2013-07-25
+- ~~fix android icon~~ 2013-07-25
