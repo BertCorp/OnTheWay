@@ -498,7 +498,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zachary Gilbert (GJY2969YDZ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Zachary Gilbert (T9BC97AQYH)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -523,7 +523,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = OnTheWay;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C0752F7E-A552-47CC-9557-811F42719530";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -558,7 +558,7 @@
 				);
 				PRODUCT_NAME = OnTheWay;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C0752F7E-A552-47CC-9557-811F42719530";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
