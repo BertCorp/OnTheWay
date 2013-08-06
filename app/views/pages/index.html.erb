@@ -1,134 +1,98 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "OnMyWay" %></title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= javascript_include_tag "application" %>
-    <%= csrf_meta_tags %>
-    <%= yield(:head) %>
-  </head>
-  <body class="landing">
-    <div id="main" role="main">
-      <div class="container">
-        <div class="content">
-           <div class="row">
-        <div id="home" class="span8">
-          <div class="row-fluid">
-            <div class="span12 centered">
-              <div class="logo"><%= link_to image_tag("logo-white.png"), root_path %></div>
-            </div>
-          </div>
-          <div class="well">
-            <div class="row-fluid">
-              <div class="span6">
-                <h3>Sick of waiting?</h3>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title><%= content_for?(:title) ? yield(:title) : "OnTheWay" %></title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<%= stylesheet_link_tag "application", :media => "all" %>
+		<%= javascript_include_tag "application" %>
+		<%= csrf_meta_tags %>
+		<%= yield(:head) %>
+	</head>
+	<body>
+		<div id="main" role="main" class="landing">
+			<div class="container">
+				<div class="content">
+					<div class="row">
+						<div id="home" class="span12">
+							<div class="well span6 left">
+								<div class="row-fluid">
+									<div class="centered">
+										<div class="logo"><%= link_to image_tag("logo.png"), root_path %></div>
+										<h3>Have a service appointment? </h3>
+									</div>
+									<div class="span6">
+										<p><strong>OnTheWay</strong> partners with your plumber, handyman, or delivery service to get rid of those annoying four hour service windows and gives you an accurate arrival time.</p>												
+										<p><strong>Appointment updates via text or email.</strong></p>
+										<p>Tell us about the details of your appointment in the form to the right and we'll work with your service provider to send you updates on their progress.</p>
+									</div>
+									<div class="span4">
+										<form action="http://ontheway.createsend.com/t/i/s/vydi/" method="post">
+											<label>Your Info</label>
+							        <input id="fieldName" name="cm-name" type="text" placeholder="Your Full Name (required)" required/>
+							        <input id="fieldEmail" name="cm-vydi-vydi" type="email" placeholder="Your Email (required)" required />
+											<label>Company Info</label>
+							        <input id="fielddhs" name="cm-f-dhs" type="text" placeholder="Company Name (required)" required />
+							        <input id="fielddhg" name="cm-f-dhg" type="text" placeholder="Company Phone (required)" required />
+											<label>Appointment Date</label>
+							        <input id="fielddhjy" name="cm-f-dhjy" type="date" placeholder=" (required)" required/>
+							        <input type="submit" class="btn btn-success" value="Get Updates">
+										</form>
+									</div><!--span3-->
+								</div><!--row-->
+							</div><!--well-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> <!--! end of .container -->
+	</div> <!--! end of #main -->
 
-                <p>Every time you book an appointment with a service provider do you dread the 4 hours you have to wait around for them to arrive on the day of your appointment?</p>
-                <p>On then on the day of your appointment they don't show up until the last 30 minutes.</p>
+	<div class="container how-it-works">
+		<div class="row">
+			<div class="span12 centered">
+				<h1>How It Works</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span4">
+				<h3>1.) Appointment Info</h3>
+				<p>Enter your appointment info - the <strong>Who</strong>, <strong>What</strong> and <strong>When</strong>. We then use this to verify your appointment with the service provider.</p>
+			</div>
+			<div class="span4">
+				<h3>2.) Partner with Provider</h3>
+				<p>We work with your provider to update you with a more defined appointment window throughout the day.</p>
+			</div>
+			<div class="span4">
+				<h3>3.) You Get Updates</h3>
+				<p>We email or text updates with your provider's estimated arrival time. No more waiting around for hours on end, now you can plan to be home when they actually arrive.</p>
+			</div>
+		</div><!--row-->
+		<hr>
+		<div class="row">
+			<div class="span12 centered">
+				<h3>How much does it cost? - $0</h3>
+				<p><strong>OnTheWay</strong> is free for customers during our beta period.</p>
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="span12 centered">
+				<h3>Are you a home service provider?</h3>
+				<p><strong>OnTheWay</strong> makes managing customers easy with automated updates & appointment reminders. Get happier customers by keeping them informed.</p><div><%= button_to "Learn More", "/pro", method: :get, :class => "btn btn-success" %></div>
+			</div>
+		</div>
+	</div><!--container-->
 
-                <p>With OnTheWay you get updated time of arrivals as your service provider works through his appointments and notified when they're enroute to your appointment.</p>
-
-                <p><strong>Have an appointment coming up? </strong>Tell us about it and we'll contact your provider about using <strong>OnTheWay.</strong></p>
-
-                <div>Service Provider? <%= link_to "Get More Info", "/pro" %></div>
-
-              </div><!--span4-->
-
-
-              <div class="span6">
-                <form action="http://ontheway.createsend.com/t/i/s/vydi/" method="post" id="subForm">
-                  <div>
-                    <h4>Tell us about your appointment</h4>
-                    <p><i>Give us the details of your next appointment and we'll contact your service provider about using OnTheWay.</i></p>
-                    <input type="text" name="cm-name" id="name" placeholder="Your Name" />
-                    <input type="text" name="cm-vydi-vydi" id="vydi-vydi" placeholder="Your Email"/>
-                    <input type="text" name="cm-f-dhs" id="CompanyName" placeholder="Company Name" />
-                    <input type="text" name="cm-f-dhg" id="CompanyPhone" placeholder="Company Phone" />
-                    <input type="date" name="cm-f-dhjy" id="AppointmentDate" placeholder="Your Appointment Date" class="input-medium" /><br />
-
-                    <input type="submit" value="Get OnTheWay" class="btn btn-success" />
-                  </div>
-                </form>
-              </div><!--span4-->
-
-            </div><!--row-->
-          </div><!--well-->
-            <div class="row">
-              <div class="span8 centered">
-                <h1>How Does It Work?</h1>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="span5">
-                <h4>1.) The morning of your appointment you get a text with a link to your appointment.</h4>
-              </div>
-              <div class="span3 pull-right">
-                <div><a href="#modal1" data-toggle="modal"><%= image_tag("text_small.png")%></a></div><br />
-              </div>
-            </div>
-
-
-            <div class="row">
-              <div class="span3">
-                <div><a href="#modal2" data-toggle="modal"><%= image_tag("iphone_1_mini.png")%></a></div><br />
-              </div>
-              <div class="span5 pull-right">
-                <h4>2.) Check your providers' progress throughout the day and their estimated time of arrival.</h4>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="span5">
-                <h4>3.) Go about your day as normal and receive an update when your provider is on the way!</h4>
-              </div>
-              <div class="span3 pull-right">
-                <div><a href="#modal3" data-toggle="modal"><%= image_tag("enroute_small.png")%></a></div><br />
-              </div>
-            </div>
-          <hr>
-          <div class="row-fluid">
-            <div class="span12 centered">
-              <div>Are you a service provider?</div>
-              <div><%= button_to "Get More Info", "/pro", method: :get, :class => "btn btn-success" %></div>
-            </div>
-          </div>
-        </div>
-            </div>
-          </div>
-          <footer>
-          </footer>
-        </div>
-      </div> <!--! end of .container -->
-    </div> <!--! end of #main -->
-
-    <!-- Modal1 -->
-    <div id="modal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-body">
-       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <%= image_tag("text_large.png")%>
-      </div>
-    </div>
-
-    <!-- Modal2 -->
-    <div id="modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-body">
-       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <%= image_tag("iphone_1.png")%>
-      </div>
-    </div>
-
-    <!-- Modal3 -->
-    <div id="modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-body">
-       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <%= image_tag("enroute_large.png")%>
-      </div>
-    </div>
-    <%= render :partial => 'layouts/analytics' %>
-  </body>
+	<footer>
+		<div class="container">
+			<hr>
+			<!--<p class="pull-right"><a href="#">Privacy</a> | <a href="#">Terms & Conditions</a></p>-->
+			<p class="pull-right">&copy; 2013 OnTheWayHQ.com</p>
+		</div>
+	</footer>
+	<%= render :partial => 'layouts/analytics' %>
+	</body>
 </html>
