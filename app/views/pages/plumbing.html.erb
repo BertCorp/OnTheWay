@@ -21,17 +21,26 @@
 								<div class="row-fluid">
 									<div class="centered">
 										<div class="logo"><%= link_to image_tag("logo.png"), root_path %></div>
+										<h3>Have a Plumbing appointment? </h3>
 									</div>
-									<div class="span12">
-										<p>Can you imagine being told by a doctors office "Your appointment will be between 8am-Noon"?</p>
-										<p><strong>Neither can we.</strong></p> 
-										<p>So, why are we waiting four hours for our home service providers?</p>
-										<p><strong>OnTheWay</strong> partners with your plumber, handyman, or delivery service to get rid of those annoying four hour service windows and give you an accurate arrival time.</p>	
-										<br>			
-										<p class="centered">		
-										 <a href="/appointment" class="btn btn-large btn-success">Get Updates</a>	
-										</p>					
+									<div class="span6">
+										<p><strong>OnTheWay</strong> partners with your plumber to get rid of those annoying tow and four hour service windows and give you an accurate arrival time.</p>												
+										<p><strong>Get appointment updates via email.</strong></p>
+										<p>Tell us about the details of your appointment in the form to the right and we'll work with your plumber to send you updates on their progress.</p>
 									</div>
+									<div class="span4">
+										<form action="http://ontheway.createsend.com/t/i/s/vydi/" method="post">
+											<label>Your Info</label>
+							        <input id="fieldName" name="cm-name" type="text" placeholder="Your Full Name (required)" required/>
+							        <input id="fieldEmail" name="cm-vydi-vydi" type="email" placeholder="Your Email (required)" required />
+											<label>Plumber Info</label>
+							        <input id="fielddhs" name="cm-f-dhs" type="text" placeholder="Company Name (required)" required />
+							        <input id="fielddhg" name="cm-f-dhg" type="text" placeholder="Company Phone (required)" required />
+											<label>Appointment Date</label>
+							        <input id="fielddhjy" name="cm-f-dhjy" type="date" placeholder=" (required)" required/>
+							        <input type="submit" class="btn btn-success" value="Get Updates">
+										</form>
+									</div><!--span3-->
 								</div><!--row-->
 							</div><!--well-->
 						</div>
@@ -53,8 +62,8 @@
 				<p>Enter your appointment info - the <strong>Who</strong>, <strong>What</strong> and <strong>When</strong>. We then use this to verify your appointment with the service provider.</p>
 			</div>
 			<div class="span4">
-				<h3>2.) Partner with Provider</h3>
-				<p>We work with your provider to get you a more defined appointment time throughout the day.</p>
+				<h3>2.) Partner with Plumber</h3>
+				<p>We work with your plumber to get you a more defined appointment time throughout the day.</p>
 			</div>
 			<div class="span4">
 				<h3>3.) You Get Updates</h3>

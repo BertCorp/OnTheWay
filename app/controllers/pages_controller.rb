@@ -4,6 +4,10 @@ class PagesController < ApplicationController
     # redirect_to appointments_path if current_company
     render :layout => false
   end
+  
+  def appointment
+    render :layout => false
+  end
 
   def landing_confirmation
     render :layout => false

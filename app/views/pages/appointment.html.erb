@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title><%= content_for?(:title) ? yield(:title) : "OnTheWay" %></title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<%= stylesheet_link_tag "application", :media => "all" %>
+		<%= javascript_include_tag "application" %>
+		<%= csrf_meta_tags %>
+		<%= yield(:head) %>
+	</head>
+	<body>
+		<div id="main" role="main">
+			<div class="container">
+				<div class="content">
+					<div class="row">
+						<div id="home" class="span12">
+							<div class="span3">
+							</div>
+							<div class="well span6">
+								<div class="row-fluid">
+									<div class="centered">
+										<div class="logo"><%= link_to image_tag("logo.png"), root_path %></div>
+									</div>
+									<div class="centered">
+										<h4>Tell Us About Your Appointment</h4>
+										<p>Tell us about your appointment and we'll work with your service provider to get you updates throughout the day.</p>
+									</div>
+									<div class="span12 centered">
+										<form action="http://ontheway.createsend.com/t/i/s/vydi/" method="post">
+											<label><strong>Your Info</strong></label>
+											<p><i>We use this to verify your appointment with your service provider.</i></p>
+							        <input id="fieldName" name="cm-name" type="text" placeholder="Your Full Name (required)" required/>
+							        <input id="fieldEmail" name="cm-vydi-vydi" type="email" placeholder="Your Email (required)" required />
+											<label><strong>Company Info</strong></label>
+											<p><i>Tell us who to contact.</i></p>
+							        <input id="fielddhs" name="cm-f-dhs" type="text" placeholder="Company Name (required)" required />
+							        <input id="fielddhg" name="cm-f-dhg" type="text" placeholder="Company Phone (required)" required />
+											<label><strong>Appointment Date</strong></label>
+											<p><i>When are they scheduled to come?</i></p>
+							        <input id="fielddhjy" name="cm-f-dhjy" type="date" placeholder=" (required)" required/>
+							        <p class="centered"><input type="submit" class="btn btn-success" value="Get Updates" ></p>
+											<a href="/" class="centered">Cancel</a>
+										</form>
+									</div><!--span10-->
+								</div><!--row-->
+							</div><!--well-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> <!--! end of .container -->
+	</div> <!--! end of #main -->
+
+	<footer>
+		<div class="container">
+			<!--<p class="pull-right"><a href="#">Privacy</a> | <a href="#">Terms & Conditions</a></p>-->
+			<p class="pull-right">&copy; 2013 OnTheWayHQ.com</p>
+		</div>
+	</footer>
+	<%= render :partial => 'layouts/analytics' %>
+	</body>
+</html>
