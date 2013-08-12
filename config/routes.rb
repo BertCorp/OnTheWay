@@ -74,6 +74,7 @@ OnTheWay::Application.routes.draw do
   match "pro_marketing_confirmation", :to => "pages#pro_marketing_confirmation"
   match "landing_confirmation", :to => "pages#landing_confirmation"
   match "appointment", :to => "pages#appointment"
+  match "email_confirmation", :to => "pages#email_confirmation"
 
   root :to => "pages#index"
 

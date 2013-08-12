@@ -8,6 +8,10 @@ class PagesController < ApplicationController
   def appointment
     render :layout => false
   end
+  
+  def email_confirmation
+    render :layout => false
+  end
 
   def landing_confirmation
     render :layout => false

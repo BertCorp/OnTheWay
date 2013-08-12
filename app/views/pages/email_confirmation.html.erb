@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "OnMyWay" %></title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <%= stylesheet_link_tag "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+    <%= yield(:head) %>
+  </head>
+  <body class="landing">
+    <div id="main" role="main">
+      <div class="container">
+        <div class="content">
+           <div class="row">
+        <div id="home" class="span8">
+          <div class="row-fluid">
+            <div class="span12 centered">
+              <div class="logo"><%= image_tag("logo.png") %></div>
+            </div>
+          </div>
+          <div class="well">
+            <div class="row-fluid">
+              <div class="span12">
+                <div class="centered">
+                  <h1>Great!</h1>
+                  <p>We've got your email and we'll be in touch with updates on OnTheWay!</p>
+                  <p><%= link_to "Take Me To The Homepage", root_path %>
+                </div><!--centered-->
+              </div><!--span12-->
+            </div><!--row-->
+          </div><!--well-->
+        </div>
+            </div>
+          </div>
+          <footer>
+          </footer>
+        </div>
+      </div> <!--! end of .container -->
+    </div> <!--! end of #main -->
+    <%= render :partial => 'layouts/analytics' %>
+  </body>
+</html>
