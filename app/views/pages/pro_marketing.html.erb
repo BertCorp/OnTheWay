@@ -1,170 +1,86 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "OnMyWay" %></title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= javascript_include_tag "application" %>
-    <%= csrf_meta_tags %>
-    <%= yield(:head) %>
-  </head>
-  <body>
-    <div id="main" role="main">
-      <div class="container">
-        <div class="content">
-           <div class="row">
-        <div id="home" class="span8">
-          <div class="row">
-            <div class="span8 centered">
-              <div class="logo"><%= link_to image_tag("logo.png"), root_path %></div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="span8">
-              <div><a href="/">Go To Homepage</a></div>
-            </div>
-          </div>
-          <div class="well">
-            <div class="row">
-              <div class="span4">
-                <p><strong>OnTheWay</strong> is a tool for service providers who want to create a better experience for their customers.</p>
-                <ul>
-                  <li><strong>Decrease customer service calls</strong> - Customers now have an automated view into your progress.</li>
-                  <li><strong>Improve customer retention</strong> - Happy Customers = Repeat Business</li>
-                  <li><strong>Increase referrals</strong> - Happy Customers = More Referrals</li>
-                  <li><strong>Social Exposure</strong> - Get mentioned on Facebook and Twitter as soon as your appointment is done.</li>
-                </ul>
-                <p>Interested in trying out <strong>OnTheWay?</strong> tell us about your business and we'll contact you about becoming a beta tester.</p>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title><%= content_for?(:title) ? yield(:title) : "OnTheWay" %></title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<%= stylesheet_link_tag "application", :media => "all" %>
+		<%= javascript_include_tag "application" %>
+		<%= csrf_meta_tags %>
+		<%= yield(:head) %>
+	</head>
+	<body>
+		<div id="main" role="main" class="landing">
+			<div class="container">
+				<div class="content">
+					<div class="row">
+						<div id="home" class="span12">
+							<div class="well span6 left">
+								<div class="row-fluid">
+									<div class="centered">
+										<div class="logo"><%= link_to image_tag("logo.png"), root_path %></div>
+									</div>
+									<div class="span12">
+										<h4 class="centered">Customer Service Calls Adding Up?</h4>
+										<p><strong>OnTheWay</strong> is making it easier to manage your customer service.</p>
+										<p>Customers don't want to wait around at home for a service window and are willing to pay a service fee to get updates on your arrival time.</p>
+										<p><strong>OnTheWay</strong> allows customers to opt-in to get updates in exchange for a small fee on their bill, making it easy for you to manage their appointment.</p>	
+										<br>			
+									 	<form action="http://ontheway.createsend.com/t/i/s/vyhk/" method="post">
+									 	    <div class="centered"><p><strong>Interested in using OnTheWay?</strong></p></div>
+									 	    <p class="centered">Let us know your email and we'll be in touch about testing OnTheWay.</p>
+                        <div class="centered"><input id="fieldEmail" name="cm-vyhk-vyhk" type="email" placeholder="Your Email" required /></div>
+                        <div class="centered"><input type="submit" class="btn btn-success" value="I'm Interested"/></div>
+                    </form>			
+									</div>
+								</div><!--row-->
+							</div><!--well-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> <!--! end of .container -->
+	</div> <!--! end of #main -->
 
-                <p>More questions? Email us at <a href="mailto:info@onthewayhq.com">info@onthewayhq.com</a></p>
-              </div><!--span4-->
+	<div class="container how-it-works">
+		<div class="row">
+			<div class="span12 centered">
+				<h1>How It Works</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span4">
+				<h3>1.) Customer Email</h3>
+				<p>Every evening we send an email to your inbox. You reply with your customers' email or phone numbers.</p>
+			</div>
+			<div class="span4">
+				<h3>2.) Customer Opt-In</h3>
+				<p>Customers then get a reminder about their appointment and have the option to opt-in to get updates on your arrival time for $10.</p>
+			</div>
+			<div class="span4">
+				<h3>3.) Send Updates</h3>
+				<p>When they opt-in we send a reminder throughout the day with a link to send updates on your arrival time for each customer who has opted-in and we pass those along to your customers.</p>
+			</div>
+		</div><!--row-->
+		<hr>
+		<div class="row">
+			<div class="span12 centered">
+				<h3>How much does it cost? - $0</h3>
+				<p><strong>OnTheWay</strong> is free with not obligation for providers during our beta period. We make our money when customers opt-in to the service. Fill out our email above to find out more.</p>
+			</div>
+		</div>
+	</div><!--container-->
 
-
-              <div class="span3">
-                <h3>Schedule a Demo</h3>
-                <p><i>One of founders will be happy to walk you a live version of the application. Please fill out the form below and we'll be in contact shortly.</i><p>
-                <form action="http://ontheway.createsend.com/t/i/s/vyhk/" method="post" id="subForm">
-                <div>
-                <input type="text" name="cm-name" id="name" placeholder="Your Name"/><br />
-                <input type="text" name="cm-vyhk-vyhk" id="vyhk-vyhk" placeholder="Your Email" /><br />
-                <input type="text" name="cm-f-jdlt" id="PhoneNumber" placeholder="Your Phone Number"/><br />
-                <input type="text" name="cm-f-jdlh" id="CompanyName" placeholder="Company Name" /><br />
-
-                <input type="submit" value="Get OnTheWay" class="btn btn-success" />
-                </div>
-                </form>
-              </div><!--span4-->
-            </div><!--row-->
-          </div><!--well-->
-
-          <div class="row">
-            <div class="span8 centered">
-              <h1>How Does It Work?</h1>
-            </div>
-          </div>
-          <div class="row">
-            <div class="span5">
-              <h4>1.) The morning of your appointment all of your customers' receive a text with a link to their appointment page.</h4>
-            </div>
-            <div class="span3 pull-right">
-              <div><a href="#modal1" data-toggle="modal"><%= image_tag("all_appointments_small.png")%></a></div><br />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="span3">
-              <div><a href="#modal2" data-toggle="modal"><%= image_tag("iphone_1_mini.png")%></a></div><br />
-            </div>
-            <div class="span5 pull-right">
-              <h4>2.) Your customers get updates on your estimated arrival time as your progress throughout your day.</h4>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="span5">
-              <h4>3.) Tell your customer when they're on their way. Running late? Ahead of schedule? No problem, easily send them a text or give them a call.</h4>
-            </div>
-            <div class="span3 pull-right">
-              <div><a href="#modal3" data-toggle="modal"><%= image_tag("appointment_show_small.png")%></a></div><br />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="span3">
-              <div><a href="#modal4" data-toggle="modal"><%= image_tag("feedback_small.png")%></a></div><br />
-            </div>
-            <div class="span5 pull-right">
-              <h4>4.) When you've completed your work your customer is prompted to leave feedback.</h4>
-            </div>
-          </div>
-
-
-             <div class="row">
-            <div class="span5">
-              <h4>5.)  Your customer is then prompted to share with their friends.</h4>
-            </div>
-            <div class="span3 pull-right">
-              <div><a href="#modal5" data-toggle="modal"><%= image_tag("social_small.png")%></a></div><br />
-            </div>
-          </div>
-
-        </div>
-            </div>
-          </div>
-          <footer>
-          </footer>
-        </div>
-      </div> <!--! end of .container -->
-    </div> <!--! end of #main -->
-
-  <!-- Modal1 -->
-  <div id="modal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-body">
-     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <%= image_tag("all_appointments_large.png")%>
-    </div>
-  </div>
-
-  <!-- Modal2 -->
-  <div id="modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-body">
-     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <%= image_tag("iphone_1.png")%>
-    </div>
-  </div>
-
-  <!-- Modal3 -->
-  <div id="modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-body">
-     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <%= image_tag("appointment_show_large.png")%>
-    </div>
-  </div>
-
-  <!-- Modal4 -->
-  <div id="modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-body">
-     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <%= image_tag("feedback_large.png")%>
-    </div>
-  </div>
-
-  <!-- Modal5 -->
-  <div id="modal5" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-body">
-     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <%= image_tag("social_large.png")%>
-    </div>
-  </div>
 	<footer>
 		<div class="container">
 			<hr>
+			<!--<p class="pull-right"><a href="#">Privacy</a> | <a href="#">Terms & Conditions</a></p>-->
 			<p class="pull-right">&copy; 2013 OnTheWayHQ.com</p>
 		</div>
 	</footer>
-    <%= render :partial => 'layouts/analytics' %>
-  </body>
+	<%= render :partial => 'layouts/analytics' %>
+	<%= render :partial => 'live_chat' %>
+	</body>
 </html>
